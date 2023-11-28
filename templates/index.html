@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+<!-- Extends the base.html template -->
+
+{% load static %}
+<!-- Loads static files such as CSS, JavaScript, and images -->
+
+{% block title %} Landing Page {% endblock %}
+<!-- Defines a block named 'title' with default content "Landing Page" -->
+
+{% block content %}
+<!-- Defines a block named 'content' -->
+<!-- Start Banner section -->
+<section class="banner-section">
+  <!-- Container to hold the content within a specified width -->
+  <div class="container">
+    <!-- Column for text content (6 columns on medium-sized screens and above) -->
+    <div class="">
+      <!-- Banner text content -->
+      <div class="banner-text text-center">
+        <!-- Main heading of the banner section -->
+        <h1>Welcome to TailTales</h1>
+        <!-- Subheading or description of the banner section -->
+        <p>
+          "Compassionate veterinary professionals dedicated to exceptional pet
+          care."
+        </p>
+
+        <!-- Buttons for user interaction -->
+        <div class="btn-main">
+          <a href="booking" class="btn btn-outline-light">Book Appointment</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Banner section -->
+
+<!-- About Us Section -->
+<section class="about-section">
+  <div class="container">
+    <div class="row">
+      <!-- Column for the first about box (occupies 4 out of 12 columns on large and extra-large screens) -->
+<div class="col-lg-4">
+  <div class="about-box">
+    <div class="about-img">
+      <img src="{% static 'about1.jpg' %}" alt="about1" />
+    </div>
+    <div class="about-info">
+      <h3>Our Mission</h3>
+      <p>
+        We are dedicated to promoting the well-being of animals through
+        compassionate care, advanced medical services, and client
+        education. We want the best for you and your pet.
+      </p>
+      <a href="#" class="read-more-btn">Read More</a>
+    </div>
+  </div>
+</div>
+
+<!-- Column for the second about box (occupies 4 out of 12 columns on large and extra-large screens) -->
+<div class="col-lg-4">
+  <div class="about-box">
+    <div class="about-img">
+      <img src="{% static 'about2.jpg' %}" alt="about2" />
+    </div>
+    <div class="about-info">
+      <h3>Experienced Team</h3>
+      <p>
+        Our team of skilled veterinarians and staff members work together
+        to provide personalized and comprehensive healthcare for your
+        beloved pets.
+      </p>
+      <a href="#" class="read-more-btn">Read More</a>
+    </div>
+  </div>
+</div>
+
+<!-- Column for the third about box (occupies 4 out of 12 columns on large and extra-large screens) -->
+<div class="col-lg-4">
+  <div class="about-box">
+    <div class="about-img">
+      <img src="{% static 'about3.jpg' %}" alt="about3" />
+    </div>
+    <div class="about-info">
+      <h3>Community Engagement</h3>
+      <p>
+        We actively engage with the community, offering educational
+        programs and health services to promote responsible pet ownership
+        and animal welfare.
+      </p>
+      <a href="#" class="read-more-btn">Read More</a>
+    </div>
+  </div>
+</div>
+
+<!-- End About Us Section -->
+
+
+<!-- Service Packages Section -->
+<section class="service-packages">
+  <!-- Introductory Section -->
+  <div class="intro-main text-center">
+      <h2>Our Services</h2>
+      <p>All our services are available for you!</p>
+  </div>
+
+  <!-- General Checkup Package -->
+  <div class="container">
+      <div class="row">
+          <div class="col-md-4">
+              <div class="package">
+                  <h3>General Checkup</h3>
+                  <ul>
+                      <li>Routine health examination</li>
+                      <li>Nutrition advice</li>
+                  </ul>
+                  <p class="price">NPR 500</p>
+                  <a href="#" class="btn btn-success book-now-btn">Book Now</a>
+              </div>
+          </div>
+
+          <!-- Add similar sections for other services -->
+          
+          <div class="col-md-4">
+              <!-- Vaccination Package -->
+              <div class="package">
+                  <h3>Vaccination</h3>
+                  <ul>
+                      <li>Essential vaccinations</li>
+                      <li>Customized for specific needs</li>
+                  </ul>
+                  <p class="price">NPR 4000</p>
+                  <a href="#" class="btn btn-success book-now-btn">Book Now</a>
+              </div>
+          </div>
+          
+          <div class="col-md-4">
+              <!-- Dental Care Package -->
+              <div class="package">
+                  <h3>Dental Care</h3>
+                  <ul>
+                      <li>Dental cleaning</li>
+                      <li>Oral examinations</li>
+                  </ul>
+                  <p class="price">NPR 600</p>
+                  <a href="#" class="btn btn-success book-now-btn">Book Now</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+<!-- End of Service Section -->
+
+<!-- VetCare Team Section -->
+<section class="team-section">
+  <!-- Introductory Section -->
+  <div class="intro-main text-center">
+    <h2>Our VetCare Team</h2>
+    <p>Meet our experienced veterinary professionals dedicated to providing top-quality care for your pets.</p>
+  </div>
+
+  <!-- Individual Team Members -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <!-- Doctor 1 -->
+        <div class="team-box">
+          <div class="team-img">
+            <img src="{% static 'vet3.jpg' %}" alt="Doctor 1" />
+          </div>
+          <div class="team-info">
+            <h3>Dhiraj Kumar Shah Kanu</h3>
+            <p>Veterinary Specialist</p>
+            <p>Ph.D. in Veterinary Medicine</p>
+            <a href="#" class="btn btn-success book-appointment-btn">Book Appointment</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add similar sections for other team members -->
+
+      <div class="col-md-4">
+        <!-- Doctor 2 -->
+        <div class="team-box">
+          <div class="team-img">
+            <img src="{% static 'vet4.jpg' %}" alt="Doctor 2" />
+          </div>
+          <div class="team-info">
+            <h3>Lujana Bajracharya</h3>
+            <p>Veterinary Surgeon</p>
+            <p>Doctor of Veterinary Medicine (DVM)</p>
+            <a href="#" class="btn btn-success book-appointment-btn">Book Appointment</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <!-- Doctor 3 -->
+        <div class="team-box">
+          <div class="team-img">
+            <img src="{% static 'vet1.jpg' %}" alt="Doctor 3" />
+          </div>
+          <div class="team-info">
+            <h3>Manoj Karki</h3>
+            <p>Animal Care Specialist</p>
+            <p>Master's in Animal Science</p>
+            <a href="#" class="btn btn-success book-appointment-btn">Book Appointment</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- End of VetCare Team Section -->
+
+
+<!-- Start Contact Us Section -->
+<section
+  class="contact-us-section"
+  style="
+    padding: 100px 0;
+    text-align: center;
+    background: #e6efed;
+    color: #1c1a1a;
+  "
+>
+  <!-- Container to hold the content within a specified width -->
+  <div class="container">
+    <!-- Contact Form Content -->
+    <div class="contact-form px-md-5">
+      <!-- Section Title -->
+      <h2>Contacts</h2>
+      <!-- Description -->
+      <p>
+        Have a question? Contact us whenever you have any questions. We are
+        always here for you!
+      </p>
+      <!-- Contact Form -->
+      <form action="{% url 'contact' %}" method="post">
+        <div class="row">
+          {% csrf_token %} 
+          <!-- First Name Input Field -->
+          <div class="col-md-6 col-12">
+            <div class="form-group pb-2">
+              <label for="contact-first-name">First Name</label>
+              <input
+                class="form-control"
+                type="text"
+                id="c-first-name"
+                name="first-name"
+                required
+                class="p-1 fs-4 bg-transparent"
+                style="border: 1px solid #0eb62f"
+              />
+            </div>
+          </div>
+
+          <!-- Last Name Input Field -->
+          <div class="col-md-6 col-12">
+            <div class="form-group pb-2">
+              <label for="contact-last-name">Last Name</label>
+              <input
+                class="form-control"
+                type="text"
+                id="c-last-name"
+                name="last-name"
+                required
+                class="p-1 fs-4 bg-transparent"
+                style="border: 1px solid #0eb62f"
+              />
+            </div>
+          </div>
+          <!-- Email Address Input Field -->
+          <div class="col-md-6 col-12">
+            <div class="form-group pb-2">
+              <label for="contact-email">Email address</label>
+              <input
+              class="form-control"
+                type="email"
+                id="c-email"
+                name="email"
+                required
+                class="p-1 fs-4 bg-transparent"
+
+                style=" border: 1px solid #0eb62f"
+                />
+            </div>
+          </div>
+
+          <!-- Phone Input Field -->
+          <div class="col-md-6 col-12">
+            <div class="form-group pb-2">
+              <label for="contact-phone">Phone</label>
+              <input
+               class="form-control"
+                type="tel"
+                id="c-phone"
+                name="phone"
+                class="p-1 fs-4 bg-transparent"
+
+                style=" border: 1px solid #0eb62f"
+                />
+            </div>
+          </div>
+          
+          <!-- Notes Textarea -->
+          <div class="col-12">
+            <div class="form-group pb-2">
+              <label for="contact-notes">Notes</label>
+              <textarea
+              class="form-control"
+                id="c-notes"
+                name="notes"
+                rows="4"
+                class="p-1 fs-4 bg-transparent"
+                style="
+                 border: 1px solid #0eb62f;
+                 resize: vertical"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn btn-blue"
+          style="
+            background: #0a461f;
+            border: none;
+            color: #fff;
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+          "
+        >
+          SUBMIT
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+<!-- End Contact Us Section -->
+
+
+
+{% endblock %}
+<!-- End of 'content' block -->

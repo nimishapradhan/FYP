@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Payment {% endblock %}
+{% block content %}
+
+<div class="container">
+  <div class="row py-5">
+    <!-- Image on the Left Side -->
+    <div class="col-md-6 col-12">
+      <img src="{% static 'img10.jpg' %}" alt="Payment Image" class="img-fluid" style="border-radius: 10px; width: 100%; height: auto;">
+    </div>
+
+    <!-- Payment Form on the Right Side -->
+    <div class="col-md-6 col-12">
+      <div class="payment-container">
+        <h2>Payment through Khalti</h2>
+        <hr class="section-divider">
+
+        <!-- Display the payment amount and description -->
+        <p>
+          Payment Amount: NPR XXXX<br>
+          Description: Your Payment Description
+        </p>
+
+        <!-- Payment Form -->
+        <form action="" method="post">
+          {% csrf_token %}
+          
+          <!-- Khalti's payment button -->
+          <script
+            src="https://khalti.com/static/khalti-checkout.js"
+            data-amount="XXXX"
+            data-product="Your Product Name"
+            data-producturl=""
+            data-merchant="Your Merchant ID"
+          >
+          </script>
+
+          <!-- Additional form fields, if needed -->
+          <!-- e.g., customer name, email, etc. -->
+
+          <!-- Submit Button -->
+          <div class="text-center" style="margin-top: 2rem;">
+            <button
+              type="submit"
+              class="btn btn-success"
+              style="
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+              "
+            >
+              Process Payment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
