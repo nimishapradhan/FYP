@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Terms and Conditions {% endblock %}
+{% block content %}
+
+<div class="container">
+  <div class="row py-5">
+    <!-- Image on the Left Side -->
+    <div class="col-md-6 col-12">
+      <img src="{% static 'img14.jpg' %}" alt="Terms and Conditions Image" class="img-fluid" style="border-radius: 10px; width: 100%; height: auto;">
+    </div>
+
+    <!-- Terms and Conditions Content on the Right Side -->
+    <div class="col-md-6 col-12">
+      <div class="terms-condition-container">
+        <h2>Terms and Conditions:</h2>
+        <hr class="section-divider">
+
+        <p>
+          By using our services at TailTales Veterinary Clinic, you agree to the following terms and conditions:
+        </p>
+
+        <p>
+          <strong>Booking Appointment:</strong> To book an appointment, an advance payment of Rs 500 is required. This payment is non-refundable, and it won't be returned even after cancellation. The payment will only be refunded if the doctor cancels the appointment. In such a case, please collect your cash refund from the clinic reception with a screenshot of your payment receipt.
+        </p>
+
+        <p>
+          <strong>Cancellation:</strong> Once an appointment is booked and the advance payment is made, any cancellation by the user will result in the forfeiture of the Rs 500 advance payment.
+        </p>
+
+        <p>
+          <strong>Refund Process:</strong> In the rare event that the doctor cancels the appointment, you are eligible for a refund. Please visit the clinic reception with a screenshot of your payment receipt to collect the refund in cash.
+        </p>
+
+        <hr class="section-divider">
+
+        <p>
+          These terms and conditions may be subject to change without prior notice. It is your responsibility to review this page periodically for updates.
+        </p>
+
+        <p>
+            If you have any questions or concerns regarding these terms, please contact us:
+            tailtales@gmail.com 
+            or call us:
+            <a href="tel:+9779849372055">+977 9849372055</a>
+          </p>
+          
+          
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "doctornav.html" %}
+
+{% load static %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center py-5"> <!-- Added justify-content-center class -->
+    
+    <!-- Edit profile Form on the Right Side -->
+    <div class="col-md-6 col-12">
+      <div class="fs-4 fw-light text-muted pb-2 text-center">Edit Profile</div>
+
+      <!-- Edit Profile Form -->
+      <form method="post" action="">
+        <!-- Password Input Field -->
+        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+          {% csrf_token %} 
+          <div class="form-group pb-2">
+            <label for="vet_pw">Current Password</label>
+            <input
+              class="form-control"
+              type="password"
+              id="vet-pw"
+              name="vet-pw"
+              required
+              style="border: 1px solid #0eb62f"
+            />
+          </div>
+        </div>
+
+        <!-- New Password Input Field -->
+        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+          <div class="form-group pb-2">
+            <label for="new_vet_pw">New Password</label>
+            <input
+              class="form-control"
+              type="password"
+              id="new-vet-pw"
+              name="new-vet-pw"
+              required
+              style="border: 1px solid #0eb62f"
+            />
+          </div>
+        </div>
+
+        <!-- Confirm New Password Input Field -->
+        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+          <div class="form-group pb-2">
+            <label for="confirm_new_vet_pw">Confirm New Password</label>
+            <input
+              class="form-control"
+              type="password"
+              id="confirm-new-vet-pw"
+              name="confirm-new-vet-pw"
+              required
+              style="border: 1px solid #0eb62f"
+            />
+          </div>
+        </div>
+
+        <!-- Rest of the profile fields -->
+        <!-- ... -->
+
+        <!-- Submit Button -->
+        <div class="text-center py-4">
+          <button
+            type="submit"
+            class="btn btn-blue"
+            style="
+              background: #4CAF50; /* Green color */
+              border: none;
+              color: #fff;
+              padding: 12px 24px;
+              font-size: 18px;
+              cursor: pointer;
+              transition: background 0.3s ease;
+            "
+          >
+            Confirm
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

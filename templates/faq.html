@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} FAQ {% endblock %}
+{% block content %}
+
+<div class="container">
+  <div class="row py-5">
+    <!-- Image on the Left Side -->
+    <div class="col-lg-6 col-12">
+      <img src="{% static 'img8.jpg' %}" alt="FAQ Image" class="img-fluid" style="border-radius: 10px; width: 100%; height: auto;">
+    </div>
+
+    <!-- FAQ Content on the Right Side -->
+    <div class="col-lg-6 col-12">
+      <div class="faq-container ">
+        <h3>Frequently Asked Questions</h3>
+        <p>
+          Here are some frequently asked questions about our veterinary services at Animal Clinic:
+        </p>
+
+        <div class="faq-item" style="margin-bottom: 2rem;">
+          <h3>What vaccinations does my pet need?</h3>
+          <p>Vaccinations vary depending on the type of pet and their age. Please contact our office for a consultation to determine the best vaccine plan for your pet.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 2rem;">
+          <h3>Can I bring my pet in for a checkup?</h3>
+          <p>Yes! We offer routine checkups and examinations for all of our patients. Please contact us to schedule an appointment.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 2rem;">
+          <h3>What services does your clinic offer?</h3>
+          <p>We offer a wide range of services including general checkup, vaccinations, dental care, and more. Please contact us for more information.</p>
+        </div>
+
+        <div class="faq-item" style="margin-bottom: 2rem;">
+          <h3>What payment methods do you accept?</h3>
+          <p>We accept both payment through Khalti. For booking an appointment, you have to do an advance payment of Rs 500. This money won't be returned even after cancellation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

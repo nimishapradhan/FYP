@@ -1,0 +1,153 @@
+{% extends "user_nav.html" %}
+{% load static %}
+{% block title %} Dashboard {% endblock %}
+{% block content %}
+
+<style>
+
+
+    /* Common table styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    th {
+        background-color: #88b4ab;
+        color: black;
+        font-weight: bold;
+    }
+
+    /* Zebra striping for tables */
+    tbody tr:nth-child(odd) {
+        background: #eee;
+    }
+
+    /* Responsive styles for tables */
+    @media only screen and (max-width: 760px),
+    (min-device-width: 768px) and (max-device-width: 1024px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+
+        thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        tr {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+        }
+
+        td:before {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+
+        /* Label the data */
+        td:nth-of-type(1):before {
+            content: "Date";
+        }
+        td:nth-of-type(2):before {
+            content: "Time";
+        }
+        td:nth-of-type(3):before {
+            content: "Doctor Name";
+        }
+        td:nth-of-type(4):before {
+            content: "Specialization";
+        }
+        td:nth-of-type(5):before {
+            content: "Status";
+        }
+    }
+
+    .availability-form {
+        margin-bottom: 4em; /* Adjust the space as needed */
+    }
+
+</style>
+
+<div class="container py-5">
+    <!-- Doctor Availability Section -->
+    <div class="availability-form">
+            <div class="fs-4">Doctor Availability</div>
+            <hr />
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Doctor Name</th>
+                    <th>Specialization</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor.date }}</td>
+                        <td>{{ doctor.time }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.qualification }}</td>
+                        <td>{{ doctor.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- Today's Appointments Section -->
+    <div class="appointment-table">
+        <div class="fs-4">My Today's Appointments</div>
+        <hr />
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Vet</th>
+                    <th>Appointment Type</th>
+                    <th>Service Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in appoitments %}
+                    <tr>
+                        <td>{{ app.date }}</td>
+                        <td>{{ app.time }}</td>
+                        <td>{{ app.vet }}</td>
+                        <td>{{ app.appoitment_type }}</td>
+                        <td>{{ app.service_type }}</td>
+                    </tr>
+                {% endfor %}
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

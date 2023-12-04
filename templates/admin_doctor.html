@@ -1,0 +1,150 @@
+
+{% extends "admin_nav.html" %}
+{% load static %}
+{% block title %} Dashboard {% endblock %}
+{% block content %}
+
+<style>
+    /* Add your styling for the profile page here */
+
+    /* Example styling for the form */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    /* Zebra striping */
+    tr:nth-of-type(odd) {
+        background: #f8f9fa; /* Light gray for zebra striping */
+    }
+
+    th {
+        background: #88b4ab; /* Green color */
+        color: rgb(29, 28, 28);
+        font-weight: bold;
+    }
+
+    td,
+    th {
+        padding: 1rem;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    @media only screen and (max-width: 760px),
+    (min-device-width: 768px) and (max-device-width: 1024px) {
+        /* Force table to not be like tables anymore */
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+            display: block;
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+        thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        tr {
+            border: 1px solid #ccc;
+        }
+
+        td {
+            /* Behave like a "row" */
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+        }
+
+        td:before {
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+    /*
+    Label the data
+    */
+    td:nth-of-type(1):before {
+      content: "Patient Name";
+    }
+    td:nth-of-type(2):before {
+      content: "Owner Name";
+    }
+    td:nth-of-type(3):before {
+      content: "Vet Name";
+    }
+    td:nth-of-type(4):before {
+      content: "Appointment Type";
+    }
+    td:nth-of-type(5):before {
+      content: "Service Type";
+    }
+    td:nth-of-type(6):before {
+      content: "Instruction";
+    }
+    td:nth-of-type(7):before {
+      content: "Date";
+    }
+  }
+
+  .btn-green {
+    background-color: #4CAF50; /* Green color */
+    color: white; /* Text color */
+  }
+  
+</style>
+
+  <div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="fs-4">Doctor Records</div>
+        <!-- Add register button with link to the booking page -->
+        <a href="{% url 'doc_register' %}" class="text-decoration-none">
+            <button type="button" class="reg-vet-btn btn btn-green">Register New Veterinarians</button>
+        </a>
+    </div>
+
+  <hr />
+
+<table>
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Gender</th>
+      <th>Phone Number</th>
+      <th>Qualification</th>
+      <th>Service Type</th>
+      <th>NMC Number</th>
+      <th>Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for doctor in doctors %}
+      <tr>
+          <td>{{ doctor.first_name }}</td>
+          <td>{{ doctor.last_name }}</td>
+          <td>{{ doctor.gender }}</td>
+          <td>{{ doctor.phone }}</td>
+          <td>{{ doctor.qualification }}</td>
+          <td>{{ doctor.service_type }}</td>
+          <td>{{ doctor.nmc_number }}</td>
+          <td>{{ doctor.address }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

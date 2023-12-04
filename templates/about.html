@@ -1,0 +1,102 @@
+{%extends "base.html"%} {% load static %} {% block title %} About
+{%endblock%} {% block content %}
+<div class="container">
+    <div class="d-lg-flex d-block align-items-center justify-content-center py-5">
+        <div class="col-lg-6 d-block">
+            <h3>            Compassionate Veterinary Care at TailTales
+            </h3>
+            <h6 class=" fw-light fs-4">Ensuring Optimal Health for Your Pet
+            </h6>
+        </div>
+        <div class="col-lg-6 pt-lg-0 pt-4">
+            <h3>Veterinary Services Provided by Animal Clinic</h3>
+            <p>
+                At Animal Clinic, we believe in providing exceptional care to your beloved pets. With over 5 years of experience in the field of veterinary medicine, our dedicated staff understands that your pet is a cherished member of your family. Our friendly veterinarians and staff work tirelessly to build lasting relationships with our clients. We are passionate about ensuring optimal health for each patient, providing the highest level of compassionate care, and offering affordable treatments to keep your pets in the best possible condition. We are committed to ensuring the well-being of animals and promoting responsible pet ownership through our services. Here's what sets us apart:
+            </p>
+            <ol class="list-unstyled">
+                <li><strong>Our Mission:</strong> We promote the well-being of animals through compassionate care, advanced medical services, and client education.</li>
+                <li><strong>Experienced Team:</strong> Our team comprises skilled veterinarians and staff members dedicated to personalized and comprehensive healthcare for your pets. With over two decades of experience, we provide expert medical attention to keep your pets healthy and happy.</li>
+                <li><strong>Community Engagement:</strong> We actively engage with the community by offering educational programs and health services to promote responsible pet ownership and animal welfare. Through various initiatives, we strive to create a positive impact on the lives of pets and their families.</li>
+            </ol>
+        </div>        
+    </div>
+   
+</div>
+
+
+<div style="background-color: #88b4ab;">
+    <div class="container">
+        <div class="row p-4">
+            <div class="col-md-3 col-6 text-center ">
+                <span class="fs-2 fw-bold">5+</span>
+                <br>
+                <span class="fs-3">
+                    years
+                </span>
+
+            </div>
+
+            <div class="col-md-3 col-6 text-center ">
+                <span class="fs-2 fw-bold">100+</span>
+                <br>
+                <span class="fs-3">
+                    happy clients
+                </span>
+
+            </div>
+
+            <div class="col-md-3 col-6 text-center ">
+                <span class="fs-2 fw-bold">50+</span>
+                <br>
+                <span class="fs-3">
+                    events
+                </span>
+
+            </div>
+
+            <div class="col-md-3 col-6 text-center ">
+                <span class="fs-2 fw-bold">100%</span>
+                <br>
+                <span class="fs-3">
+                    happy clients
+                </span>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+ <!-- Slider with images -->
+
+ <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="10000">
+            <img src="{% static 'test.jpg' %}" class="d-block w-100" alt="about1" />
+        </div>
+        <div class="carousel-item" data-bs-interval="2000">
+            <img src="{% static 'img18.jpg' %}" class="d-block w-100" alt="about2" />
+        </div>
+        <div class="carousel-item">
+            <img src="{% static 'login_img.jpg' %}" class="d-block w-100" alt="about3" />
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+    
+{% endblock %}
+
