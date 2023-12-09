@@ -151,6 +151,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="fs-4">Bookable Time Slots</div>
             </div>
+
             <hr />
             <div class="time-slots">
                 {% for slot in time_slots %}
@@ -171,6 +172,11 @@
         <a href="{% url 'booking' %}" class="text-decoration-none">
             <button type="button" class="book-appointment-btn btn btn-green">Book appointment</button>
         </a>
+    </div>
+
+    <div class = "input-group input-group-sm mb-3 mt-4">
+        <input type="text" class="form-control" id="search" placeholder="Search for...">
+        <a href = "user_app" class="btn btn-primary" style="margin: left 2px;"> <i class="fa-solid fa-magnifying-glass"></i> </a>
     </div>
 
     <hr />

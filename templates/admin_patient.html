@@ -81,17 +81,47 @@
             content: "Pet Name";
         }
         td:nth-of-type(2):before {
-            content: "Owner Name";
+            content: "Pet Breed";
         }
-
         td:nth-of-type(3):before {
-            content: "Service Type";
+            content: "Pet Colour";
         }
         td:nth-of-type(4):before {
-            content: "Instructions";
+            content: "Pet Age";
         }
         td:nth-of-type(5):before {
-            content: "Date";
+            content: "Owner Name";
+        }
+        td:nth-of-type(6):before {
+            content: "Owner Email";
+        }
+        td:nth-of-type(7):before {
+            content: "Gender";
+        }
+
+        td:nth-of-type(8):before {
+            content: "Phone Number";
+        }
+        td:nth-of-type(9):before {
+            content: "Address";
+        }
+        td:nth-of-type(10):before {
+            content: "Tole";
+        }
+        td:nth-of-type(11):before {
+            content: "House Number";
+        }
+        td:nth-of-type(12):before {
+            content: "Pet Disease";
+        }
+        td:nth-of-type(13):before {
+            content: "Instructions";
+        }
+        td:nth-of-type(14):before {
+            content: "Registered Date";
+        }
+        td:nth-of-type(15):before {
+            content: "Action";
         }
     }
 
@@ -129,6 +159,18 @@
     color: white; /* Text color */
   }
 
+  div.container {
+        overflow-x: auto;
+    }
+
+    table {
+        white-space: nowrap;
+    }
+
+    th {
+        white-space: nowrap;
+    }
+
 </style>
 
 <div class="container py-5">
@@ -140,32 +182,68 @@
         </a>
     </div>
 
+    <div class = "input-group input-group-sm mb-3 mt-4">
+        <input type="text" onkeyup="searchFunction()" class="form-control" id="search" placeholder="Search for...">
+        <a href = "admin_patient" class="btn btn-primary" style="margin: left 2px;"> <i class="fa-solid fa-magnifying-glass"></i> </a>
+    </div>
 
 
-    <hr />
+    
     <table>
         <thead>
             <tr>
                 <th>Pet Name</th>
+                <th>Pet Breed</th>
+                <th>Pet Colour</th>
+                <th>Pet Age</th>
+                <th>Owner Name</th>
                 <th>Owner Email</th>
-                <th>Service Type</th>
+                <th>Gender</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Tole</th>
+                <th>House Number</th>
+                <th>Pet Disease</th>
                 <th>Instructions</th>
-                <th>Date</th>
+                <th>Registered Date</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             {% for patient in patients %}
             <tr>
                 <td>{{ patient.pet_name }}</td>
+                <td>{{ patient.pet_breed }}</td>
+                <td>{{ patient.pet_colour }}</td>
+                <td>{{ patient.pet_age }}</td>
+                <td>{{ patient.name }}</td>
                 <td>{{ patient.email }}</td>
-                <td>{{ patient.service_type }}</td>
-                <td>None</td>
+                <td>{{ patient.gender }}</td>
+                <td>{{ patient.number }}</td>
+                <td>{{ patient.address }}</td>
+                <td>{{ patient.tole }}</td>
+                <td>{{ patient.housenumber }}</td>
+                <td>{{ patient.petdisease }}</td>
+                <td>drink water</td>
                 <td>{{ patient.date }}</td>
+                <td>
+                    <a href="#" class="btn btn-primary" title="Edit product">
+                      <i class="fa-solid fa-pen"></i>
+                    </a>
+                  
+                    &nbsp;&nbsp;
+                  
+                    <a href="#" class="btn btn-primary" title="Delete product">
+                      <i class="fa-solid fa-trash"></i>
+                    </a>
+                  </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModal" aria-hidden="true">

@@ -1,4 +1,3 @@
-
 {% extends "admin_nav.html" %}
 {% load static %}
 {% block title %} Dashboard {% endblock %}
@@ -73,40 +72,51 @@
             padding-right: 10px;
             white-space: nowrap;
         }
-    /*
-    Label the data
-    */
-    td:nth-of-type(1):before {
-      content: "Patient Name";
-    }
-    td:nth-of-type(2):before {
-      content: "Owner Name";
-    }
-    td:nth-of-type(3):before {
-      content: "Vet Name";
-    }
-    td:nth-of-type(4):before {
-      content: "Appointment Type";
-    }
-    td:nth-of-type(5):before {
-      content: "Service Type";
-    }
-    td:nth-of-type(6):before {
-      content: "Instruction";
-    }
-    td:nth-of-type(7):before {
-      content: "Date";
-    }
-  }
+        /*
+        Label the data
+        */
+        td:nth-of-type(1):before {
+            content: "First Name";
+        }
+        td:nth-of-type(2):before {
+            content: "Last Name";
+        }
+        td:nth-of-type(3):before {
+            content: "Gender";
+        }
+        td:nth-of-type(4):before {
+            content: "Phone number";
+        }
+        td:nth-of-type(5):before {
+            content: "Qualification";
+        }
+        td:nth-of-type(6):before {
+            content: "Service Type";
+        }
+        td:nth-of-type(7):before {
+            content: "Date";
+        }
 
-  .btn-green {
-    background-color: #4CAF50; /* Green color */
-    color: white; /* Text color */
-  }
-  
+        td:nth-of-type(8):before {
+            content: "NMC Number";
+        }
+
+        td:nth-of-type(9):before {
+            content: "Address";
+        }
+
+        td:nth-of-type(10):before {
+            content: "Action";
+        }
+    }
+
+    .btn-green {
+        background-color: #4CAF50; /* Green color */
+        color: white; /* Text color */
+    }
 </style>
 
-  <div class="container py-5">
+<div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="fs-4">Doctor Records</div>
         <!-- Add register button with link to the booking page -->
@@ -115,36 +125,51 @@
         </a>
     </div>
 
-  <hr />
+    <div class="input-group input-group-sm mb-3 mt-4">
+        <input type="text" class="form-control" id="search" placeholder="Search for...">
+        <a href="admin_doctor" class="btn btn-primary" style="margin-left: 2px;"> <i class="fa-solid fa-magnifying-glass"></i> </a>
+    </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Gender</th>
-      <th>Phone Number</th>
-      <th>Qualification</th>
-      <th>Service Type</th>
-      <th>NMC Number</th>
-      <th>Address</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for doctor in doctors %}
-      <tr>
-          <td>{{ doctor.first_name }}</td>
-          <td>{{ doctor.last_name }}</td>
-          <td>{{ doctor.gender }}</td>
-          <td>{{ doctor.phone }}</td>
-          <td>{{ doctor.qualification }}</td>
-          <td>{{ doctor.service_type }}</td>
-          <td>{{ doctor.nmc_number }}</td>
-          <td>{{ doctor.address }}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    <table>
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Phone Number</th>
+                <th>Qualification</th>
+                <th>Service Type</th>
+                <th>NMC Number</th>
+                <th>Address</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doctor in doctors %}
+                <tr>
+                    <td>{{ doctor.first_name }}</td>
+                    <td>{{ doctor.last_name }}</td>
+                    <td>{{ doctor.gender }}</td>
+                    <td>{{ doctor.phone }}</td>
+                    <td>{{ doctor.qualification }}</td>
+                    <td>{{ doctor.service_type }}</td>
+                    <td>{{ doctor.nmc_number }}</td>
+                    <td>{{ doctor.address }}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary" title="Edit product">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
 
+                        &nbsp;&nbsp;
+
+                        <a href="#" class="btn btn-primary" title="Delete product">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}
