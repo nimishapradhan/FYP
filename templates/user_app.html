@@ -136,7 +136,6 @@
     .booked {
         background-color: #dc3545;
         color: white;
-        cursor: not-allowed;
     }
 
     .time-slot-btn:hover {
@@ -201,20 +200,20 @@
 
     <script>
         // Simulating booked time slots (you would get this data from your server)
-        const bookedTimeSlots = ["9:00 AM", "10:30 AM", "1:30 PM", "3:00 PM"];
-
+        const bookedTimeSlots = ["9:00 AM", "9:20 AM", "9:40 AM", "10:00 AM", "10:20 AM", "10:40 AM", "11:00 AM", "11:20 AM", "10:40 AM", "12:00 PM"];
+    
         document.addEventListener("DOMContentLoaded", function () {
-            // Generate time slots from 9 am to 5 pm in 30-minute intervals
+            // Generate time slots from 9 am to 5 pm in 20-minute intervals
             const timeSlots = [];
             let currentTime = new Date();
             currentTime.setHours(9, 0, 0, 0); // Set initial time to 9 am
-
-            for (let i = 0; i < 16; i++) {
+    
+            for (let i = 0; i < 24; i++) {
                 const time = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 const button = document.createElement("button");
                 button.className = "time-slot-btn";
                 button.textContent = time;
-
+    
                 if (bookedTimeSlots.includes(time)) {
                     button.classList.add("booked");
                 } else {
@@ -223,12 +222,15 @@
                         alert(`Booked ${time}`);
                     });
                 }
-
+    
                 document.querySelector('.time-slots').appendChild(button);
-                currentTime.setMinutes(currentTime.getMinutes() + 30);
+                currentTime.setMinutes(currentTime.getMinutes() + 20);
             }
         });
     </script>
+    
+   
+    
 
 </div>
 
