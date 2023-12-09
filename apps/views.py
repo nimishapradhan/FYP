@@ -372,14 +372,92 @@ def userapp_view(request):
             app_details.append(app_detail)
     
     sendData = {
-        'appoitments': app_details
+        'appointments': app_details
     }
     return render(request, 'user_app.html', sendData)
 
 def userpayment_view(request):
     return render(request, 'user_payment.html')
 
+
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
+
 def userprofile_view(request):
+    user = request.user
+    
+    if request.method == 'POST':
+        if 'update_profile' in request.POST:
+            user.first_name = request.POST.get('user-first-name')
+            user.last_name = request.POST.get('user-last-name')
+            user.email = request.POST.get('user-email')
+            user.save()
+            messages.success(request, 'Profile updated successfully')
+        
+        elif 'change_password' in request.POST:
+            # Password change handling
+            current_password = request.POST.get('current_password')
+            new_password = request.POST.get('new_password')
+            confirm_password = request.POST.get('confirm_password')
+
+            # Validate the current password
+            if user.check_password(current_password):
+                if new_password == confirm_password:
+                    user.set_password(new_password)
+                    user.save()
+                    update_session_auth_hash(request, user)  # Update the user's session
+                    messages.success(request, 'Password changed successfully')
+
+                else:
+                    messages.error(request, 'New password and confirmation do not match')
+            else:
+                messages.error(request, 'Current password is incorrect')
+    context = {
+        'user': user,
+        #'password_form': form,
+    }
+    return render(request, 'user_profile.html', context)
+
+
+# def profile(request):
+#     user = request.user
+    
+#     if request.method == 'POST':
+#         if 'update_profile' in request.POST:
+#             # user.username = request.POST.get('username')
+#             user.first_name = request.POST.get('fullname')
+#             user.email = request.POST.get('email')
+#             user.save()
+#             messages.success(request, 'Profile updated successfully')
+
+#         if 'change_password' in request.POST:
+#             # Password change handling
+#             current_password = request.POST.get('current_password')
+#             new_password = request.POST.get('new_password')
+#             confirm_password = request.POST.get('confirm_password')
+
+#             # Validate the current password
+#             if user.check_password(current_password):
+#                 if new_password == confirm_password:
+#                     user.set_password(new_password)
+#                     user.save()
+#                     update_session_auth_hash(request, user)  # Update the user's session
+#                     messages.success(request, 'Password changed successfully')
+                    
+#                 else:
+#                     messages.error(request, 'New password and confirmation do not match')
+#             else:
+#                 messages.error(request, 'Current password is incorrect')
+
+#     context = {
+#         'user': user
+#     }
+#     return render(request, 'profile.html', context)
+
+
+
+#def userprofile_view(request):
     user = request.user
 
     if request.method == 'POST':
