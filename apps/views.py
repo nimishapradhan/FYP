@@ -503,10 +503,10 @@ def doctorprofile_view(request):
 def doctorapp_view(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM booking_details")
-        allAppoitments = cursor.fetchall()
+        allAppointments = cursor.fetchall()
 
         appointments = []
-        for row in allAppoitments:
+        for row in allAppointments:
             appointment = {
                 'appointment_id': row[0],
                 'pet_name': row[4],
@@ -602,8 +602,6 @@ def register_view(request):
     return render(request, 'register.html')
 
 
-
 def logout_view(request):
-    logout(request)
-    return redirect('login')
+    return render(request, 'login.html')
 
