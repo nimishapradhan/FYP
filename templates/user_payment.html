@@ -89,6 +89,9 @@
         td:nth-of-type(5):before {
             content: "Payment";
         }
+        td:nth-of-type(6):before {
+            content: "Action";
+        }
     }
 
     /* Style for the "Bill" button */
@@ -118,6 +121,7 @@
                 <th>Service Type</th>
                 <th>Appointment Type</th>
                 <th>Payment</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -128,6 +132,11 @@
                 <td>Dental Care</td>
                 <td>Home</td>
                 <td>500</td>
+                <td>
+                    <a href="#" class="btn btn-primary" title="Delete product">
+                      <i class="fa-solid fa-trash"></i>
+                    </a>
+                  </td>
             </tr>
             <!-- Add more rows as needed -->
         </tbody>

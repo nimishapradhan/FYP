@@ -88,6 +88,9 @@
         td:nth-of-type(5):before {
             content: "Instructions";
         }
+        td:nth-of-type(6):before {
+            content: "Action";
+        }
     }
 
     /* Style for the "Book Appointment" button */
@@ -189,6 +192,7 @@
                 <th>Appointment Type</th>
                 <th>Service Type</th>
                 <th>Instructions</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -199,6 +203,11 @@
                     <td>{{ app.appoitment_type }}</td>
                     <td>{{ app.service_type }}</td>
                     <td>none</td>
+                    <td>
+                        <a href="#" class="btn btn-primary" title="Delete product">
+                          <i class="fa-solid fa-trash"></i>
+                        </a>
+                      </td>
                 </tr>
             {% endfor %}
         </tbody>
