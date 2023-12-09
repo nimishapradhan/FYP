@@ -258,22 +258,71 @@ def usernav_view(request):
 def uhistory_view(request):
     return render(request, 'user_history.html')
 
+# def userdashboard_view(request):
+#     with connection.cursor() as cursor:
+#         cursor.execute("SELECT * from doctor_details")
+#         data = cursor.fetchall()
+
+#         user = request.user
+
+#         # cursor.execute("SELECT * FROM booking_details where email = '%s'", [user.email])
+#         # Appdata = cursor.fetchall()
+#         cursor.execute("SELECT * FROM booking_details")
+#         Appdata = cursor.fetchall()
+
+#         doctor_details = []
+#         app_details = []
+
+#         for row in data:
+#             doctor_detail = {
+#                 'id': row[0],
+#                 'name': row[1],
+#                 'date': row[12],
+#                 'time': row[13],
+#                 'qualification': row[7],
+#                 'status': 'available'
+#             }
+#             doctor_details.append(doctor_detail)
+        
+#         for row in Appdata:
+#             app_detail = {
+#                 'id': row[0],
+#                 'date': row[17],
+#                 'time': row[18],
+#                 'vet': row[19],
+#                 'appoitment_type': row[11],
+#                 'service_type': row[13]
+#             }
+#             app_details.append(app_detail)
+
+#     getData = {
+#         'doctors': doctor_details,
+#         'appoitments': app_details
+#     }
+#     return render(request, 'user_dashboard.html', getData)
+
+
+from datetime import date
+
 def userdashboard_view(request):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * from doctor_details")
-        data = cursor.fetchall()
+        # Fetching doctor details
+        cursor.execute("SELECT * FROM doctor_details")
+        doctor_data = cursor.fetchall()
 
         user = request.user
 
-        # cursor.execute("SELECT * FROM booking_details where email = '%s'", [user.email])
-        # Appdata = cursor.fetchall()
-        cursor.execute("SELECT * FROM booking_details")
-        Appdata = cursor.fetchall()
-
+        # Fetching appointment details for today's date
+        today = date.today()
+        print("Date", today)
+        cursor.execute("SELECT * FROM booking_details WHERE date = %s", [today])
+        app_data = cursor.fetchall()
+        
         doctor_details = []
         app_details = []
 
-        for row in data:
+        # Processing doctor details
+        for row in doctor_data:
             doctor_detail = {
                 'id': row[0],
                 'name': row[1],
@@ -283,23 +332,26 @@ def userdashboard_view(request):
                 'status': 'available'
             }
             doctor_details.append(doctor_detail)
-        
-        for row in Appdata:
+
+        # Processing appointment details
+        for row in app_data:
             app_detail = {
                 'id': row[0],
                 'date': row[17],
                 'time': row[18],
                 'vet': row[19],
-                'appoitment_type': row[11],
+                'appointment_type': row[11],
                 'service_type': row[13]
             }
             app_details.append(app_detail)
+        print("Date app", app_details)    
 
     getData = {
         'doctors': doctor_details,
-        'appoitments': app_details
+        'appointments': app_details
     }
     return render(request, 'user_dashboard.html', getData)
+
 
 def userapp_view(request):
     with connection.cursor() as cursor:
@@ -549,6 +601,9 @@ def register_view(request):
             return render(request, 'register.html', {'error_message': f'Missing key: {e}'})
     return render(request, 'register.html')
 
+
+
 def logout_view(request):
     logout(request)
     return redirect('login')
+

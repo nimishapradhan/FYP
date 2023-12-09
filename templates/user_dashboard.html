@@ -135,12 +135,12 @@
                 </tr>
             </thead>
             <tbody>
-                {% for app in appoitments %}
+                {% for app in appointments %}
                     <tr>
                         <td>{{ app.date }}</td>
                         <td>{{ app.time }}</td>
                         <td>{{ app.vet }}</td>
-                        <td>{{ app.appoitment_type }}</td>
+                        <td>{{ app.appointment_type }}</td>
                         <td>{{ app.service_type }}</td>
                     </tr>
                 {% endfor %}
