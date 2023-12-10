@@ -54,12 +54,16 @@
    <!-- Start Header -->
 <header>
     <div class="container">
-        <div class="px-0">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand logo" href="{% url 'index' %}">
-                    <img src="{% static 'logo.png' %}" alt="logo" style="max-width: 75px; max-height: 200px;">
-                    <span class="welcome-text">Welcome, user!</span>
-                </a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href='{% url 'index' %}'>
+                <img src="{% static 'logo.png' %}" alt="logo" style="max-width: 75px; max-height: 200px;">
+
+                <span class="text-white">Welcome, user!</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
             <div class="collapse navbar-collapse justify-content-center" id="navbarToggler">
                 <ul class="navbar-nav">
@@ -78,11 +82,11 @@
                 </ul>
             </div>
             
-            <div class="d-flex ps-5">
+            <ul class="navbar-nav ms-auto">
                 <button type="submit" class="btn btn-logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                   Logout
-                </button>
-              </div>
+                    Logout
+                 </button>
+            </ul>
         </nav>
     </div>
 </div>
@@ -101,7 +105,7 @@
               Are you are you want to logout?
               </div>
               <div class="modal-footer">
-              <a href="{% url 'user_dashboard' %}" type="button" class="btn btn-secondary">Cancel</a>
+              <a href="{% url 'user_dashboard' %}" type="button" class="btn btn-danger">Cancel</a>
               <a href="{% url 'feedback' %}" type="button" class="btn btn-success">Logout</a>
               </div>
           </div>

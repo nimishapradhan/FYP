@@ -174,7 +174,7 @@
 </style>
 
 <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-right mb-4">
         <div class="fs-4">Patient Records</div>
         <!-- Add register button with link to the booking page -->
         <a href="{% url 'booking' %}" class="text-decoration-none">
@@ -227,13 +227,13 @@
                 <td>drink water</td>
                 <td>{{ patient.date }}</td>
                 <td>
-                    <a href="#" class="btn btn-primary" title="Edit product">
+                    <a href="#" class="btn btn-success" title="Edit product">
                       <i class="fa-solid fa-pen"></i>
                     </a>
                   
                     &nbsp;&nbsp;
                   
-                    <a href="#" class="btn btn-primary" title="Delete product">
+                    <a href="#" class="btn btn-danger" title="Delete product">
                       <i class="fa-solid fa-trash"></i>
                     </a>
                   </td>

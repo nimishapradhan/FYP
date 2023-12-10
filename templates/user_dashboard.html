@@ -102,6 +102,7 @@
                     <th>Doctor Name</th>
                     <th>Specialization</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -112,6 +113,16 @@
                         <td>{{ doctor.name }}</td>
                         <td>{{ doctor.qualification }}</td>
                         <td>{{ doctor.status }}</td>
+                        <td>
+                            <a href="#" class="btn btn-success" title="Cancel appointment">
+                                <i class="fa-solid fa-ban"></i>
+                            </a>
+                            &nbsp;&nbsp;
+
+                            <a href="#" class="btn btn-danger" title="Delete appointment">
+                              <i class="fa-solid fa-trash"></i>
+                            </a>
+                          </td>
                     </tr>
                 {% endfor %}
             </tbody>

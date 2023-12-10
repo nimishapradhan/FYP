@@ -81,7 +81,10 @@
       content: "Time";
     }
     td:nth-of-type(6):before {
-      content: "Instruction";
+      content: "Status";
+    }
+    td:nth-of-type(7):before {
+      content: "Action";
     }
   }
 
@@ -216,6 +219,7 @@
           <th>Service Type</th>
           <th>Time</th>
           <th>Status</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -227,6 +231,17 @@
                 <td>{{ appointment.service_type }}</td>
                 <td>{{ appointment.time }}</td>
                 <td>{{ appointment.status }}</td>
+                <td>
+                  <a href="#" class="btn btn-success" title="Edit appointment">
+                      <i class="fa-solid fa-pen"></i>
+                  </a>
+
+                  &nbsp;&nbsp;
+
+                  <a href="#" class="btn btn-danger" title="Delete appointment">
+                      <i class="fa-solid fa-trash"></i>
+                  </a>
+              </td>
             </tr>
         {% endfor %}
     </tbody>

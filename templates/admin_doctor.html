@@ -141,6 +141,7 @@
                 <th>Service Type</th>
                 <th>NMC Number</th>
                 <th>Address</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -155,14 +156,15 @@
                     <td>{{ doctor.service_type }}</td>
                     <td>{{ doctor.nmc_number }}</td>
                     <td>{{ doctor.address }}</td>
+                    <td>available</td>
                     <td>
-                        <a href="#" class="btn btn-primary" title="Edit product">
+                        <a href="#" class="btn btn-success" title="Edit product">
                             <i class="fa-solid fa-pen"></i>
                         </a>
 
                         &nbsp;&nbsp;
 
-                        <a href="#" class="btn btn-primary" title="Delete product">
+                        <a href="#" class="btn btn-danger" title="Delete product">
                             <i class="fa-solid fa-trash"></i>
                         </a>
                     </td>
