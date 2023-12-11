@@ -147,25 +147,33 @@
 </style>
 
 
-
-    <!-- Display time slots for booking -->
-    <div class="time-slots-container py-5">
+        <!-- Add a dropdown for selecting doctors -->
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="fs-4">Bookable Time Slots</div>
-            </div>
-
-            <hr />
-            <div class="time-slots">
-                {% for slot in time_slots %}
-                    <button class="time-slot-btn {% if slot.booked %}booked{% else %}available{% endif %}"
-                            {% if not slot.booked %}onclick="location.href='{% url 'book_appointment' slot.id %}'"{% endif %}>
-                        {{ slot.time }}
-                    </button>
-                {% endfor %}
+            <div class="doctor-selection-container py-4">
+                <label for="doctor-select" class="form-label fs-4">Select Doctor:</label>
+                <select id="doctor-select" class="form-select">
+                    <option value="lujana">Lujana</option>
+                    <option value="dhiraj">Dhiraj</option>
+                    <option value="manoj">Manoj</option>
+                </select>
             </div>
         </div>
-    </div>
+      
+
+        <!-- Display time slots for booking -->
+        <div class="time-slots-container py-5">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="fs-4">Bookable Time Slots</div>
+                </div>
+
+                <hr />
+                <div class="time-slots">
+                    <!-- Time slots will be dynamically generated and updated based on the selected doctor -->
+                </div>
+            </div>
+        </div>
+
 
 
 <div class="container py-5">
@@ -196,57 +204,111 @@
             </tr>
         </thead>
         <tbody>
-            {% for app in appoitments %}
+            {% for app in appointments %}
                 <tr>
                     <td>{{ app.date }}</td>
                     <td>{{ app.vet }}</td>
-                    <td>{{ app.appoitment_type }}</td>
+                    <td>{{ app.appointment_type }}</td>
                     <td>{{ app.service_type }}</td>
                     <td>none</td>
                     <td>
-                        <a href="#" class="btn btn-danger" title="Delete product">
-                          <i class="fa-solid fa-trash"></i>
+                        <a href="{% url 'delete_appointment' %}" class="btn btn-danger delete-appointment" title="Delete product" data-appointment-id="{{ app.id }}">
+                          <!-- <i class="fa-solid fa-trash"></i> -->
+                          Delete
                         </a>
                       </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+</div>
 
-    <script>
-        // Simulating booked time slots (you would get this data from your server)
-        const bookedTimeSlots = ["9:00 AM", "9:20 AM", "9:40 AM", "10:00 AM", "10:20 AM", "10:40 AM", "11:00 AM", "11:20 AM", "10:40 AM", "12:00 PM"];
-    
-        document.addEventListener("DOMContentLoaded", function () {
-            // Generate time slots from 9 am to 5 pm in 20-minute intervals
-            const timeSlots = [];
-            let currentTime = new Date();
-            currentTime.setHours(9, 0, 0, 0); // Set initial time to 9 am
-    
-            for (let i = 0; i < 24; i++) {
-                const time = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                const button = document.createElement("button");
-                button.className = "time-slot-btn";
-                button.textContent = time;
-    
-                if (bookedTimeSlots.includes(time)) {
-                    button.classList.add("booked");
-                } else {
-                    button.classList.add("available");
-                    button.addEventListener("click", function () {
-                        alert(`Booked ${time}`);
-                    });
-                }
-    
-                document.querySelector('.time-slots').appendChild(button);
-                currentTime.setMinutes(currentTime.getMinutes() + 20);
-            }
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const doctorSelect = document.querySelector('#doctor-select');
+        const timeSlotsContainer = document.querySelector('.time-slots');
+
+        function updateSlots(selectedDoctor) {
+            const url = `/myapp/get_booked_time_slots/${selectedDoctor}/`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    timeSlotsContainer.innerHTML = '';
+
+                    let currentTime = new Date();
+                    currentTime.setHours(9, 0, 0, 0);
+
+                    for (let i = 0; i < 24; i++) {
+                        const time = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                        if (data.booked_time_slots.includes(time)) {
+                            // If the time slot is booked for the selected doctor, skip it
+                            currentTime.setMinutes(currentTime.getMinutes() + 20);
+                            continue;
+                        }
+
+                        const button = document.createElement("button");
+                        button.className = "time-slot-btn available";
+                        button.textContent = time;
+                        button.addEventListener("click", function () {
+                            alert(`Booked ${time} for ${selectedDoctor}`);
+                        });
+                        timeSlotsContainer.appendChild(button);
+
+                        currentTime.setMinutes(currentTime.getMinutes() + 20);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Initial update with the default selected doctor
+        updateSlots(doctorSelect.value);
+
+        // Add event listener to update time slots when the doctor is changed
+        doctorSelect.addEventListener('change', function () {
+            const selectedDoctor = this.value;
+            updateSlots(selectedDoctor);
+        });
+    });
+
+</script>
+
+<script>
+
+/* Crud */
+
+        $(document).ready(function () {
+            $(".delete-appointment").click(function () {
+                var appointmentId = $(this).data("appointment-id");
+
+                // Make an AJAX request to delete the appointment
+                $.ajax({
+                    url: '/delete_appointment/',
+                    type: 'POST',
+                    data: {
+                        'appointment_id': appointmentId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function (data) {
+                        // Refresh the page or update the UI as needed
+                        location.reload();
+                    },
+                    error: function (error) {
+                        console.error('Error deleting appointment:', error);
+                        // Handle error as needed
+                    }
+                });
+            });
         });
     </script>
     
    
     
 
-</div>
+
 
 {% endblock %}

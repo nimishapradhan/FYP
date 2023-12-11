@@ -13,10 +13,12 @@ urlpatterns = [
     path('payment', views.payment_view, name='payment'),  
     path('booking', views.booking_view, name='booking'),
     path('password', views.password_view, name='password'), 
-    path('passwordreset', views.passwordreset_view, name='passwordreset'), 
+    path('passwordreset', views.passwordreset_view, name='passwordreset'),
+    path('verify_otp', views.verify_otp, name='verify_otp'),
+    path('reset_password', views.reset_password, name='reset_password'),
 
 
-    path('login', views.login_view, name='login'),  
+    path('login/', views.login_view, name='login'),  
     path('register', views.register_view, name='register'),
     path('doc_register', views.doc_register_view, name='doc_register'),
 
@@ -44,6 +46,13 @@ urlpatterns = [
     path('doctornav', views.doctornav_view, name='doctornav'),
 
     path('logout/', views.logout_view, name='logout'),
+
+    path('delete_appointment/', views.delete_appointment, name='delete_appointment'),
+
+   
+    path('get_booked_time_slots/<str:doctor>/', views.get_booked_time_slots, name='get_booked_time_slots'),
+
+
 
 ]
     

@@ -5,11 +5,15 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.db import connection, IntegrityError
 from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib.auth.hashers import make_password
 from .models import UserProfile
 from django.urls import reverse
 from datetime import date
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
+from django.utils import timezone
 
 
 def index_view(request):
@@ -106,7 +110,91 @@ def password_view(request):
     return render(request, 'password.html')
 
 def passwordreset_view(request):
-    return render(request, 'passwordreset.html')
+    if request.method == 'POST':
+        email = request.POST['email']
+        with connection.cursor() as cursor:
+            # Use raw SQL query to get the user based on email
+            cursor.execute("SELECT * FROM auth_user WHERE email = %s", [email])
+            row = cursor.fetchone()
+
+        if row:
+            user_id = row[0]
+            username = row[4]
+            db_email = row[7]
+
+            # Generate OTP
+            otp = get_random_string(length=6, allowed_chars='1234567890')
+
+            # Store OTP in the database
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE auth_user SET otp = %s, otp_created_at = %s WHERE id = %s",
+                    [otp, timezone.now(), user_id]
+                )
+
+            # Send OTP via Email
+            subject = 'Forget Password'
+            
+            message = f'Hello {username},<br><br>'
+            message += 'You requested a password reset. Please use the following OTP to proceed:<br><br>'
+            message += f'<strong>OTP: {otp}</strong><br><br>'
+            message += 'This OTP is valid for 15 minutes.<br>'
+            message += 'If you did not request a password reset, please ignore this email.<br><br>'
+            message += 'Thank You!'
+
+            from_email = 'Nimisha'
+            recipient_list = [db_email]
+
+            send_mail(subject, message, from_email, recipient_list, html_message=message)
+
+            return render(request, 'password.html', {'otp_sent': True, 'email': db_email})
+        else:
+            return render(request, 'password.html', {'user_not_found': True, 'error': 'Email not found!'})
+    else:
+        return render(request, 'password.html', {'otp_sent': False, 'otp_verified': False})
+
+def verify_otp(request):
+    if request.method == 'POST':
+        try:
+            email = request.POST['email']
+            otp_entered = request.POST['otp']
+
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "SELECT * FROM auth_user WHERE email = %s AND otp = %s AND otp_created_at >= %s",
+                    [email, otp_entered, timezone.now() - timezone.timedelta(minutes=15)]
+                )
+                row = cursor.fetchone()
+
+            if row:
+                user_id = row[0]
+                with connection.cursor() as cursor:
+                    cursor.execute("UPDATE auth_user SET otp_verified = TRUE WHERE id = %s", [user_id])
+
+                return render(request, 'passwordreset.html', {'otp_verified': True, 'email': email})
+            else:
+                return render(request, 'passwordreset.html', {'otp_verified': False, 'email': email})
+        except MultiValueDictKeyError:
+            return render(request, 'passwordreset.html', {'otp_verified': False, 'email_not_found': True})
+    else:
+        return render(request, 'passwordreset.html', {'otp_verified': False, 'otp_sent': False})
+
+def reset_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        new_password = request.POST.get('new-password')
+        confirm_password = request.POST.get('confirm-password')
+
+        if new_password == confirm_password:
+            hashed_password = make_password(new_password)
+            with connection.cursor() as cursor:
+                cursor.execute("UPDATE auth_user SET password = %s WHERE email = %s", [hashed_password, email])
+            return HttpResponseRedirect('/login')
+        else:
+            error = "Passwords do not match."
+            return render(request, 'passwordreset.html', {'otp_verified': True, 'error': error, 'email': email})
+    else:
+        return HttpResponseRedirect('/login')
 
 def faq_view(request):
     return render(request, 'faq.html')
@@ -344,13 +432,26 @@ def userdashboard_view(request):
                 'service_type': row[13]
             }
             app_details.append(app_detail)
-        print("Date app", app_details)    
+        # print("Date app", app_details)    
 
     getData = {
         'doctors': doctor_details,
         'appointments': app_details
     }
     return render(request, 'user_dashboard.html', getData)
+
+
+def delete_appointment(request):
+    if request.method == 'POST':
+        appointment_id = request.POST.get('appointment_id')
+
+        print(appointment_id)
+
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM booking_details WHERE id = %s", [appointment_id])
+    
+    return HttpResponseRedirect('/user_app')
+
 
 
 def userapp_view(request):
@@ -366,15 +467,17 @@ def userapp_view(request):
                 'date': row[17],
                 'time': row[18],
                 'vet': row[19],
-                'appoitment_type': row[11],
-                'service_type': row[13]
+                'appointment_type': row[13],
+                'service_type': row[11]
             }
             app_details.append(app_detail)
     
     sendData = {
         'appointments': app_details
     }
-    return render(request, 'user_app.html', sendData)
+
+    # print(app_details)
+    return render(request, 'user_app.html', sendData)   
 
 def userpayment_view(request):
     return render(request, 'user_payment.html')
@@ -682,4 +785,21 @@ def register_view(request):
 
 def logout_view(request):
     return render(request, 'login.html')
+
+
+
+# Simulating booked time slots for each doctor
+booked_time_slots = {
+    "lujana": ["9:00 AM", "9:20 AM", "10:00 AM"],
+    "dhiraj": ["9:40 AM", "10:20 AM", "11:00 AM"],
+    "manoj": ["9:20 AM", "10:00 AM", "10:40 AM"],
+}
+
+def get_booked_time_slots(request, doctor):
+    # Retrieve booked time slots for the specific doctor
+    doctor_booked_slots = booked_time_slots.get(doctor, [])
+
+    return JsonResponse({"booked_time_slots": doctor_booked_slots})
+
+
 
