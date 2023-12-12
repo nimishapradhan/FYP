@@ -44,13 +44,18 @@ urlpatterns = [
     path('doctor_patient', views.doctorpatient_view, name='doctor_patient'),  
     path('doctorapp', views.doctorapp_view, name='doctorapp'),  
     path('doctornav', views.doctornav_view, name='doctornav'),
+    path('xyz', views.xyz_view, name='xyz'),
 
     path('logout/', views.logout_view, name='logout'),
+
 
     path('delete_appointment/', views.delete_appointment, name='delete_appointment'),
 
    
     path('get_booked_time_slots/<str:doctor>/', views.get_booked_time_slots, name='get_booked_time_slots'),
+
+
+  
 
 
 

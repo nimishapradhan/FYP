@@ -711,8 +711,10 @@ def doctorapp_view(request):
 def doctornav_view(request):
     return render(request, 'doctornav.html')
 
-def doctor_dashboard(request):
-    return render(request, 'doctor_dashboard.html')
+def xyz_view(request):
+    return render(request, 'xyz.html')
+
+
 
 def doc_register_view(request):
     if request.method == 'POST':
@@ -785,6 +787,9 @@ def register_view(request):
 
 def logout_view(request):
     return render(request, 'login.html')
+
+def doctor_dashboard(request):
+    return render(request, 'doctor_dashboard')
 
 
 
