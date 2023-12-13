@@ -200,97 +200,8 @@
 
     
     /* Common table styles */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+  
 
-    /* Zebra striping */
-    tr:nth-of-type(odd) {
-        background: #eee;
-    }
-
-    th {
-        background: #88b4ab;
-        color: black;
-        font-weight: bold;
-    }
-
-    td,
-    th {
-        padding: 1rem;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-
-    @media only screen and (max-width: 760px),
-    (min-device-width: 768px) and (max-device-width: 1024px) {
-        /* Force table to not be like tables anymore */
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-            display: block;
-        }
-
-        /* Hide table headers (but not display: none;, for accessibility) */
-        thead tr {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-        }
-
-        tr {
-            border: 1px solid #ccc;
-        }
-
-        td {
-            /* Behave like a "row" */
-            border: none;
-            border-bottom: 1px solid #eee;
-            position: relative;
-            padding-left: 50%;
-        }
-
-        td:before {
-            /* Now like a table header */
-            position: absolute;
-            /* Top/left values mimic padding */
-            top: 6px;
-            left: 6px;
-            width: 45%;
-            padding-right: 10px;
-            white-space: nowrap;
-        }
-
-        /*
-        Label the data
-        */
-        td:nth-of-type(1):before {
-            content: "Date";
-        }
-        td:nth-of-type(2):before {
-            content: "Vet Name";
-        }
-    
-        td:nth-of-type(3):before {
-            content: "Service Type";
-        }
-        td:nth-of-type(4):before {
-            content: "Instructions";
-        }
-
-        td:nth-of-type(5):before {
-            content: "Payment";
-        }
-        td:nth-of-type(6):before {
-            content: "Action";
-        }
-    }
-
-   
 </style>
 
 <body>
@@ -300,7 +211,7 @@
                 <div class="sidebar-logo">
                     <a href="{% url 'index' %}">
                         <img src="{% static 'logo.png' %}" alt="logo" style="max-width: 75px; max-height: 200px;">
-                        <span class="welcome-text">TailTales</span>
+                        <span class="welcome-text">Admin</span>
                     </a>
                 </div>
                 
@@ -309,7 +220,7 @@
                         Dashboard Elements
                     </li>
                     <li class="sidebar-item">
-                        <a href="user_dashboard" class="sidebar-link">
+                        <a href="admin_dashboard" class="sidebar-link">
                             <i class="fa-solid fa-list pe-2"></i>
                             Dashboard
                         </a>
@@ -321,13 +232,40 @@
                         </a>
                         <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="booking" class="sidebar-link">Book Appointment</a>
+                                <a href="admin_app" class="sidebar-link">Appointment History</a>
                             </li>
+
                             <li class="sidebar-item">
-                                <a href="user_app" class="sidebar-link">Appointment History</a>
+                              <a href="booking" class="sidebar-link">Add Appointment</a>
                             </li>
                         </ul>
                     </li>
+
+
+
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-regular fa-user pe-2"></i> 
+                            User Details
+                        </a>
+                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="doc_register" class="sidebar-link">Register Vet</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="register" class="sidebar-link">Register User</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="admin_doctor" class="sidebar-link">Vet Records</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="admin_patient" class="sidebar-link">Patient Records</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#posts" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fas fa-file-invoice-dollar pe-2"></i>
@@ -335,21 +273,7 @@
                         </a>
                         <ul id="posts" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="user_payment" class="sidebar-link">Payment History</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Generate Bill</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
-                            aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
-                            Settings
-                        </a>
-                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a href="user_profile" class="sidebar-link">Profile</a>
+                                <a href="doctor_profile" class="sidebar-link">Payment History</a>
                             </li>
                         </ul>
                     </li>
@@ -375,7 +299,7 @@
                             Are you are you want to logout?
                             </div>
                             <div class="modal-footer">
-                            <a href="{% url 'user_dashboard' %}" type="button" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'doctordash_main' %}" type="button" class="btn btn-secondary">Cancel</a>
                             <a href="{% url 'login' %}" type="button" class="btn btn-success">Logout</a>
                             </div>
                         </div>
@@ -404,11 +328,6 @@
                             <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                                 <img src="{% static 'logo.png' %}"  class="avatar img-fluid rounded" alt="logo" style="max-width: 75px; max-height: 200px;">
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a href="user_profile" class="dropdown-item">Profile</a>
-                                <a href="#" class="dropdown-item">Setting</a>
-                                <a href="login" class="dropdown-item">Logout</a>
-                            </div>
                         </li>
                     </ul>
                 </div>
@@ -426,48 +345,86 @@
     <!-- Table Element -->
     <div class="card border-0">
      
-        <!-- add data-->
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="fs-4">Payment History</div>
-        <!-- Add appointment button with link to the booking page -->
-
-    </div>
-
-    <hr />
+      <div class="container">
+        <div class="row justify-content-center py-5"> <!-- Added justify-content-center class -->
+        
+        <!-- Edit profile Form on the Right Side -->
+        <div class="col-md-6 col-12">
+          <div class="fs-4 fw-light text-muted pb-2 text-center">Edit Profile</div>
     
-    <table>
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Pet Name</th>
-                <th>Vet</th>
-                <th>Service Type</th>
-                <th>Appointment Type</th>
-                <th>Payment</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>2060/11/13</td>
-                <td>James</td>
-                <td>Lujana</td>
-                <td>Dental Care</td>
-                <td>Home</td>
-                <td>500</td>
-                <td>
-                    <a href="#" class="btn btn-danger" title="Delete product">
-                      <i class="fa-solid fa-trash"></i>
-                    </a>
-                  </td>
-            </tr>
-            <!-- Add more rows as needed -->
-        </tbody>
-    </table>
-
-   
-
+          <!-- Edit Profile Form -->
+          <form method="post" action="">
+            <!-- Password Input Field -->
+            <div class="col-lg-7 col-md-12 col-8 mx-auto">
+              {% csrf_token %} 
+              <div class="form-group pb-2">
+                <label for="vet_pw">Current Password</label>
+                <input
+                  class="form-control"
+                  type="password"
+                  id="vet-pw"
+                  name="vet-pw"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+            </div>
+    
+            <!-- New Password Input Field -->
+            <div class="col-lg-7 col-md-12 col-8 mx-auto">
+              <div class="form-group pb-2">
+                <label for="new_vet_pw">New Password</label>
+                <input
+                  class="form-control"
+                  type="password"
+                  id="new-vet-pw"
+                  name="new-vet-pw"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+            </div>
+    
+            <!-- Confirm New Password Input Field -->
+            <div class="col-lg-7 col-md-12 col-8 mx-auto">
+              <div class="form-group pb-2">
+                <label for="confirm_new_vet_pw">Confirm New Password</label>
+                <input
+                  class="form-control"
+                  type="password"
+                  id="confirm-new-vet-pw"
+                  name="confirm-new-vet-pw"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+            </div>
+    
+            <!-- Rest of the profile fields -->
+            <!-- ... -->
+    
+            <!-- Submit Button -->
+            <div class="text-center py-4">
+              <button
+                type="submit"
+                class="btn btn-blue"
+                style="
+                  background: #4CAF50; /* Green color */
+                  border: none;
+                  color: #fff;
+                  padding: 12px 24px;
+                  font-size: 18px;
+                  cursor: pointer;
+                  transition: background 0.3s ease;
+                "
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </main> 
             
             
