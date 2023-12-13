@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap Admin Dashboard</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
 
@@ -290,6 +290,39 @@
         }
     }
 
+    
+
+            /* Add these styles for the search bar */
+            .search-bar {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .search-input {
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            background-color: #e0e8f0; /* Dark background color */
+            color: #ecf0f1; /* Light text color */
+        }
+
+        .search-btn {
+            background-color: #20713f; /* Button color */
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            color: #ecf0f1; /* Light text color */
+        }
+
+        .search-btn:hover {
+            background-color: #2980b9; /* Hover state color */
+        }
+
 </style>
 
 <body>
@@ -387,15 +420,15 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="input-group input-group-sm mb-4 mt-4">
-                            <input type="text" class="form-control" id="search" placeholder="Search for...">
-                            <a href="user_app" class="btn btn-primary" style="margin: left 2px;"> <i class="fa-solid fa-magnifying-glass"></i> </a>
-                        </div>
-                    </div>
-                </div>
-                
+               <!-- Search Bar -->
+               <div class="container mt-2 search-bar">
+                <input type="text" class="form-control search-input" placeholder="Search" aria-label="Search" aria-describedby="searchIcon">
+                <button class="btn btn-primary search-btn" type="button" id="searchIcon">
+                    <i class="bi bi-search"></i> Search
+                </button>
+            </div>
+
+
                 
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">
