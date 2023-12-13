@@ -28,6 +28,27 @@ def service_view(request):
 def team_view(request):
     return render(request, 'team.html')
 
+def admin_login(request):
+    if request.method == 'POST':
+        getEmail = request.POST['admin_login_email']
+        getPassword = request.POST['admin_login_password']
+        sql_query = "Select * from admin_profile WHERE email = %s and password =%s"
+
+        values = (getEmail, getPassword)
+        with connection.cursor() as cursor:
+            cursor.execute(sql_query, values)
+            data= cursor.fetchone()
+        
+   
+        if data :
+            print("test1",data)
+            return HttpResponseRedirect("/admin_dashboard")
+            
+        
+        else:
+            return HttpResponse("Invalid Login")
+
+    return render(request, 'admin_login.html')
 def contact_view(request):
     if request.method == 'POST':
         first_name = request.POST['first-name']
@@ -92,7 +113,7 @@ def booking_view(request):
             doctor = request.POST['doctor']
 
             query = "INSERT INTO booking_details (email, phone, address, pet_name, breed, age, color, gender, disease, ongoing_medication, purpose_of_visit, symptom, method, city, tole, house_number, doctor, date, time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (email, phone, address, petname, breed, age, color, gender, nameOfDisease, onGoingMedication, purposeOfVisit, symptonOfDisease, methodOfTreatment, city, tole, houseNumber, date, doctor, time)
+            val = (email, phone, address, petname, breed, age, color, gender, nameOfDisease, onGoingMedication, purposeOfVisit, symptonOfDisease, methodOfTreatment, city, tole, houseNumber,  doctor, date, time)
 
             try:
                 with connection.cursor() as cursor:
@@ -218,7 +239,7 @@ def admin_dashboard(request):
     current_date = date.today()
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM booking_details WHERE DATE(updatedOn) = %s", [current_date])
+        cursor.execute("SELECT COUNT(*) FROM booking_details WHERE date = %s", [current_date])
         totalPatient = cursor.fetchone()[0]
 
         cursor.execute("SELECT COUNT(*) FROM doctor_details")
@@ -227,7 +248,7 @@ def admin_dashboard(request):
         cursor.execute("SELECT COUNT(*) FROM booking_details")
         totalAppointment = cursor.fetchone()[0]
 
-        cursor.execute("SELECT * FROM booking_details WHERE DATE(updatedOn) = %s", [current_date])
+        cursor.execute("SELECT * FROM booking_details WHERE date = %s", [current_date])
         todayAppointments = cursor.fetchall()
 
 
