@@ -43,11 +43,13 @@
     }
 
     #sidebar {
-        max-width: 264px;
-        min-width: 264px;
-        background: var(--bs-dark);
-        transition: all 0.35s ease-in-out;
-    }
+    max-width: 264px;
+    min-width: 264px;
+    background: #21836f; /* Color #88b4ab for the background */
+    color: black; /* Set text color to black */
+    transition: all 0.35s ease-in-out;
+}
+
 
     .main {
         display: flex;
@@ -201,33 +203,39 @@
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
     }
 
-    th, td {
-        padding: 12px;
-        border: 1px solid #ccc;
-        text-align: center;
+    /* Zebra striping */
+    tr:nth-of-type(odd) {
+        background: #eee;
     }
 
     th {
-        background-color: #88b4ab;
+        background: #88b4ab;
         color: black;
         font-weight: bold;
     }
 
-    /* Zebra striping for tables */
-    tbody tr:nth-child(odd) {
-        background: #eee;
+    td,
+    th {
+        padding: 1rem;
+        border: 1px solid #ccc;
+        text-align: center;
     }
 
-    /* Responsive styles for tables */
     @media only screen and (max-width: 760px),
     (min-device-width: 768px) and (max-device-width: 1024px) {
-        table, thead, tbody, th, td, tr {
+        /* Force table to not be like tables anymore */
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
             display: block;
         }
 
+        /* Hide table headers (but not display: none;, for accessibility) */
         thead tr {
             position: absolute;
             top: -9999px;
@@ -236,10 +244,10 @@
 
         tr {
             border: 1px solid #ccc;
-            margin-bottom: 20px;
         }
 
         td {
+            /* Behave like a "row" */
             border: none;
             border-bottom: 1px solid #eee;
             position: relative;
@@ -247,7 +255,9 @@
         }
 
         td:before {
+            /* Now like a table header */
             position: absolute;
+            /* Top/left values mimic padding */
             top: 6px;
             left: 6px;
             width: 45%;
@@ -255,27 +265,32 @@
             white-space: nowrap;
         }
 
-        /* Label the data */
+        /*
+        Label the data
+        */
         td:nth-of-type(1):before {
             content: "Date";
         }
         td:nth-of-type(2):before {
-            content: "Time";
+            content: "Vet Name";
         }
+    
         td:nth-of-type(3):before {
-            content: "Doctor Name";
+            content: "Service Type";
         }
         td:nth-of-type(4):before {
-            content: "Specialization";
+            content: "Instructions";
         }
+
         td:nth-of-type(5):before {
-            content: "Status";
+            content: "Payment";
+        }
+        td:nth-of-type(6):before {
+            content: "Action";
         }
     }
 
-    .availability-form {
-        margin-bottom: 4em; /* Adjust the space as needed */
-    }
+   
 </style>
 
 <body>
@@ -283,40 +298,44 @@
         <aside id="sidebar" class="js-sidebar">
             <div class="h-100">
                 <div class="sidebar-logo">
-                    <a href="#">TailTales</a>
+                    <a href="{% url 'index' %}">
+                        <img src="{% static 'logo.png' %}" alt="logo" style="max-width: 75px; max-height: 200px;">
+                        <span class="welcome-text">TailTales</span>
+                    </a>
                 </div>
+                
                 <ul class="sidebar-nav">
                     <li class="sidebar-header">
                         Dashboard Elements
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a href="user_dashboard" class="sidebar-link">
                             <i class="fa-solid fa-list pe-2"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#pages" data-bs-toggle="collapse"
-                            aria-expanded="false"><i class="fa-solid fa-file-lines pe-2"></i>
+                            aria-expanded="false"><i class="fas fa-calendar-alt pe-2"></i>
                             Appointment
                         </a>
                         <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Book Appointment</a>
+                                <a href="booking" class="sidebar-link">Book Appointment</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Appointment History</a>
+                                <a href="user_app" class="sidebar-link">Appointment History</a>
                             </li>
                         </ul>
                     </li>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#posts" data-bs-toggle="collapse"
-                            aria-expanded="false"><i class="fa-solid fa-sliders pe-2"></i>
+                            aria-expanded="false"><i class="fas fa-file-invoice-dollar pe-2"></i>
                             Billing
                         </a>
                         <ul id="posts" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Payment History</a>
+                                <a href="user_payment" class="sidebar-link">Payment History</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="#" class="sidebar-link">Generate Bill</a>
@@ -330,21 +349,55 @@
                         </a>
                         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Profile</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">Logout</a>
+                                <a href="user_profile" class="sidebar-link">Profile</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
+
+                <div class="d-flex ps-3 mt-auto">
+                    <button type="submit" class="btn btn-logout" data-bs-toggle="modal" data-bs-target="#logoutModal" style="color: white;">
+                        <i class="fas fa-sign-out-alt pe-2"></i> Logout
+                    </button>
+                </div>
             </div>
         </aside>
+
+        
+                    <!-- Logout Modal -->
+                    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModal" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Logout</h1>
+                            </div>
+                            <div class="modal-body">
+                            Are you are you want to logout?
+                            </div>
+                            <div class="modal-footer">
+                            <a href="{% url 'user_dashboard' %}" type="button" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'login' %}" type="button" class="btn btn-success">Logout</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
         <div class="main">
             <nav class="navbar navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="input-group input-group-sm mb-4 mt-4">
+                            <input type="text" class="form-control" id="search" placeholder="Search for...">
+                            <a href="user_app" class="btn btn-primary" style="margin: left 2px;"> <i class="fa-solid fa-magnifying-glass"></i> </a>
+                        </div>
+                    </div>
+                </div>
+                
+                
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
@@ -352,59 +405,71 @@
                                 <img src="{% static 'logo.png' %}"  class="avatar img-fluid rounded" alt="logo" style="max-width: 75px; max-height: 200px;">
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
-                                <a href="#" class="dropdown-item">Profile</a>
+                                <a href="user_profile" class="dropdown-item">Profile</a>
                                 <a href="#" class="dropdown-item">Setting</a>
-                                <a href="#" class="dropdown-item">Logout</a>
+                                <a href="login" class="dropdown-item">Logout</a>
                             </div>
                         </li>
                     </ul>
                 </div>
             </nav>
 
- 
-
-  <main class="content px-3 py-2">
-    <!-- Table Element -->
-    <div class="card border-0">
-
-
-  <div class="container py-5">
-    <!-- Doctor Availability Section -->
-    <div class="availability-form">
-            <div class="fs-4">Doctor Availability</div>
-            <hr />
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Doctor Name</th>
-                    <th>Specialization</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for doctor in doctors %}
-                    <tr>
-                        <td>{{ doctor.date }}</td>
-                        <td>{{ doctor.time }}</td>
-                        <td>{{ doctor.name }}</td>
-                        <td>{{ doctor.qualification }}</td>
-                        <td>{{ doctor.status }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-  </main> 
-
-
-
             <a href="#" class="theme-toggle">
                 <i class="fa-regular fa-moon"></i>
                 <i class="fa-regular fa-sun"></i>
             </a>
+
+            
+
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+     
+        <!-- add data-->
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="fs-4">Payment History</div>
+        <!-- Add appointment button with link to the booking page -->
+
+    </div>
+
+    <hr />
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Pet Name</th>
+                <th>Vet</th>
+                <th>Service Type</th>
+                <th>Appointment Type</th>
+                <th>Payment</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2060/11/13</td>
+                <td>James</td>
+                <td>Lujana</td>
+                <td>Dental Care</td>
+                <td>Home</td>
+                <td>500</td>
+                <td>
+                    <a href="#" class="btn btn-danger" title="Delete product">
+                      <i class="fa-solid fa-trash"></i>
+                    </a>
+                  </td>
+            </tr>
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+
+   
+
+  </main> 
+            
             
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
@@ -441,6 +506,8 @@
                     toggleRootClass();
                 }
             </script>
+
+   
         </div>
     </div>
 </body>
