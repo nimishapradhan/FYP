@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin_patient', views.admin_patient_view, name='admin_patient'), 
     path('admin_app', views.admin_app_view, name='admin_app'), 
     path('admin_payment', views.admin_payment_view, name='admin_payment'), 
+    path('admin_service', views.admin_service_view, name='admin_service'), 
 
 
     path('user_nav', views.usernav_view, name='user_nav'),  

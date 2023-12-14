@@ -392,6 +392,10 @@
                             <li class="sidebar-item">
                               <a href="booking" class="sidebar-link">Add Appointment</a>
                             </li>
+
+                            <li class="sidebar-item">
+                                <a href="admin_service" class="sidebar-link">Add Service</a>
+                              </li>
                         </ul>
                     </li>
 
@@ -494,131 +498,92 @@
             
 
 
-<main class="content px-3 py-2">
-    <!-- Table Element -->
-    <div class="card border-0">
+            <main class="content px-3 py-2">
+                <!-- Table Element -->
+                <div class="card border-0">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 py-5">
+                                <div class="card">
+                                    <div class="card-body p-0" style="background-color: whitesmoke;">
+                                        <div class="row p-5">
+                                            <div class="col-md-6" style="margin-left: 250px;">
+                                                <!-- Vet Clinic Logo -->
+                                                <img src="{% static 'logo.png' %}" alt="logo" style="max-width: 75px; max-height: 200px; margin-left: -270px;">
+                                                <h6 style="font-size: 14; margin-right: -60px;" class="w3-wide w3-center">Vet Clinic, Kathmandu</h6>
+                                            </div>
+                                        </div>
             
-      <div class="container py-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="fs-4">Appointment History</div>
-            <!-- Add appointment button with link to the booking page -->
-            <a href="{% url 'booking' %}" class="text-decoration-none">
-                <button type="button" class="book-appointment-btn btn btn-green">Add appointment</button>
-            </a>
-        </div>
-    
-        <div class = "input-group input-group-sm mb-3 mt-4">
-            <input type="text" class="form-control" id="search" placeholder="Search for...">
-            <a href = "home" class="btn btn-primary" style="margin: left 2px;"> <i class="fa-solid fa-magnifying-glass"></i> </a>
-        </div>
-    
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>Pet Name</th>
-                    <th>Owner Email</th>
-                    <th>Vet Name</th>
-                    <th>Appointment Type</th>
-                    <th>Service Type</th>
-                    <th>Time</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for appointment in allAppoitments %}
-                <tr>
-                    <td class="open-modal" data-toggle="modal" data-target="#patientDetailsModal">{{ appointment.pet_name}}</td>
-                    <td>{{ appointment.email }}</td>
-                    <td>{{ appointment.vet }}</td>
-                    <td>{{ appointment.appointment_type }}</td>
-                    <td>{{ appointment.service_type}}</td>
-                    <td>{{ appointment.time }}</td>
-                    <td>{{ appointment.date }}</td>
-                    <td>Approve</td>
-                    <td>
-                        <a href="#" class="btn btn-success" title="Edit product">
-                          <i class="fa-solid fa-pen"></i>
-                        </a>
-                      
-                        &nbsp;&nbsp;
-                      
-                        <a href="#" class="btn btn-danger" title="Delete product">
-                          <i class="fa-solid fa-trash"></i>
-                        </a>
-                      </td>
-                      
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Pet Details</h1>
+                                        <hr/>
+            
+                                        <div class="row pb-5 p-5">
+                                            <div class="col-md-6">
+                                                <p class="font-weight-bold mb-4"><b><h4>Client Information</h4></b></p>
+                                                <p><b>Booked by:</b> {{ client_name }}</p>
+                                                <p><b>Phone:</b> {{ client_phone }}</p>
+                                                <p><b>Email:</b> {{ client_email }}</p>
+                                                <p class="mb-1"><b>Location:</b> {{ client_location }}, Kathmandu</p>
+                                            </div>
+                                        </div>
+            
+                                        <div class="row p-5">
+                                            <div class="col-md-12">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-0 text-uppercase small font-weight-bold">Service ID</th>
+                                                            <th class="border-0 text-uppercase small font-weight-bold">Service Name</th>
+                                                            <th class="border-0 text-uppercase small font-weight-bold">Service Price</th>
+                                                            <th class="border-0 text-uppercase small font-weight-bold">Quantity</th>
+                                                            <th class="border-0 text-uppercase small font-weight-bold">Unit Cost</th>
+                                                            <th class="border-0 text-uppercase small font-weight-bold">Total</th>
+                                                        </tr>
+                                                    </thead>
+            
+                                                    <tbody>
+                                                        {% for service in booked_services %}
+                                                            <tr>
+                                                                <td>{{ service.service_id }}</td>
+                                                                <td>{{ service.service_name }}</td>
+                                                                <td>Rs. {{ service.service_price }}</td>
+                                                                <td>1</td> <!-- Assuming one booking per appointment -->
+                                                                <td>Rs. {{ service.service_price }}</td>
+                                                                <td>Rs. {{ service.service_price }}</td> <!-- Total for each service -->
+                                                            </tr>
+                                                        {% endfor %}
+            
+                                                        <!-- Booking Appointment Fee -->
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>Booking Appointment Fee</td>
+                                                            <td>Rs. 500</td> <!-- Updated booking fee to Rs. 500 -->
+                                                            <td>1</td>
+                                                            <td>Rs. 500</td>
+                                                            <td>Rs. 500</td> <!-- Total for booking appointment fee -->
+                                                        </tr>
+            
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+            
+                                        <div class="d-flex flex-row-reverse bg-light text-white p-4"> <!-- Change bg-dark to bg-light -->
+                                            <div class="py-3 px-5 text-right">
+                                                <!-- Total Amount -->
+                                                <div class="mb-2">Amount</div>
+                                                <div class="h2 font-weight-light">
+                                                    <td><button onclick="window.print();" target="_blank" style="cursor:pointer;">Rs. {{ total_amount }}</button></td>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                  <!-- Your modal body content goes here -->
-               
-                    <div class="row form-group pb-2">
-                        <div class="col-3">
-                            <label for="pet_age">Age</label>
-                        </div>
-                        <div class="col-9">
-                            <div>10</div>
-                        </div>
-                    </div>
-                    <div class="mt-2"></div>
-                
-                    <div class="row form-group pb-2">
-                        <div class="col-3">
-                            <label for="pet_age">Breed</label>
-                        </div>
-                        <div class="col-9">
-                            <div>Test</div>
-                        </div>
-                    </div>
-                    <div class="mt-2"></div>
-                
-                    <div class="row form-group pb-2">
-                        <div class="col-3">
-                            <label for="pet_age">Color</label>
-                        </div>
-                        <div class="col-9">
-                            <div>Brown</div>
-                        </div>
-                    </div>
-                    <div class="mt-2"></div>
-                
-                    <div class="row form-group pb-2">
-                        <div class="col-3">
-                            <label for="pet_age">Address</label>
-                        </div>
-                        <div class="col-9">
-                            <div>Nepal</div>
-                        </div>
-                    </div>
-                    <div class="mt-2"></div>
-                
-                    <div class="row form-group pb-2">
-                        <div class="col-3">
-                            <label for="pet_age">Contact</label>
-                        </div>
-                        <div class="col-9">
-                            <div>+977 9849372055</div>
-                        </div>
-                    </div>
-                    <div class="mt-2"></div>
-                
-                </div>
-          </div>
-  </main> 
+            </main>
+            
             
             
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

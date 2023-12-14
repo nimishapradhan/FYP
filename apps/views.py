@@ -235,6 +235,9 @@ def payment_view(request):
 def adminnav_view(request):
     return render(request, 'admin_nav.html')
 
+def admin_service_view(request):
+    return render(request, 'admin_service.html')
+
 def admin_dashboard(request):
     current_date = date.today()
 
