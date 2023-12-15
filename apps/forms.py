@@ -8,3 +8,5 @@ class PetOwnerRegistrationForm(forms.Form):
     gender = forms.ChoiceField(choices=(('male', 'Male'), ('female', 'Female'), ('other', 'Other')))
     password = forms.CharField(widget=forms.PasswordInput())
     address = forms.CharField(widget=forms.Textarea)
+
+

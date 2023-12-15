@@ -983,6 +983,108 @@ def verifyKhalti(request):
         return redirect('home')
     
 
+        <!-- Invoice-->
+
+
+        <main class="content px-3 py-2">
+            <!-- Table Element -->
+            <div class="card border-0">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 py-5">
+                            <div class="card">
+                                <div class="card-body p-0" style="background-color: whitesmoke;">
+                                    
+                                    <div class="row pb-5 p-5">
+                                        <div class="col-md-6">
+                                            <p class="font-weight-bold mb-4"><b><h4>Client Information</h4></b></p>
+                                            <p><b>Booked by:</b> {{ user.firstname }}</p>
+                                            <p><b>Email:</b> {{ user.email }}</p>
+                                            <p><b>Phone:</b> {{ user.phoneno }}</p>
+                                            <p class="mb-1"><b>Location:</b> {{ user.address }}, Kathmandu</p>
+                                        </div>
+                                    </div>
         
+                                    <div class="row p-5">
+                                        <div class="col-md-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">Service ID</th>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">Date</th>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">Service Name</th>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">Service Price</th>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">Quantity</th>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">Unit Cost</th>
+                                                        <th class="border-0 text-uppercase small font-weight-bold">Total</th>
+                                                    </tr>
+                                                </thead>
+        
+                                                <tbody>
+                                                    {% for service in booked_services %}
+                                                        <tr>
+                                                            <td>{{ service.service_id }}</td>
+                                                            <td>{{ service.service_date }}</td>
+                                                            <td>{{ service.service_name }}</td>
+                                                            <td>Rs. {{ service.service_price }}</td>
+                                                            <td>1</td> <!-- Assuming one booking per appointment -->
+                                                            <td>Rs. {{ service.service_price }}</td>
+                                                            <td>Rs. {{ service.service_price }}</td> <!-- Total for each service -->
+                                                        </tr>
+                                                    {% endfor %}
+        
+                                                    <!-- Booking Appointment Fee -->
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>2023/12/14</td>
+                                                        <td>Booking Appointment Charge</td>
+                                                        <td>Rs. 500</td> <!-- Updated booking fee to Rs. 500 -->
+                                                        <td>1</td>
+                                                        <td>Rs. 500</td>
+                                                        <td>Rs. 500</td> <!-- Total for booking appointment fee -->
+                                                    </tr>
+        
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>2023/12/14</td>
+                                                        <td>Dental Care</td>
+                                                        <td>Rs. 1000</td> <!-- Updated booking fee to Rs. 500 -->
+                                                        <td>1</td>
+                                                        <td>Rs. 500</td>
+                                                        <td>Rs. 500</td> <!-- Total for booking appointment fee -->
+                                                    </tr>
+        
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+        
+                                    <div class="d-flex flex-row-reverse bg-light text-white p-4"> <!-- Change bg-dark to bg-light -->
+                                        <div class="py-3 px-5 text-right">
+                                            <!-- Total Amount -->
+                                            <div class="mb-2" style="color: #000;">Amount</div>
+                                            <div class="h2 font-weight-light">
+                                                <td>
+                                                    <button onclick="window.print();" target="_blank" style="cursor:pointer; background-color: green; color: #fff; padding: 5px 10px;">Rs. {{ total_amount }}</button>
+                                                </td>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                    
+                                    
+                            </div>
+                            <h6> Note: Additional charges might be added if you have to undergo additional tests.</h6>
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+            </div>
+        </main>
+        
+        
+
 
 

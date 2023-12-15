@@ -47,6 +47,7 @@ urlpatterns = [
     path('doctorapp', views.doctorapp_view, name='doctorapp'),  
     path('doctornav', views.doctornav_view, name='doctornav'),
     path('xyz', views.xyz_view, name='xyz'),
+    path('invoice', views.invoice_view, name='invoice'),
 
     path('logout/', views.logout_view, name='logout'),
 

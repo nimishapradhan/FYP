@@ -738,6 +738,9 @@ def doctornav_view(request):
 def xyz_view(request):
     return render(request, 'xyz.html')
 
+def invoice_view(request):
+    return render(request, 'invoice.html')
+
 
 
 def doc_register_view(request):

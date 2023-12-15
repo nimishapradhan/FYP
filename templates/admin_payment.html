@@ -290,8 +290,11 @@
         td:nth-of-type(7):before {
             content: "Date";
         }
-        td:nth-of-type(7):before {
+        td:nth-of-type(8):before {
             content: "Total Payment";
+        }
+        td:nth-of-type(9):before {
+            content: "Action";
         }
     }
 
@@ -397,11 +400,7 @@
                             </li>
 
                             <li class="sidebar-item">
-                              <a href="booking" class="sidebar-link">Add Appointment</a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a href="admin_service" class="sidebar-link">Add Service</a>
+                                <a href="admin_service" class="sidebar-link">Service Records</a>
                               </li>
                         </ul>
                     </li>
@@ -510,16 +509,12 @@
     <!-- Table Element -->
     <div class="card border-0">
             
-      <div class="container py-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="fs-4">Payment Records</div>
-            <!-- Add register button with link to the booking page -->
-            <a href="{% url 'payment' %}" class="text-decoration-none">
-                <button type="button" class="reg-vet-btn btn btn-green">Add Payment</button>
-            </a>
-        </div>
-    
-        <hr />
+        <div class="container  py-5">
+            <div>
+                <div class="fs-4">Payment Records</div>
+            </div>
+          
+            <hr />
         <table>
             <thead>
                 <tr>
@@ -531,6 +526,7 @@
                     <th>Time</th>
                     <th>Date</th>
                     <th>Total Payment</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -545,6 +541,11 @@
                     <td>2:30</td>
                     <td>2023/11/13</td>
                     <td>500</td>
+                    <td>
+                        <a href="#" class="btn btn-danger" title="Delete product">
+                          <i class="fa-solid fa-trash"></i>
+                        </a>
+                      </td>
                 </tr>
             </tbody>
         </table>

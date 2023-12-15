@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap Admin Dashboard</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
 
@@ -199,6 +199,87 @@
 
 
     
+    /* Common table styles */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    th {
+        background-color: #88b4ab;
+        color: black;
+        font-weight: bold;
+    }
+
+    /* Zebra striping for tables */
+    tbody tr:nth-child(odd) {
+        background: #eee;
+    }
+
+    /* Responsive styles for tables */
+    @media only screen and (max-width: 760px),
+    (min-device-width: 768px) and (max-device-width: 1024px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+
+        thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        tr {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        td {
+            border: none;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 50%;
+        }
+
+        td:before {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+        }
+
+        /* Label the data */
+        td:nth-of-type(1):before {
+            content: "Date";
+        }
+        td:nth-of-type(2):before {
+            content: "Time";
+        }
+        td:nth-of-type(3):before {
+            content: "Doctor Name";
+        }
+        td:nth-of-type(4):before {
+            content: "Specialization";
+        }
+        td:nth-of-type(5):before {
+            content: "Status";
+        }
+    }
+
+    .availability-form {
+        margin-bottom: 4em; /* Adjust the space as needed */
+    }
+
+
     
 
             /* Add these styles for the search bar */
@@ -219,7 +300,7 @@
         }
 
         .search-btn {
-            background-color: #6cd595; /* Button color */
+            background-color: #20713f; /* Button color */
             border: none;
             border-radius: 5px;
             padding: 10px 15px;
@@ -231,131 +312,6 @@
         .search-btn:hover {
             background-color: #2980b9; /* Hover state color */
         }
-
-
-            /* Example styling for the form */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    /* Zebra striping */
-    tr:nth-of-type(odd) {
-        background: #f8f9fa; /* Light gray for zebra striping */
-    }
-
-    th {
-        background: #88b4ab; /* Green color */
-        color: rgb(29, 28, 28);
-        font-weight: bold;
-    }
-
-    td,
-    th {
-        padding: 1rem;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-
-    @media only screen and (max-width: 760px),
-    (min-device-width: 768px) and (max-device-width: 1024px) {
-        /* Force table to not be like tables anymore */
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-            display: block;
-        }
-
-        /* Hide table headers (but not display: none;, for accessibility) */
-        thead tr {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-        }
-
-        tr {
-            border: 1px solid #ccc;
-        }
-
-        td {
-            /* Behave like a "row" */
-            border: none;
-            border-bottom: 1px solid #eee;
-            position: relative;
-            padding-left: 50%;
-        }
-
-        td:before {
-            /* Now like a table header */
-            position: absolute;
-            /* Top/left values mimic padding */
-            top: 6px;
-            left: 6px;
-            width: 45%;
-            padding-right: 10px;
-            white-space: nowrap;
-        }
-
-        /*
-        Label the data
-        */
-        td:nth-of-type(1):before {
-            content: "Pet Name";
-        }
-        td:nth-of-type(2):before {
-            content: "Owner Name";
-        }
-        td:nth-of-type(3):before {
-            content: "Vet Name";
-        }
-        td:nth-of-type(4):before {
-            content: "Appointment Type";
-        }
-        td:nth-of-type(5):before {
-            content: "Service Type";
-        }
-        td:nth-of-type(6):before {
-            content: "Time";
-        }
-        td:nth-of-type(7):before {
-            content: "Date";
-        }
-        td:nth-of-type(8):before {
-            content: "Status";
-        }
-    }
-
-    /* Modal styling */
-    .modal-content {
-        background-color: #f9f9f9;
-    }
-
-    .modal-header {
-        background-color: #88b4ab;
-        color: white;
-        border-bottom: none;
-    }
-
-    .modal-body {
-        color: #161616;
-    }
-
-    .modal-footer {
-        text-align: center;
-        border-top: none;
-    }
-
-    .btn-green {
-    background-color: #4CAF50; /* Green color */
-    color: white; /* Text color */
-  }
-  
-  
-
 </style>
 
 <body>
@@ -365,7 +321,7 @@
                 <div class="sidebar-logo">
                     <a href="{% url 'index' %}">
                         <img src="{% static 'logo.png' %}" alt="logo" style="max-width: 75px; max-height: 200px;">
-                        <span class="welcome-text">Admin</span>
+                        <span class="welcome-text">TailTales</span>
                     </a>
                 </div>
                 
@@ -374,7 +330,7 @@
                         Dashboard Elements
                     </li>
                     <li class="sidebar-item">
-                        <a href="admin_dashboard" class="sidebar-link">
+                        <a href="user_dashboard" class="sidebar-link">
                             <i class="fa-solid fa-list pe-2"></i>
                             Dashboard
                         </a>
@@ -386,44 +342,13 @@
                         </a>
                         <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="admin_app" class="sidebar-link">Appointment History</a>
-                            </li>
-
-                            <li class="sidebar-item">
-                              <a href="booking" class="sidebar-link">Add Appointment</a>
-                            </li>
-
-                            <li class="sidebar-item">
-                                <a href="admin_service" class="sidebar-link">Add Service</a>
-                              </li>
-                        </ul>
-                    </li>
-
-
-
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
-                            aria-expanded="false"><i class="fa-regular fa-user pe-2"></i> 
-                            User Details
-                        </a>
-                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a href="doc_register" class="sidebar-link">Register Vet</a>
+                                <a href="booking" class="sidebar-link">Book Appointment</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="register" class="sidebar-link">Register User</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="admin_doctor" class="sidebar-link">Vet Records</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="admin_patient" class="sidebar-link">Patient Records</a>
+                                <a href="user_app" class="sidebar-link">Appointment History</a>
                             </li>
                         </ul>
                     </li>
-
-
-
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-target="#posts" data-bs-toggle="collapse"
                             aria-expanded="false"><i class="fas fa-file-invoice-dollar pe-2"></i>
@@ -431,17 +356,36 @@
                         </a>
                         <ul id="posts" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="admin_payment" class="sidebar-link">Payment History</a>
+                                <a href="user_payment" class="sidebar-link">Payment History</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="xyz" class="sidebar-link">Generate Bill</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
+                            Settings
+                        </a>
+                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="user_profile" class="sidebar-link">Profile</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="login" class="sidebar-link">Logout</a>
                             </li>
                         </ul>
                     </li>
                 </ul>
 
+                
                 <div class="d-flex ps-3 mt-auto">
                     <button type="submit" class="btn btn-logout" data-bs-toggle="modal" data-bs-target="#logoutModal" style="color: white;">
                         <i class="fas fa-sign-out-alt pe-2"></i> Logout
                     </button>
                 </div>
+
             </div>
         </aside>
 
@@ -457,34 +401,43 @@
                             Are you are you want to logout?
                             </div>
                             <div class="modal-footer">
-                            <a href="{% url 'doctordash_main' %}" type="button" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'user_dashboard' %}" type="button" class="btn btn-secondary">Cancel</a>
                             <a href="{% url 'login' %}" type="button" class="btn btn-success">Logout</a>
                             </div>
                         </div>
                         </div>
                     </div>
 
+    
         <div class="main">
             <nav class="navbar navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-               <!-- Search Bar -->
-        <div class="container mt-2 search-bar">
-          <input type="text" class="form-control search-input" placeholder="Search" aria-label="Search" aria-describedby="searchIcon">
-          <button class="btn btn-primary search-btn" type="button" id="searchIcon">
-              <i class="bi bi-search"></i> Search
-          </button>
-      </div>
-                
-                
+
+                  <!-- Search Bar -->
+                  <div class="container mt-2 search-bar">
+                    <input type="text" class="form-control search-input" placeholder="Search" aria-label="Search" aria-describedby="searchIcon">
+                    <button class="btn btn-primary search-btn" type="button" id="searchIcon">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+
+
+
+
+
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
                                 <img src="{% static 'logo.png' %}"  class="avatar img-fluid rounded" alt="logo" style="max-width: 75px; max-height: 200px;">
                             </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a href="user_profile" class="dropdown-item">Edit Profile</a>
+                                <a href="login" class="dropdown-item">Delete Profile</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -501,84 +454,32 @@
             <main class="content px-3 py-2">
                 <!-- Table Element -->
                 <div class="card border-0">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 py-5">
-                                <div class="card">
-                                    <div class="card-body p-0" style="background-color: whitesmoke;">
-                                        <div class="row p-5">
-                                            <div class="col-md-6" style="margin-left: 250px;">
-                                                <!-- Vet Clinic Logo -->
-                                                <img src="{% static 'logo.png' %}" alt="logo" style="max-width: 75px; max-height: 200px; margin-left: -270px;">
-                                                <h6 style="font-size: 14; margin-right: -60px;" class="w3-wide w3-center">Vet Clinic, Kathmandu</h6>
-                                            </div>
-                                        </div>
-            
-                                        <hr/>
-            
-                                        <div class="row pb-5 p-5">
-                                            <div class="col-md-6">
-                                                <p class="font-weight-bold mb-4"><b><h4>Client Information</h4></b></p>
-                                                <p><b>Booked by:</b> {{ client_name }}</p>
-                                                <p><b>Phone:</b> {{ client_phone }}</p>
-                                                <p><b>Email:</b> {{ client_email }}</p>
-                                                <p class="mb-1"><b>Location:</b> {{ client_location }}, Kathmandu</p>
-                                            </div>
-                                        </div>
-            
-                                        <div class="row p-5">
-                                            <div class="col-md-12">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="border-0 text-uppercase small font-weight-bold">Service ID</th>
-                                                            <th class="border-0 text-uppercase small font-weight-bold">Service Name</th>
-                                                            <th class="border-0 text-uppercase small font-weight-bold">Service Price</th>
-                                                            <th class="border-0 text-uppercase small font-weight-bold">Quantity</th>
-                                                            <th class="border-0 text-uppercase small font-weight-bold">Unit Cost</th>
-                                                            <th class="border-0 text-uppercase small font-weight-bold">Total</th>
-                                                        </tr>
-                                                    </thead>
-            
-                                                    <tbody>
-                                                        {% for service in booked_services %}
-                                                            <tr>
-                                                                <td>{{ service.service_id }}</td>
-                                                                <td>{{ service.service_name }}</td>
-                                                                <td>Rs. {{ service.service_price }}</td>
-                                                                <td>1</td> <!-- Assuming one booking per appointment -->
-                                                                <td>Rs. {{ service.service_price }}</td>
-                                                                <td>Rs. {{ service.service_price }}</td> <!-- Total for each service -->
-                                                            </tr>
-                                                        {% endfor %}
-            
-                                                        <!-- Booking Appointment Fee -->
-                                                        <tr>
-                                                            <td></td>
-                                                            <td>Booking Appointment Fee</td>
-                                                            <td>Rs. 500</td> <!-- Updated booking fee to Rs. 500 -->
-                                                            <td>1</td>
-                                                            <td>Rs. 500</td>
-                                                            <td>Rs. 500</td> <!-- Total for booking appointment fee -->
-                                                        </tr>
-            
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-            
-                                        <div class="d-flex flex-row-reverse bg-light text-white p-4"> <!-- Change bg-dark to bg-light -->
-                                            <div class="py-3 px-5 text-right">
-                                                <!-- Total Amount -->
-                                                <div class="mb-2">Amount</div>
-                                                <div class="h2 font-weight-light">
-                                                    <td><button onclick="window.print();" target="_blank" style="cursor:pointer;">Rs. {{ total_amount }}</button></td>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="container py-5 w3-margin-top" style="max-width:1400px; margin-left: 600px;">
+                        <div class="w3-container" style="height:300px;width:300px; margin-top:80px;">
+                            <h4 class="text-center">Generate Invoice</h4>
+                            
+                            <div class="text-center">
+                                <input class="custom-select" type="text" id="search" name="search" placeholder="username" style="width:180px; border: black; background-color: rgb(225, 237, 237);">
                             </div>
+            
+                            <br>
+            
+                            <div class="text-center">
+                                <input class="custom-select" type="text" id="search" name="search" placeholder="petname" style="width:180px; border: black; background-color: rgb(225, 237, 237);">
+                            </div>
+            
+                            <br>
+            
+                            <div class="text-center">
+                                <input class="custom-select datepicker" type="date" placeholder="Date" style="width:180px; border: black; background-color: rgb(225, 237, 237);">
+                            </div>
+            
+                            <br>
+            
+                            <div class="text-center">
+                                <a href="{% url 'invoice' %}" class="btn btn-success" style="width:100px; border: none;">Generate</a>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -621,8 +522,6 @@
                     toggleRootClass();
                 }
             </script>
-
-   
         </div>
     </div>
 </body>
