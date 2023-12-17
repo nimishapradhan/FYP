@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %} Dashboard {% endblock %}
+{% block title %} Login {% endblock %}
 
 {% block content %}
 <div class="container">
@@ -78,7 +78,7 @@
 
       <!-- Register Link -->
       <div class="text-center pt-3 text-muted">
-        Don't have an account?<a href="register">Register Here!</a>
+        Don't have an account?<a href="{% url 'register' %}">Register Here!</a>
       </div>
 
       

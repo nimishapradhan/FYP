@@ -238,11 +238,68 @@ def adminnav_view(request):
 def admin_service_view(request):
     return render(request, 'admin_service.html')
 
+def admin_cancelled_appointment(request):
+     status = 'Cancelled'
+     with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM booking_details Where status= %s", [status])
+        allAppoitments = cursor.fetchall()
+
+        appointments = []
+        for row in allAppoitments:
+            appointment = {
+                'appointment_id': row[0],
+                'pet_name': row[4],
+                'email': row[1],
+                'vet': row[19],
+                'appointment_type': row[11],
+                'service_type': row[13],
+                'time': row[18],
+                'date': row[17],
+                'status': 'Cancelled',
+            }
+            appointments.append(appointment)
+    
+        
+        sendData = {
+            'allAppoitments': appointments,
+        }
+
+
+        return render(request, 'admin_cancelled_appointment.html', sendData)
+
+def admin_doctor_view(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM doctor_details")
+        doctors_details = cursor.fetchall()
+
+        doctors = []
+        for row in doctors_details:
+            docs = {
+                'id': row[0],
+                'first_name': row[1],
+                'last_name': row[2],
+                'gender': row[3],
+                'phone': row[6],
+                'qualification': row[7],
+                'service_type': row[8],
+                'nmc_number': row[9],
+                'address': row[10],
+            }
+            doctors.append(docs)
+    
+        
+        sendData = {
+            'doctors': doctors,
+        }
+
+    return render(request, 'admin_cancelled_appointment.html')
+
 def admin_dashboard(request):
     current_date = date.today()
+    status = 'Ongoing'
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM booking_details WHERE date = %s", [current_date])
+        cursor.execute("SELECT COUNT(*) FROM booking_details WHERE date = %s", [current_date] )
         totalPatient = cursor.fetchone()[0]
 
         cursor.execute("SELECT COUNT(*) FROM doctor_details")
@@ -251,7 +308,7 @@ def admin_dashboard(request):
         cursor.execute("SELECT COUNT(*) FROM booking_details")
         totalAppointment = cursor.fetchone()[0]
 
-        cursor.execute("SELECT * FROM booking_details WHERE date = %s", [current_date])
+        cursor.execute("SELECT * FROM booking_details WHERE date = %s AND status =%s", [current_date, status])
         todayAppointments = cursor.fetchall()
 
 
@@ -278,9 +335,21 @@ def admin_dashboard(request):
 
     return render(request, 'admin_dashboard.html', sendData)
 
-def admin_app_view(request):
+
+def cancel_appointment(request, appointment_id):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM booking_details")
+        # Write your raw SQL query to update the appointment status
+        sql_query = "UPDATE booking_details SET status = 'Cancelled' WHERE id = %s"
+        cursor.execute(sql_query, [appointment_id])
+
+    
+    return redirect( 'admin_dashboard')  # Redirect to the appointment list page
+
+
+def admin_app_view(request):
+    status = 'Cancelled'
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM booking_details WHERE status != %s", [status])
         allAppoitments = cursor.fetchall()
 
         appointments = []
@@ -294,7 +363,7 @@ def admin_app_view(request):
                 'service_type': row[13],
                 'time': row[18],
                 'date': row[17],
-                'status': 'ongoing',
+                'status': row[21],
             }
             appointments.append(appointment)
     
@@ -318,6 +387,7 @@ def admin_doctor_view(request):
                 'first_name': row[1],
                 'last_name': row[2],
                 'gender': row[3],
+                'email': row[4],
                 'phone': row[6],
                 'qualification': row[7],
                 'service_type': row[8],
@@ -476,6 +546,27 @@ def delete_appointment(request):
     
     return HttpResponseRedirect('/user_app')
 
+def delete_appointment_doc(request):
+    if request.method == 'POST':
+        appointment_id = request.POST.get('appointment_id')
+
+        print(appointment_id)
+
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM booking_details WHERE email = %s", [appointment_id])
+    
+    return HttpResponseRedirect('/doctorapp')
+
+def delete_appointment_admin(request):
+    if request.method == 'POST':
+        appointment_id = request.POST.get('appointment_id')
+
+        print(appointment_id)
+
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM booking_details WHERE email = %s", [appointment_id])
+    
+    return HttpResponseRedirect('/admin_app')
 
 
 def userapp_view(request):
@@ -603,9 +694,11 @@ def userprofile_view(request):
 
 def doctordashmain_view(request):
     current_date = date.today()
+    status =  'Cancelled'
+    user_id = request.user
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM booking_details WHERE DATE(updatedOn) = %s", [current_date])
+        cursor.execute("SELECT COUNT(*) FROM booking_details WHERE date = %s", [current_date])
         totalPatient = cursor.fetchone()[0]
 
         cursor.execute("SELECT COUNT(*) FROM booking_details WHERE method = 'home'")
@@ -614,7 +707,7 @@ def doctordashmain_view(request):
         cursor.execute("SELECT COUNT(*) FROM booking_details WHERE method = 'clinic'")
         clinicPatient = cursor.fetchone()[0]
 
-        cursor.execute("SELECT * FROM booking_details WHERE DATE(updatedOn) = %s", [current_date])
+        cursor.execute("SELECT * FROM booking_details WHERE date = %s and status != %s", [current_date, status])
         todayAppointments = cursor.fetchall()
 
 
@@ -627,7 +720,13 @@ def doctordashmain_view(request):
                 'appointment_type': row[11],
                 'service_type': row[13],
                 'time': row[18],
-                'status': 'ongoing',
+                'status': row[21],
+                'age': row[6],
+                'breed':row[5],
+                'color':row[7],
+                'address': row[3],
+                'contact':row[2],
+                'description': row[11]
             }
             appointments.append(appointment)
 
@@ -638,7 +737,6 @@ def doctordashmain_view(request):
             'clinic': clinicPatient,
             'todayAppointments': appointments
         }
-
     return render(request, 'doctordash_main.html', sendData)
 
 def doctorpatient_view(request):

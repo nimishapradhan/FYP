@@ -20,7 +20,7 @@ urlpatterns = [
 
     path('admin_login', views.admin_login , name = 'admin_login'),
     path('login/', views.login_view, name='login'),  
-    path('register', views.register_view, name='register'),
+    path('register/', views.register_view, name='register'),
     path('doc_register', views.doc_register_view, name='doc_register'),
 
     
@@ -31,6 +31,10 @@ urlpatterns = [
     path('admin_app', views.admin_app_view, name='admin_app'), 
     path('admin_payment', views.admin_payment_view, name='admin_payment'), 
     path('admin_service', views.admin_service_view, name='admin_service'), 
+    path('cancel_appointment/<int:appointment_id>/', views.cancel_appointment, name='cancel_appointment'),
+    path('admin_cancelled_appointment', views.admin_cancelled_appointment, name='admin_cancelled_appointment'), 
+
+
 
 
     path('user_nav', views.usernav_view, name='user_nav'),  
@@ -53,6 +57,8 @@ urlpatterns = [
 
 
     path('delete_appointment/', views.delete_appointment, name='delete_appointment'),
+    path('delete_appointment_doc/', views.delete_appointment_doc, name='delete_appointment_doc'),
+    path('delete_appointment_admin/', views.delete_appointment_admin, name='delete_appointment_admin'),
 
    
     path('get_booked_time_slots/<str:doctor>/', views.get_booked_time_slots, name='get_booked_time_slots'),
