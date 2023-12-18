@@ -31,8 +31,17 @@ urlpatterns = [
     path('admin_app', views.admin_app_view, name='admin_app'), 
     path('admin_payment', views.admin_payment_view, name='admin_payment'), 
     path('admin_service', views.admin_service_view, name='admin_service'), 
+    path('admin-operator', views.admin_operator, name='admin-operator'), 
     path('cancel_appointment/<int:appointment_id>/', views.cancel_appointment, name='cancel_appointment'),
     path('admin_cancelled_appointment', views.admin_cancelled_appointment, name='admin_cancelled_appointment'), 
+
+
+
+    path('operator-appointment', views.operator_appointment, name='operator-appointment'), 
+    path('operator-dashboard', views.operator_dashboard, name='operator-dashboard'), 
+    path('operator-doctor', views.operator_doctor, name='operator-doctor'), 
+    path('operator-patient', views.operator_patient, name='operator-patient'), 
+    path('operator-profile', views.operator_profile, name='operator-profile'), 
 
 
 

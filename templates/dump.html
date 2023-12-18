@@ -1088,3 +1088,165 @@ def verifyKhalti(request):
 
 
 
+
+
+
+        <!-- Doctor Registration Form on the Right Side -->
+        <div class="col-md-6 col-12">
+            <div class="fs-4 fw-light text-muted pb-2 text-center">Doctor Registration</div>
+            <form action="" method="post">
+              {% csrf_token %}
+      
+              <!-- First Name Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-first-name">First Name</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="doc-first-name"
+                  name="doc-first-name"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- Last Name Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-last-name">Last Name</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="doc-last-name"
+                  name="doc-last-name"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- Gender Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-gender">Gender</label>
+                <select class="form-select" id="doc-gender" name="doc-gender" required style="border: 1px solid #0eb62f">
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+      
+              <!-- Phone Number Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-phone">Phone Number</label>
+                <input
+                  class="form-control"
+                  type="tel"
+                  id="doc-phone"
+                  name="doc-phone"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- Qualification Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-qualification">Qualification</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="doc-qualification"
+                  name="doc-qualification"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- Service Type Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-service-type">Service Type</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="doc-service-type"
+                  name="doc-service-type"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- NMC Number Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-nmc-number">NMC Number</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="doc-nmc-number"
+                  name="doc-nmc-number"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- Address Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-address">Address</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="doc-address"
+                  name="doc-address"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- Email Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-email">Email</label>
+                <input
+                  class="form-control"
+                  type="email"
+                  id="doc-email"
+                  name="doc-email"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- Password Input Field -->
+              <div class="form-group pb-2">
+                <label for="doc-password">Password</label>
+                <input
+                  class="form-control"
+                  type="password"
+                  id="doc-password"
+                  name="doc-password"
+                  required
+                  style="border: 1px solid #0eb62f"
+                />
+              </div>
+      
+              <!-- Submit Button -->
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn btn-blue"
+                  style="
+                    background: #0a461f;
+                    border: none;
+                    color: #fff;
+                    padding: 12px 24px;
+                    font-size: 18px;
+                    cursor: pointer;
+                    transition: background 0.3s ease;
+                  "
+                >
+                  Register
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </main> 
+            
+
+

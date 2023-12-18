@@ -916,6 +916,37 @@ def logout_view(request):
 def doctor_dashboard(request):
     return render(request, 'doctor_dashboard')
 
+def operator_dashboard(request):
+    return render(request, 'operator-dashboard')
+
+def operator_appointment(request):
+    return render(request, 'operator-appointment')
+
+def operator_doctor(request):
+    return render(request, 'operator-doctor')
+
+def operator_patient(request):
+    return render(request, 'operator-patient')
+
+def operator_profile(request):
+    return render(request, 'operator-profile')
+
+def admin_operator(request):
+    return render(request, 'admin-operator')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # Simulating booked time slots for each doctor

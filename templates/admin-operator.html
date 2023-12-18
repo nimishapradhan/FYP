@@ -485,7 +485,7 @@
     <div class="card border-0">
             <div class="container  py-5">
               <div>
-                  <div class="fs-4">Vet Records</div>
+                  <div class="fs-4">Operator Records</div>
               </div>
             
               <hr />
@@ -496,28 +496,20 @@
                     <th>Last Name</th>
                     <th>Gender</th>
                     <th>Phone Number</th>
-                    <th>Qualification</th>
-                    <th>Service Type</th>
-                    <th>NMC Number</th>
                     <th>Address</th>
                     <th>Email</th>
-                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for doctor in doctors %}
                     <tr>
-                        <td>{{ doctor.first_name }}</td>
-                        <td>{{ doctor.last_name }}</td>
-                        <td>{{ doctor.gender }}</td>
-                        <td>{{ doctor.phone }}</td>
-                        <td>{{ doctor.qualification }}</td>
-                        <td>{{ doctor.service_type }}</td>
-                        <td>{{ doctor.nmc_number }}</td>
-                        <td>{{ doctor.address }}</td>
-                        <td>{{ doctor.email }}</td>
-                        <td>available</td>
+                        <td>{{ operator.first_name }}</td>
+                        <td>{{ operator.last_name }}</td>
+                        <td>{{ operator.gender }}</td>
+                        <td>{{ operator.phone }}</td>
+                        <td>{{ operator.address }}</td>
+                        <td>{{ operator.email }}</td>
                         <td>
                             <a href="#" class="btn btn-success" title="Edit product">
                                 <i class="fa-solid fa-pen"></i>
