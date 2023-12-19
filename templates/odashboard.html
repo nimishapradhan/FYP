@@ -355,7 +355,7 @@
 
 </style>
 
-
+<
 <body>
     <div class="wrapper">
         <aside id="sidebar" class="js-sidebar">
@@ -372,7 +372,7 @@
                         Dashboard Elements
                     </li>
                     <li class="sidebar-item">
-                        <a href="operator-dashboard" class="sidebar-link">
+                        <a href="odashboard" class="sidebar-link">
                             <i class="fa-solid fa-list pe-2"></i>
                             Dashboard
                         </a>
@@ -384,7 +384,7 @@
                         </a>
                         <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="operator-appointment" class="sidebar-link">Appointment History</a>
+                                <a href="oappointment" class="sidebar-link">Appointment History</a>
                             </li>
                         </ul>
                     </li>
@@ -395,10 +395,10 @@
                         </a>
                         <ul id="posts" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="operator-patient" class="sidebar-link">Patient Details</a>
+                                <a href="opatient" class="sidebar-link">Patient Details</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="operator-doctor" class="sidebar-link">Vet Details</a>
+                                <a href="odoctor" class="sidebar-link">Vet Details</a>
                             </li>
                         </ul>
                     </li>
@@ -409,7 +409,7 @@
                         </a>
                         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="operator-profile" class="sidebar-link">Profile</a>
+                                <a href="oprofile" class="sidebar-link">Profile</a>
                             </li>
                         </ul>
                     </li>
@@ -422,6 +422,7 @@
                 </div>
             </div>
         </aside>
+
         
                     <!-- Logout Modal -->
                     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModal" aria-hidden="true">
@@ -476,97 +477,155 @@
                 <i class="fa-regular fa-sun"></i>
             </a>
 
-
             
+
 
 <main class="content px-3 py-2">
     <!-- Table Element -->
     <div class="card border-0">
-     
-      <div class="container">
-        <div class="row justify-content-center py-5"> <!-- Added justify-content-center class -->
-        
-        <!-- Edit profile Form on the Right Side -->
-        <div class="col-md-6 col-12">
-          <div class="fs-4 fw-light text-muted pb-2 text-center">Edit Profile</div>
-    
-          <!-- Edit Profile Form -->
-          <form method="post" action="">
-            <!-- Password Input Field -->
-            <div class="col-lg-7 col-md-12 col-8 mx-auto">
-              {% csrf_token %} 
-              <div class="form-group pb-2">
-                <label for="vet_pw">Current Password</label>
-                <input
-                  class="form-control"
-                  type="password"
-                  id="vet-pw"
-                  name="vet-pw"
-                  required
-                  style="border: 1px solid #0eb62f"
-                />
-              </div>
+      
+  <div class="container py-5">
+    <!-- Doctor Availability Section -->
+    <div class="availability-form">
+            <div class="fs-4">Doctor Availability</div>
+            <hr />
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Doctor Name</th>
+                    <th>Specialization</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor.date }}</td>
+                        <td>{{ doctor.time }}</td>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.qualification }}</td>
+                        <td>{{ doctor.status }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+  
+      <hr />
+      <div>
+        <div class="fs-4">Today's Appointment</div>
+      </div>
+      <hr />
+      <table>
+        <thead>
+          <tr>
+            <th>Pet Name</th>
+            <th>Owner Email</th>
+            <th>Appointment Type</th>
+            <th>Service Type</th>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appointment in todayAppointments %}
+              <tr>
+                  <td>{{ appointment.pet_name }}</td>
+                  <td>{{ appointment.email }}</td>
+                  <td>{{ appointment.appointment_type }}</td>
+                  <td>{{ appointment.service_type }}</td>
+                  <td>{{ appointment.time }}</td>
+                  <td>{{ appointment.status }}</td>
+              </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Patient Details Modal -->
+  <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#patientModal">
+    Launch demo modal
+  </button> -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Pet Details</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row form-group pb-2">
+            <div class="col-3">
+              <label for="pet_age">Age</label>
             </div>
-    
-            <!-- New Password Input Field -->
-            <div class="col-lg-7 col-md-12 col-8 mx-auto">
-              <div class="form-group pb-2">
-                <label for="new_vet_pw">New Password</label>
-                <input
-                  class="form-control"
-                  type="password"
-                  id="new-vet-pw"
-                  name="new-vet-pw"
-                  required
-                  style="border: 1px solid #0eb62f"
-                />
-              </div>
+            <div class="col-9">
+              <div>10</div>
             </div>
-    
-            <!-- Confirm New Password Input Field -->
-            <div class="col-lg-7 col-md-12 col-8 mx-auto">
-              <div class="form-group pb-2">
-                <label for="confirm_new_vet_pw">Confirm New Password</label>
-                <input
-                  class="form-control"
-                  type="password"
-                  id="confirm-new-vet-pw"
-                  name="confirm-new-vet-pw"
-                  required
-                  style="border: 1px solid #0eb62f"
-                />
-              </div>
+          </div>
+  
+          <div class="row form-group pb-2">
+            <div class="col-3">
+              <label for="pet_age">Breed</label>
             </div>
-    
-            <!-- Rest of the profile fields -->
-            <!-- ... -->
-    
-            <!-- Submit Button -->
-            <div class="text-center py-4">
-              <button
-                type="submit"
-                class="btn btn-blue"
-                style="
-                  background: #4CAF50; /* Green color */
-                  border: none;
-                  color: #fff;
-                  padding: 12px 24px;
-                  font-size: 18px;
-                  cursor: pointer;
-                  transition: background 0.3s ease;
-                "
-              >
-                Confirm
-              </button>
+            <div class="col-9">
+              <div>Test</div>
             </div>
-          </form>
+          </div>
+  
+          <div class="row form-group pb-2">
+            <div class="col-3">
+              <label for="pet_age">Color</label>
+            </div>
+            <div class="col-9">
+              <div>Brown</div>
+            </div>
+          </div>
+  
+          <div class="row form-group pb-2">
+            <div class="col-3">
+              <label for="pet_age">Address</label>
+            </div>
+            <div class="col-9">
+              <div>Nepal</div>
+            </div>
+          </div>
+  
+          <div class="row form-group pb-2">
+            <div class="col-3">
+              <label for="pet_age">Contact</label>
+            </div>
+            <div class="col-9">
+              <div>+977 9849372055</div>
+            </div>
+          </div>
+  
+          <div class="row form-group pb-2">
+            <div class="col-3">
+              <label for="pet_age">Description</label>
+            </div>
+            <div class="col-9">
+              <div>test</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer text-center">
+          <button type="submit" class="btn btn-blue">OK</button>
         </div>
       </div>
     </div>
+  </div>
+  
+   
+
   </main> 
             
-                  
- 
             
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>

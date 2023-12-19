@@ -280,6 +280,7 @@ def admin_doctor_view(request):
                 'last_name': row[2],
                 'gender': row[3],
                 'phone': row[6],
+                'email': row[4],
                 'qualification': row[7],
                 'service_type': row[8],
                 'nmc_number': row[9],
@@ -414,8 +415,15 @@ def admin_patient_view(request):
             data = {
                 'appointment_id': row[0],
                 'pet_name': row[4],
+                'pet_breed': row[5],
+                'pet_age': row[6],
+                'pet_colour': row[7],
+                'gender': row[8],
                 'email': row[1],
-                'service_type': row[13],
+                'tole': row[15],
+                'number': row[2],
+                'address': row[3],
+                'housenumber': row[16],
                 'date': row[17]
             }
             patients.append(data)
@@ -438,7 +446,34 @@ def usernav_view(request):
     return render(request, 'user_nav.html')
 
 def uhistory_view(request):
-    return render(request, 'user_history.html')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM booking_details")
+        patients_data = cursor.fetchall()
+
+        patients = []
+        for row in patients_data:
+            data = {
+                'appointment_id': row[0],
+                'pet_name': row[4],
+                'pet_breed': row[5],
+                'pet_age': row[6],
+                'pet_colour': row[7],
+                'gender': row[8],
+                'email': row[1],
+                'tole': row[15],
+                'number': row[2],
+                'address': row[3],
+                'housenumber': row[16],
+            }
+            patients.append(data)
+
+        sendData = {
+            'patients': patients,
+        }
+
+    return render(request, 'user_history.html', sendData)
+
+  
 
 # def userdashboard_view(request):
 #     with connection.cursor() as cursor:
@@ -567,6 +602,17 @@ def delete_appointment_admin(request):
             cursor.execute("DELETE FROM booking_details WHERE email = %s", [appointment_id])
     
     return HttpResponseRedirect('/admin_app')
+
+def delete_doctor_admin(request):
+    if request.method == 'POST':
+        doctor_id = request.POST.get('doctor_id')
+
+        print(doctor_id)
+
+        with connection.cursor() as cursor:
+            cursor.execute("DELETE FROM booking_details WHERE email = %s", [doctor_id])
+    
+    return HttpResponseRedirect('/admin_doctor')
 
 
 def userapp_view(request):
@@ -839,6 +885,32 @@ def xyz_view(request):
 def invoice_view(request):
     return render(request, 'invoice.html')
 
+def oappointment_view(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM booking_details")
+        allAppointments = cursor.fetchall()
+
+        appointments = []
+        for row in allAppointments:
+            appointment = {
+                'pet_name': row[4],
+                'email': row[1],
+                'vet': row[19],
+                'appointment_type': row[11],
+                'service_type': row[13],
+                'time': row[18],
+                'date': row[17],
+                'status': row[21]
+            }
+            appointments.append(appointment)
+    
+        
+        sendData = {
+            'allAppoitments': appointments,
+        }
+    return render(request, 'oappointment.html', sendData)
+    
+
 
 
 def doc_register_view(request):
@@ -916,23 +988,138 @@ def logout_view(request):
 def doctor_dashboard(request):
     return render(request, 'doctor_dashboard')
 
-def operator_dashboard(request):
-    return render(request, 'operator-dashboard')
 
-def operator_appointment(request):
-    return render(request, 'operator-appointment')
 
-def operator_doctor(request):
-    return render(request, 'operator-doctor')
+def odashboard(request):
+    try:
+        with connection.cursor() as cursor:
+            # Fetching doctor details
+            cursor.execute("SELECT * FROM doctor_details")
+            doctor_data = cursor.fetchall()
 
-def operator_patient(request):
-    return render(request, 'operator-patient')
+            user = request.user
 
-def operator_profile(request):
-    return render(request, 'operator-profile')
+            # Fetching appointment details for today's date
+            today = date.today()
+            print("Date", today)
+            cursor.execute("SELECT * FROM booking_details WHERE date = %s", [today])
+            app_data = cursor.fetchall()
+            
+            doctor_details = []
+            app_details = []
+
+            # Processing doctor details
+            for row in doctor_data:
+                doctor_detail = {
+                    'id': row[0],
+                    'name': row[1],
+                    'date': row[12],
+                    'time': row[13],
+                    'qualification': row[7],
+                    'status': 'available'
+                }
+                doctor_details.append(doctor_detail)
+
+            # Processing appointment details
+            for row in app_data:
+                app_detail = {
+                    'id': row[0],
+                    'date': row[17],
+                    'time': row[18],
+                    'vet': row[19],
+                    'appointment_type': row[11],
+                    'service_type': row[13]
+                }
+                app_details.append(app_detail)
+            # print("Date app", app_details)    
+
+        getData = {
+            'doctors': doctor_details,
+            'appointments': app_details
+        }
+
+        return render(request, 'odashboard.html', getData)
+
+    except Exception as e:
+        # Handle exceptions (print or log the error, or redirect to an error page)
+        print(f"An error occurred: {e}")
+        # Redirect to an error page or handle the error accordingly
+        return render(request, 'error_page.html', {'error_message': str(e)})
+
+    
+
+
+def odoctor(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM doctor_details")
+        doctors_details = cursor.fetchall()
+
+        doctors = []
+        for row in doctors_details:
+            docs = {
+                'id': row[0],
+                'first_name': row[1],
+                'last_name': row[2],
+                'gender': row[3],
+                'phone': row[6],
+                'email': row[4],
+                'qualification': row[7],
+                'service_type': row[8],
+                'nmc_number': row[9],
+                'address': row[10],
+            }
+            doctors.append(docs)
+    
+        sendData = {
+            'doctors': doctors,
+        }
+
+    return render(request, 'odoctor.html', sendData)
+
+
+
+def opatient(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM booking_details")
+            patients_data = cursor.fetchall()
+
+            patients = []
+            for row in patients_data:
+                data = {
+                    'appointment_id': row[0],
+                    'pet_name': row[4],
+                    'pet_breed': row[5],
+                    'pet_age': row[6],
+                    'pet_colour': row[7],
+                    'gender': row[8],
+                    'email': row[1],
+                    'tole': row[15],
+                    'number': row[2],
+                    'address': row[3],
+                    'housenumber': row[16],
+                }
+                patients.append(data)
+
+            sendData = {
+                'patients': patients,
+            }
+
+        return render(request, 'opatient.html', sendData)
+
+    except Exception as e:
+        # Handle exceptions (print or log the error, or redirect to an error page)
+        print(f"An error occurred: {e}")
+        # Redirect to an error page or handle the error accordingly
+        return render(request, 'error_page.html', {'error_message': str(e)})
+
+
+
+def oprofile(request):
+    return render(request, 'oprofile.html')
 
 def admin_operator(request):
-    return render(request, 'admin-operator')
+    return render(request, 'admin_operator.html')
 
 
 
@@ -963,4 +1150,90 @@ def get_booked_time_slots(request, doctor):
     return JsonResponse({"booked_time_slots": doctor_booked_slots})
 
 
+
+
+def getSlots(hours, date, slot_duration, lat, lang, timezone=False, target_timezone=False, blocked=None):
+    slots = []
+    for hour in hours:
+        createdSlots = createSlots(hour.from_hour, hour.to_hour, date, hour.slot_duration, timezone, target_timezone)
+        if len(createdSlots):
+            data = []
+            data.append(hour.id)
+            data.append(createdSlots)
+            slots.append(data)
+
+    bookings = Appointments.objects.filter(start_time__date=date).values('start_time', 'end_time', 'id').all()
+    destination = (lat, lang)
+    old_timezone = pytz.timezone(timezone)
+    target_timezone = pytz.timezone(target_timezone)
+    results = []
+    for book in blocked:
+
+        result_time = 0
+
+        start_time = datetime.datetime.combine(book['start_date'], book['start_time'])
+        start_time = old_timezone.localize(start_time)
+        start_time = start_time.astimezone(target_timezone)
+        end_time = datetime.datetime.combine(book['end_date'], book['end_time'])
+        end_time = old_timezone.localize(end_time)
+        end_time = end_time.astimezone(target_timezone)
+        # The Slot Subtraction Place.
+        for count, i in enumerate(slots):
+            removing_objects = []
+            for count_j, j in enumerate(i[1]):
+                # j = j.astimezone(old_timezone)
+                if j in DateTimeRange(start_time, end_time):
+                   # slots[count][1].remove(j)
+                    removing_objects.append(j)
+                else:
+                    # print("not in time range")
+                    pass
+                if start_time == j:
+                  #  slots[count][1].remove(j)
+                    removing_objects.append(j)
+                else:
+                    # print("not same time")
+                    pass
+            for remo in removing_objects:
+                if remo in slots[count][1]:
+                    slots[count][1].remove(remo)
+
+    for book in bookings:
+
+        result_time = 0
+
+        start_time = book['start_time'] - datetime.timedelta(
+            minutes=int(result_time))
+        start_time = start_time.astimezone(old_timezone)
+        end_time = book['end_time'] + datetime.timedelta(
+            minutes=int(result_time))
+        end_time = end_time.astimezone(old_timezone)
+        # The Slot Subtraction Place.
+        for count, i in enumerate(slots):
+            removing_objects = []
+            for count_j, j in enumerate(i[1]):
+                j = j.astimezone(old_timezone)
+                if j in DateTimeRange(start_time, end_time):
+                   # slots[count][1].remove(j)
+                    removing_objects.append(j)
+                else:
+                    # print("not in time range")
+                    pass
+                if start_time == j:
+                  #  slots[count][1].remove(j)
+                    removing_objects.append(j)
+                else:
+                    # print("not same time")
+                    pass
+            for remo in removing_objects:
+                if remo in slots[count][1]:
+                    slots[count][1].remove(remo)
+
+
+
+    for count, slot in enumerate(slots):
+        if len(slot[1]) == 0:
+            slots.pop(count)
+    slots.sort(reverse=False)
+    return slots
 

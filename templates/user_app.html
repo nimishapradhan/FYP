@@ -457,6 +457,26 @@
     <!-- Table Element -->
     <div class="card border-0">
 
+
+        <div class="container mt-5">
+            <h2 class="mb-4">Available Slots</h2>
+    
+            <!-- Display available slots -->
+            {% for hour in slots %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        Hour: {{ hour.0 }}
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for slot in hour.1 %}
+                            <li class="list-group-item">{{ slot }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+    
+        </div>
+
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="fs-4">My Appointment History</div>

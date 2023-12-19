@@ -399,7 +399,7 @@
                                 <a href="admin_patient" class="sidebar-link">Patient Records</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="admin-operator" class="sidebar-link">Operator Records</a>
+                                <a href="admin_operator" class="sidebar-link">Operator Records</a>
                             </li>
                         </ul>
                     </li>
@@ -519,15 +519,17 @@
                         <td>{{ doctor.email }}</td>
                         <td>available</td>
                         <td>
-                            <a href="#" class="btn btn-success" title="Edit product">
-                                <i class="fa-solid fa-pen"></i>
+                            <a href="#" class="btn btn-success" title="Edit vet">
+                                Edit
                             </a>
     
                             &nbsp;&nbsp;
-    
-                            <a href="#" class="btn btn-danger" title="Delete product">
-                                <i class="fa-solid fa-trash"></i>
+                        
+                           <a href="{% url 'delete_doctor_admin' %}" class="btn btn-danger delete-appointment" title="Delete vet" data-appointment-id="{{ doctor.email }}">
+                                  <!-- <i class="fa-solid fa-trash"></i> -->
+                                  Delete
                             </a>
+                              
                         </td>
                     </tr>
                 {% endfor %}
@@ -543,6 +545,29 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
             <script>
+                    $(".delete-doctor").click(function () {
+                    var doctorId = $(this).data("doctor-id");
+    
+                    // Make an AJAX request to delete the doctor
+                    $.ajax({
+                        url: '/delete_doctor_admin/',
+                        type: 'POST',
+                        data: {
+                            'doctor_id': doctorId,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                        },
+                        success: function (data) {
+                            // Refresh the page or update the UI as needed
+                            location.reload();
+                        },
+                        error: function (error) {
+                            console.error('Error deleting doctor:', error);
+                            // Handle error as needed
+                        }
+                    });
+                });
+
+
                 const sidebarToggle = document.querySelector("#sidebar-toggle");
                 sidebarToggle.addEventListener("click",function(){
                     document.querySelector("#sidebar").classList.toggle("collapsed");

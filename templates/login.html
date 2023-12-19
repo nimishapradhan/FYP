@@ -20,6 +20,20 @@
       <form method="post" action="{% url 'login' %}">
         <div class="row py-4">
           {% csrf_token %} 
+
+         <!-- User Role Dropdown with 3 fingers space -->
+         <div class="col-lg-7 col-md-12 col-8 mx-auto mb-5">
+          <div class="form-group pb-2">
+            <label for="user_role">Select User Role</label>
+            <select class="form-select" id="user_role" name="user_role" required style="border: 1px solid #0eb62f">
+              <option value="patient">Patient</option>
+              <option value="doctor">Vet</option>
+              <option value="operator">Operator</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+
           <!-- Email Input Field -->
           <div class="col-lg-7 col-md-12 col-8 mx-auto">
             <div class="form-group pb-2">

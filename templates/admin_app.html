@@ -385,9 +385,10 @@
                                 <a href="admin_app" class="sidebar-link">Appointment History</a>
                             </li>
 
+
                             <li class="sidebar-item">
-                                <a href="admin_service" class="sidebar-link">Service Records</a>
-                              </li>
+                              <a href="admin_service" class="sidebar-link">Service Records</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -400,10 +401,7 @@
                         </a>
                         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="doc_register" class="sidebar-link">Register Vet</a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="register" class="sidebar-link">Register User</a>
+                                <a href="doc_register" class="sidebar-link">Register Staffs</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="admin_doctor" class="sidebar-link">Vet Records</a>
@@ -411,6 +409,9 @@
                             <li class="sidebar-item">
                                 <a href="admin_patient" class="sidebar-link">Patient Records</a>
                             </li>
+                            <li class="sidebar-item">
+                              <a href="admin_operator" class="sidebar-link">Operator Records</a>
+                          </li>
                         </ul>
                     </li>
 
@@ -520,7 +521,6 @@
                     <th>Service Type</th>
                     <th>Time</th>
                     <th>Date</th>
-                    <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -534,7 +534,6 @@
                     <td>{{ appointment.service_type}}</td>
                     <td>{{ appointment.time }}</td>
                     <td>{{ appointment.date }}</td>
-                    <td>{{ appointment.status }}</td>
                     <td>
                         <a href="{% url 'delete_appointment_admin' %}" class="btn btn-danger delete-appointment" title="Delete product" data-appointment-id="{{ appointment.email }}"> Delete
                         </a>
