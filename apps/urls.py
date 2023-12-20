@@ -1,6 +1,10 @@
 from django.urls import path
 from . import views
 
+
+from django.urls import path, include
+
+
 urlpatterns = [
     path('', views.index_view, name='index'),  # Maps to the index_view function for the path '/index/'
     path('about', views.about_view, name='about'),  # Maps to the about_view function for the path '/about/'
@@ -60,6 +64,7 @@ urlpatterns = [
     path('doctornav', views.doctornav_view, name='doctornav'),
     path('xyz', views.xyz_view, name='xyz'),
     path('invoice', views.invoice_view, name='invoice'),
+    path('timeslots', views.time_slots, name='timeslots'),
     path('logout/', views.logout_view, name='logout'),
 
 
@@ -71,8 +76,6 @@ urlpatterns = [
    
     path('get_booked_time_slots/<str:doctor>/', views.get_booked_time_slots, name='get_booked_time_slots'),
 
-
-  
 
 
 

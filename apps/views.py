@@ -615,6 +615,9 @@ def delete_doctor_admin(request):
     return HttpResponseRedirect('/admin_doctor')
 
 
+
+
+
 def userapp_view(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM booking_details")
@@ -1121,14 +1124,8 @@ def oprofile(request):
 def admin_operator(request):
     return render(request, 'admin_operator.html')
 
-
-
-
-
-
-
-
-
+def time_slots(request):
+    return render(request, 'manage_time_slots.html')
 
 
 
@@ -1148,92 +1145,4 @@ def get_booked_time_slots(request, doctor):
     doctor_booked_slots = booked_time_slots.get(doctor, [])
 
     return JsonResponse({"booked_time_slots": doctor_booked_slots})
-
-
-
-
-def getSlots(hours, date, slot_duration, lat, lang, timezone=False, target_timezone=False, blocked=None):
-    slots = []
-    for hour in hours:
-        createdSlots = createSlots(hour.from_hour, hour.to_hour, date, hour.slot_duration, timezone, target_timezone)
-        if len(createdSlots):
-            data = []
-            data.append(hour.id)
-            data.append(createdSlots)
-            slots.append(data)
-
-    bookings = Appointments.objects.filter(start_time__date=date).values('start_time', 'end_time', 'id').all()
-    destination = (lat, lang)
-    old_timezone = pytz.timezone(timezone)
-    target_timezone = pytz.timezone(target_timezone)
-    results = []
-    for book in blocked:
-
-        result_time = 0
-
-        start_time = datetime.datetime.combine(book['start_date'], book['start_time'])
-        start_time = old_timezone.localize(start_time)
-        start_time = start_time.astimezone(target_timezone)
-        end_time = datetime.datetime.combine(book['end_date'], book['end_time'])
-        end_time = old_timezone.localize(end_time)
-        end_time = end_time.astimezone(target_timezone)
-        # The Slot Subtraction Place.
-        for count, i in enumerate(slots):
-            removing_objects = []
-            for count_j, j in enumerate(i[1]):
-                # j = j.astimezone(old_timezone)
-                if j in DateTimeRange(start_time, end_time):
-                   # slots[count][1].remove(j)
-                    removing_objects.append(j)
-                else:
-                    # print("not in time range")
-                    pass
-                if start_time == j:
-                  #  slots[count][1].remove(j)
-                    removing_objects.append(j)
-                else:
-                    # print("not same time")
-                    pass
-            for remo in removing_objects:
-                if remo in slots[count][1]:
-                    slots[count][1].remove(remo)
-
-    for book in bookings:
-
-        result_time = 0
-
-        start_time = book['start_time'] - datetime.timedelta(
-            minutes=int(result_time))
-        start_time = start_time.astimezone(old_timezone)
-        end_time = book['end_time'] + datetime.timedelta(
-            minutes=int(result_time))
-        end_time = end_time.astimezone(old_timezone)
-        # The Slot Subtraction Place.
-        for count, i in enumerate(slots):
-            removing_objects = []
-            for count_j, j in enumerate(i[1]):
-                j = j.astimezone(old_timezone)
-                if j in DateTimeRange(start_time, end_time):
-                   # slots[count][1].remove(j)
-                    removing_objects.append(j)
-                else:
-                    # print("not in time range")
-                    pass
-                if start_time == j:
-                  #  slots[count][1].remove(j)
-                    removing_objects.append(j)
-                else:
-                    # print("not same time")
-                    pass
-            for remo in removing_objects:
-                if remo in slots[count][1]:
-                    slots[count][1].remove(remo)
-
-
-
-    for count, slot in enumerate(slots):
-        if len(slot[1]) == 0:
-            slots.pop(count)
-    slots.sort(reverse=False)
-    return slots
 
