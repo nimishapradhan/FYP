@@ -14,6 +14,8 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from django.utils import timezone
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 def index_view(request):
@@ -285,6 +287,7 @@ def admin_doctor_view(request):
                 'service_type': row[8],
                 'nmc_number': row[9],
                 'address': row[10],
+                'status': row[14],
             }
             doctors.append(docs)
     
@@ -618,6 +621,30 @@ def delete_doctor_admin(request):
 
 
 
+def delete_patient_admin(request):
+    if request.method == 'POST':
+        patient_email = request.POST.get('patient_email')
+
+        try:
+            with connection.cursor() as cursor:
+                # Use parameterized query to prevent SQL injection
+                cursor.execute("DELETE FROM booking_details WHERE email = %s", [patient_email])
+
+            # Redirect after successful deletion to avoid form resubmission
+            return redirect('/admin_patient')
+
+        except Exception as e:
+            # Handle the exception (e.g., log it or show an error message)
+            print(f"Error deleting patient: {e}")
+
+    # If the request method is not POST or deletion fails, redirect to some error page
+    return redirect('/error_page')
+
+
+
+
+
+
 def userapp_view(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM booking_details")
@@ -647,8 +674,6 @@ def userpayment_view(request):
     return render(request, 'user_payment.html')
 
 
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 
 
 def userprofile_view(request):
@@ -1122,10 +1147,37 @@ def oprofile(request):
     return render(request, 'oprofile.html')
 
 def admin_operator(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM doctor_details")
+        operator_details = cursor.fetchall()
+
+        operator = []
+        for row in operator_details:
+            operators = {
+                'id': row[0],
+                'first_name': row[1],
+                'last_name': row[2],
+                'gender': row[3],
+                'phone': row[7],
+                'email': row[4],
+                'address': row[6],
+            }
+            operator.append(operators)
+    
+        
+        sendData = {
+            'operator': operator,
+        }
+
     return render(request, 'admin_operator.html')
+
+
 
 def time_slots(request):
     return render(request, 'manage_time_slots.html')
+
+def edit_doctor_status(request):
+    return render(request, 'edit_doctor_status.html')
 
 
 

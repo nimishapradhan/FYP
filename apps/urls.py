@@ -72,6 +72,9 @@ urlpatterns = [
     path('delete_appointment_doc/', views.delete_appointment_doc, name='delete_appointment_doc'),
     path('delete_appointment_admin/', views.delete_appointment_admin, name='delete_appointment_admin'),
     path('delete_doctor_admin/', views.delete_doctor_admin, name='delete_doctor_admin'),
+    path('delete_patient_admin/', views.delete_patient_admin, name='delete_patient_admin'),
+
+    path('edit_doctor_status/', views.edit_doctor_status, name='edit_doctor_status'),
 
    
     path('get_booked_time_slots/<str:doctor>/', views.get_booked_time_slots, name='get_booked_time_slots'),

@@ -552,6 +552,60 @@ html[data-bs-theme="dark"] .theme-toggle {
 
 
   </main> 
+
+
+  
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const doctorSelect = document.querySelector('#doctor-select');
+        const timeSlotsContainer = document.querySelector('.time-slots');
+
+        function updateSlots(selectedDoctor) {
+            const url = `/myapp/get_booked_time_slots/${selectedDoctor}/`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    timeSlotsContainer.innerHTML = '';
+
+                    let currentTime = new Date();
+                    currentTime.setHours(9, 0, 0, 0);
+
+                    for (let i = 0; i < 24; i++) {
+                        const time = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                        if (data.booked_time_slots.includes(time)) {
+                            // If the time slot is booked for the selected doctor, skip it
+                            currentTime.setMinutes(currentTime.getMinutes() + 20);
+                            continue;
+                        }
+
+                        const button = document.createElement("button");
+                        button.className = "time-slot-btn available";
+                        button.textContent = time;
+                        button.addEventListener("click", function () {
+                            alert(`Booked ${time} for ${selectedDoctor}`);
+                        });
+                        timeSlotsContainer.appendChild(button);
+
+                        currentTime.setMinutes(currentTime.getMinutes() + 20);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Initial update with the default selected doctor
+        updateSlots(doctorSelect.value);
+
+        // Add event listener to update time slots when the doctor is changed
+        doctorSelect.addEventListener('change', function () {
+            const selectedDoctor = this.value;
+            updateSlots(selectedDoctor);
+        });
+    });
+
+</script>
+
             
 
             
