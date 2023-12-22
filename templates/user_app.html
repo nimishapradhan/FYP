@@ -484,6 +484,20 @@
 </div>
 
 
+    <style>
+        /* Add your custom styles here */
+        .time-slot {
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+    </style>
+
+ 
+
+
+
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="fs-4">My Appointment History</div>
@@ -525,6 +539,46 @@
 </div>
 
   </main> 
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Assuming you have a function to fetch time slots from the backend
+        // Replace 'fetchTimeSlots' with the actual function that fetches time slots
+        function fetchTimeSlots(doctorId) {
+            // Replace the following line with your API call to get time slots
+            // For simplicity, let's assume time slots are returned as an array
+            return ['09:00 AM', '10:00 AM', '11:00 AM', '01:00 PM', '02:00 PM'];
+        }
+
+        function displayTimeSlots(doctorId) {
+            const timeSlotsContainer = document.getElementById('time-slots');
+            timeSlotsContainer.innerHTML = '';
+
+            const timeSlots = fetchTimeSlots(doctorId);
+
+            timeSlots.forEach(slot => {
+                const timeSlotElement = document.createElement('div');
+                timeSlotElement.classList.add('time-slot');
+                timeSlotElement.textContent = slot;
+
+                // Add a click event listener to handle slot selection
+                timeSlotElement.addEventListener('click', () => {
+                    // Handle the selected time slot, e.g., trigger a booking process
+                    alert(`You selected ${slot}`);
+                });
+
+                timeSlotsContainer.appendChild(timeSlotElement);
+            });
+        }
+
+        // Replace 'selectedDoctorId' with the actual way you determine the selected doctor
+        const selectedDoctorId = 'doctor123';
+
+        // Initial display of time slots
+        displayTimeSlots(selectedDoctorId);
+    });
+</script>
+
             
             
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
