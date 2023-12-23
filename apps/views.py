@@ -298,6 +298,77 @@ def admin_doctor_view(request):
 
     return render(request, 'admin_cancelled_appointment.html')
 
+
+def delete_doctor_admin(request, doctor_id):
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM doctor_details WHERE id = %s", [doctor_id])
+
+    return HttpResponseRedirect('/admin_doctor')
+
+
+
+def edit_doctor_admin(request, doctor_id):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE doctor_details SET first_name = %s, last_name = %s, gender = %s, "
+                    "phone = %s, qualification = %s, service_type = %s, "
+                    "nmc_number = %s, address = %s, email = %s, status = %s WHERE id = %s",
+                    [
+                        request.POST.get('first_name', ''),
+                        request.POST.get('last_name', ''),
+                        request.POST.get('gender', ''),
+                        request.POST.get('phone', ''),
+                        request.POST.get('qualification', ''),
+                        request.POST.get('service_type', ''),
+                        request.POST.get('nmc_number', ''),
+                        request.POST.get('address', ''),
+                        request.POST.get('email', ''),
+                        request.POST.get('status', ''),
+                        doctor_id,
+                    ]
+                )
+        except Exception as e:
+            # Handle the exception, you may want to log it or redirect to an error page
+            print(f"Error updating doctor details: {e}")
+            return HttpResponseRedirect('/error_page/')  # Redirect to your error page
+
+        # After updating, redirect to the admin_doctor page
+        return redirect('admin_doctor')
+    else:
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM doctor_details WHERE id = %s", [doctor_id])
+                doctor_details = cursor.fetchone()
+
+                if not doctor_details:
+                    # Handle the case where doctor with the given ID is not found
+                    return HttpResponseRedirect('/not_found/')  # Redirect to a not found page
+
+                doctor = {
+                    'id': doctor_details[0],
+                    'first_name': doctor_details[1],
+                    'last_name': doctor_details[2],
+                    'gender': doctor_details[3],
+                    'phone': doctor_details[4],
+                    'qualification': doctor_details[5],
+                    'service_type': doctor_details[6],
+                    'nmc_number': doctor_details[7],
+                    'address': doctor_details[8],
+                    'email': doctor_details[9],
+                    'status': doctor_details[10],
+                }
+
+        except Exception as e:
+            # Handle the exception, you may want to log it or redirect to an error page
+            print(f"Error fetching doctor details: {e}")
+            return HttpResponseRedirect('/error_page/')  # Redirect to your error page
+
+        return render(request, 'edit_doctor_admin.html', {'doctor': doctor})
+
+
+
 def admin_dashboard(request):
     current_date = date.today()
     status = 'Ongoing'
@@ -605,20 +676,6 @@ def delete_appointment_admin(request):
             cursor.execute("DELETE FROM booking_details WHERE email = %s", [appointment_id])
     
     return HttpResponseRedirect('/admin_app')
-
-def delete_doctor_admin(request):
-    if request.method == 'POST':
-        doctor_id = request.POST.get('doctor_id')
-
-        print(doctor_id)
-
-        with connection.cursor() as cursor:
-            cursor.execute("DELETE FROM booking_details WHERE email = %s", [doctor_id])
-    
-    return HttpResponseRedirect('/admin_doctor')
-
-
-
 
 
 def delete_patient_admin(request):
@@ -968,6 +1025,36 @@ def doc_register_view(request):
             return render(request, 'doc_register.html', {'error_message': f'Missing key: {e}'})
     return render(request, 'doc_register.html')
 
+
+
+
+def operator_register_view(request):
+    if request.method == 'POST':
+        try:
+            first_name = request.POST['op-first-name']
+            last_name = request.POST['op-last-name']
+            gender = request.POST.get('op-gender')
+            phone = request.POST['op-phone']
+            address = request.POST['op-address']
+            email = request.POST['op-email']
+            password = request.POST['op-password']
+
+            query = "INSERT INTO operator_details (first_name, last_name, gender, phone, address, email, password) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            val = (first_name, last_name, gender, phone, address, email, password)
+
+            with connection.cursor() as cursor:
+                cursor.execute(query, val)
+                connection.commit()
+
+            return redirect('admin_operator')
+
+        except MultiValueDictKeyError as e:
+            return render(request, 'operator_register.html', {'error_message': f'Missing key: {e}'})
+    return render(request, 'operator_register.html')
+
+
+
+
 def login_view(request):
     if request.method == 'POST':
         getEmail = request.POST['login-email']
@@ -1146,14 +1233,17 @@ def opatient(request):
 def oprofile(request):
     return render(request, 'oprofile.html')
 
+from django.shortcuts import render, redirect
+from django.db import connection
+
 def admin_operator(request):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM doctor_details")
+        cursor.execute("SELECT * FROM operator_details")
         operator_details = cursor.fetchall()
 
-        operator = []
+        operators = []
         for row in operator_details:
-            operators = {
+            operator = {
                 'id': row[0],
                 'first_name': row[1],
                 'last_name': row[2],
@@ -1162,22 +1252,72 @@ def admin_operator(request):
                 'email': row[4],
                 'address': row[6],
             }
-            operator.append(operators)
-    
-        
+            operators.append(operator)
+
         sendData = {
-            'operator': operator,
+            'operators_data': operators,
         }
 
-    return render(request, 'admin_operator.html')
+    return render(request, 'admin_operator.html', sendData)
+
+def delete_operator(request, operator_id):
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM operator_details WHERE id = %s", [operator_id])
+    
+    return redirect('admin_operator')
+
+
+
+def edit_operator(request, operator_id):
+    if request.method == 'POST':
+        # Handle form submission and update operator details in the database
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "UPDATE operator_details SET first_name = %s, last_name = %s, gender = %s, "
+                "email = %s, address = %s, phone = %s WHERE id = %s",
+                [
+                    request.POST['first_name'],
+                    request.POST['last_name'],
+                    request.POST['gender'],
+                    request.POST['email'],
+                    request.POST['address'],
+                    request.POST['phone'],
+                    operator_id,
+                ]
+            )
+
+        # After updating, redirect to the admin_operator page
+        return redirect('admin_operator')
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM operator_details WHERE id = %s", [operator_id])
+            operator_details = cursor.fetchone()
+
+            if not operator_details:
+                # Handle the case where operator with the given ID is not found
+                # For simplicity, redirect to an error page. You can customize this behavior.
+                return redirect('error_page')  # Replace 'error_page' with your actual error page
+
+            operator = {
+                'id': operator_details[0],
+                'first_name': operator_details[1],
+                'last_name': operator_details[2],
+                'gender': operator_details[3],
+                'phone': operator_details[7],
+                'email': operator_details[4],
+                'address': operator_details[6],
+            }
+
+        return render(request, 'edit_operator.html', {'operator': operator})
+
+
 
 
 
 def time_slots(request):
     return render(request, 'manage_time_slots.html')
 
-def edit_doctor_status(request):
-    return render(request, 'edit_doctor_status.html')
+
 
 
 

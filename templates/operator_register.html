@@ -199,117 +199,8 @@
 
 
     
-    /* Common table styles */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    /* Zebra striping */
-    tr:nth-of-type(odd) {
-        background: #f8f9fa; /* Light gray for zebra striping */
-    }
-
-    th {
-        background: #88b4ab; /* Green color */
-        color: rgb(29, 28, 28);
-        font-weight: bold;
-    }
-
-    td,
-    th {
-        padding: 1rem;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-
-    @media only screen and (max-width: 760px),
-    (min-device-width: 768px) and (max-device-width: 1024px) {
-        /* Force table to not be like tables anymore */
-        table,
-        thead,
-        tbody,
-        th,
-        td,
-        tr {
-            display: block;
-        }
-
-        /* Hide table headers (but not display: none;, for accessibility) */
-        thead tr {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-        }
-
-        tr {
-            border: 1px solid #ccc;
-        }
-
-        td {
-            /* Behave like a "row" */
-            border: none;
-            border-bottom: 1px solid #eee;
-            position: relative;
-            padding-left: 50%;
-        }
-
-        td:before {
-            /* Now like a table header */
-            position: absolute;
-            /* Top/left values mimic padding */
-            top: 6px;
-            left: 6px;
-            width: 45%;
-            padding-right: 10px;
-            white-space: nowrap;
-        }
-        /*
-        Label the data
-        */
-        td:nth-of-type(1):before {
-            content: "First Name";
-        }
-        td:nth-of-type(2):before {
-            content: "Last Name";
-        }
-        td:nth-of-type(3):before {
-            content: "Gender";
-        }
-        td:nth-of-type(4):before {
-            content: "Phone number";
-        }
-        td:nth-of-type(5):before {
-            content: "Qualification";
-        }
-        td:nth-of-type(6):before {
-            content: "Service Type";
-        }
-        td:nth-of-type(7):before {
-            content: "Date";
-        }
-
-        td:nth-of-type(8):before {
-            content: "NMC Number";
-        }
-
-        td:nth-of-type(9):before {
-            content: "Address";
-        }
-
-        td:nth-of-type(10):before {
-            content: "Action";
-        }
-    }
-
-    .btn-green {
-        background-color: #4CAF50; /* Green color */
-        color: white; /* Text color */
-    }
-
-
     
+
             /* Add these styles for the search bar */
             .search-bar {
             display: flex;
@@ -342,6 +233,7 @@
         }
 
   
+
 </style>
 
 <body>
@@ -376,8 +268,8 @@
                             </li>
 
                             <li class="sidebar-item">
-                                <a href="admin_service" class="sidebar-link">Service Records</a>
-                              </li>
+                              <a href="booking" class="sidebar-link">Add Appointment</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -399,7 +291,7 @@
                                 <a href="admin_patient" class="sidebar-link">Patient Records</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="admin_operator" class="sidebar-link">Operator Records</a>
+                                <a href="admin-operator" class="sidebar-link">Operator Records</a>
                             </li>
                         </ul>
                     </li>
@@ -452,14 +344,14 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                   <!-- Search Bar -->
+               <!-- Search Bar -->
         <div class="container mt-2 search-bar">
-            <input type="text" class="form-control search-input" placeholder="Search" aria-label="Search" aria-describedby="searchIcon">
-            <button class="btn btn-primary search-btn" type="button" id="searchIcon">
-                <i class="bi bi-search"></i> Search
-            </button>
-        </div>
-                  
+          <input type="text" class="form-control search-input" placeholder="Search" aria-label="Search" aria-describedby="searchIcon">
+          <button class="btn btn-primary search-btn" type="button" id="searchIcon">
+              <i class="bi bi-search"></i> Search
+          </button>
+      </div>
+                
                 
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">
@@ -479,62 +371,143 @@
 
             
 
-
-<main class="content px-3 py-2">
-    <!-- Table Element -->
-    <div class="card border-0">
-            <div class="container  py-5">
-              <div>
-                  <div class="fs-4">Operator Records</div>
-              </div>
+            <main class="content px-3 py-2">
+                <div class="card border-0">
+                    <div class="container">
+                        <div class="row py-5">
             
-              <hr />
-        <table>
-            <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Gender</th>
-                    <th>Phone Number</th>
-                    <th>Address</th>
-                    <th>Email</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for operator in operators_data %}
-                    <tr>
-                        <td>{{ operator.first_name }}</td>
-                        <td>{{ operator.last_name }}</td>
-                        <td>{{ operator.gender }}</td>
-                        <td>{{ operator.phone }}</td>
-                        <td>{{ operator.address }}</td>
-                        <td>{{ operator.email }}</td>
-                        <td>
-                            {% if operator.id %}
-                            <a href="{% url 'edit_operator' operator.id %}" class="btn btn-success" title="Edit operator">
-                                Edit
-                            </a>
-                            &nbsp;&nbsp;
-                            <a href="{% url 'delete_operator' operator.id %}" class="btn btn-danger" title="Delete operator">
-                                Delete
-                            </a>
-                            {% else %}
-                            <!-- Handle the case where operator.id is None -->
-                            Not Available
-                        {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
-
-            </tbody>
-        </table>
-    </div>
-
-
-
-  </main> 
+                            <!-- Operator Registration on the Left Side -->
+                            <div class="col-md-6 col-12">
+                                <div class="fs-4 fw-light text-muted pb-2 text-center">Operator Registration</div>
+                                <form action="" method="post">
+                                    {% csrf_token %}
             
+                                    <!-- Input Fields for Operator Registration -->
+                            
+            
+                            <!-- Opp Registration Form on the Right Side -->
+                            <div class="col-md-6 col-12">
+                                <div class="fs-4 fw-light text-muted pb-2 text-center">Operator Registration</div>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+            
+                                     <!-- Input Fields for Operator Registration -->
+                                                                            <!-- First Name Input Field -->
+                                                                            <div class="form-group pb-2">
+                                                                                <label for="op-first-name">First Name</label>
+                                                                                <input
+                                                                                    class="form-control"
+                                                                                    type="text"
+                                                                                    id="op-first-name"
+                                                                                    name="op-first-name"
+                                                                                    required
+                                                                                    style="border: 1px solid #0eb62f"
+                                                                                />
+                                                                            </div>
+                                    
+                                                                            <!-- Last Name Input Field -->
+                                                                            <div class="form-group pb-2">
+                                                                                <label for="op-last-name">Last Name</label>
+                                                                                <input
+                                                                                    class="form-control"
+                                                                                    type="text"
+                                                                                    id="op-last-name"
+                                                                                    name="op-last-name"
+                                                                                    required
+                                                                                    style="border: 1px solid #0eb62f"
+                                                                                />
+                                                                            </div>
+                                    
+                                                                            <!-- Gender Input Field -->
+                                                                            <div class="form-group pb-2">
+                                                                                <label for="op-gender">Gender</label>
+                                                                                <select class="form-select" id="op-gender" name="op-gender" required style="border: 1px solid #0eb62f">
+                                                                                    <option value="male">Male</option>
+                                                                                    <option value="female">Female</option>
+                                                                                    <option value="other">Other</option>
+                                                                                </select>
+                                                                            </div>
+                                    
+                                                                            <!-- Phone Number Input Field -->
+                                                                            <div class="form-group pb-2">
+                                                                                <label for="op-phone">Phone Number</label>
+                                                                                <input
+                                                                                    class="form-control"
+                                                                                    type="tel"
+                                                                                    id="op-phone"
+                                                                                    name="op-phone"
+                                                                                    required
+                                                                                    style="border: 1px solid #0eb62f"
+                                                                                />
+                                                                            </div>
+                                    
+                                                                            <!-- Address Input Field -->
+                                                                            <div class="form-group pb-2">
+                                                                                <label for="op-address">Address</label>
+                                                                                <input
+                                                                                    class="form-control"
+                                                                                    type="text"
+                                                                                    id="op-address"
+                                                                                    name="op-address"
+                                                                                    required
+                                                                                    style="border: 1px solid #0eb62f"
+                                                                                />
+                                                                            </div>
+                                    
+                                                                            <!-- Email Input Field -->
+                                                                            <div class="form-group pb-2">
+                                                                                <label for="op-email">Email</label>
+                                                                                <input
+                                                                                    class="form-control"
+                                                                                    type="email"
+                                                                                    id="op-email"
+                                                                                    name="op-email"
+                                                                                    required
+                                                                                    style="border: 1px solid #0eb62f"
+                                                                                />
+                                                                            </div>
+                                    
+                                                                            <!-- Password Input Field -->
+                                                                            <div class="form-group pb-2">
+                                                                                <label for="op-password">Password</label>
+                                                                                <input
+                                                                                    class="form-control"
+                                                                                    type="password"
+                                                                                    id="op-password"
+                                                                                    name="op-password"
+                                                                                    required
+                                                                                    style="border: 1px solid #0eb62f"
+                                                                                />
+                                                                            </div>
+                                                                                    
+                                                                                        
+                                                                                    <!-- Submit Button -->
+                                                                                    <div class="text-center">
+                                                                                        <button
+                                                                                            type="submit"
+                                                                                            class="btn btn-blue"
+                                                                                            style="
+                                                                                                background: #0a461f;
+                                                                                                border: none;
+                                                                                                color: #fff;
+                                                                                                padding: 12px 24px;
+                                                                                                font-size: 18px;
+                                                                                                cursor: pointer;
+                                                                                                transition: background 0.3s ease;
+                                                                                            "
+                                                                                        >
+                                                                                            Register
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </main>
+                                                            
+                                                            
             
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>

@@ -40,11 +40,29 @@ urlpatterns = [
     path('admin_cancelled_appointment', views.admin_cancelled_appointment, name='admin_cancelled_appointment'), 
 
 
+
+    path('delete_operator/<int:operator_id>/', views.delete_operator, name='delete_operator'),
+    path('edit_operator/<int:operator_id>/', views.edit_operator, name='edit_operator'),
+
+
+   # Add a URL pattern for edit_doctor_admin
+    path('edit_doctor_admin/<int:doctor_id>/', views.edit_doctor_admin, name='edit_doctor_admin'),
+
+    path('delete_doctor_admin/<int:doctor_id>/', views.delete_doctor_admin, name='delete_doctor_admin'),
+   
+
+
+
+   
+
+
     path('oappointment', views.oappointment_view, name='oappointment'),
     path('odashboard', views.odashboard, name='odashboard'), 
     path('odoctor', views.odoctor, name='odoctor'), 
     path('opatient', views.opatient, name='opatient'), 
     path('oprofile', views.oprofile, name='oprofile'), 
+    path('oprofile', views.oprofile, name='oprofile'), 
+    path('operator_register', views.operator_register_view, name='operator_register'),
 
 
 
@@ -71,10 +89,9 @@ urlpatterns = [
     path('delete_appointment/', views.delete_appointment, name='delete_appointment'),
     path('delete_appointment_doc/', views.delete_appointment_doc, name='delete_appointment_doc'),
     path('delete_appointment_admin/', views.delete_appointment_admin, name='delete_appointment_admin'),
-    path('delete_doctor_admin/', views.delete_doctor_admin, name='delete_doctor_admin'),
     path('delete_patient_admin/', views.delete_patient_admin, name='delete_patient_admin'),
 
-    path('edit_doctor_status/', views.edit_doctor_status, name='edit_doctor_status'),
+ 
 
    
     path('get_booked_time_slots/<str:doctor>/', views.get_booked_time_slots, name='get_booked_time_slots'),
