@@ -592,7 +592,6 @@
           <th>Appointment Type</th>
           <th>Service Type</th>
           <th>Time</th>
-          <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -604,7 +603,6 @@
                 <td>{{ appointment.appointment_type }}</td>
                 <td>{{ appointment.service_type }}</td>
                 <td>{{ appointment.time }}</td>
-                <td>{{ appointment.status }}</td>
                 <!-- <td>
                   <a href="#" class="btn btn-success" title="Edit appointment">
                       <i class="fa-solid fa-pen"></i>
@@ -616,6 +614,7 @@
                       <i class="fa-solid fa-trash"></i>
                   </a>
               </td> -->
+              <td>
                 <a href="{% url 'cancel_appointment' appointment.appointment_id %}" class="btn btn-danger" title="Cancel appointment">
                  Cancel
               </a>

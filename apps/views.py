@@ -229,7 +229,30 @@ def terms_view(request):
     return render(request, 'terms.html')
 
 def payment_view(request):
-    return render(request, 'payment.html')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM booking_details")
+        getData = cursor.fetchall()
+
+        storeData = []
+        for row in getData:
+            service_name = row[11]
+            print(service_name)
+            cursor.execute("SELECT * FROM service_details WHERE service_name = %s", [service_name])
+            service_data = cursor.fetchone()
+            print(service_data)
+            data = {
+                'date': row[17],
+                'pet': row[4],
+                'email': row[1],
+                'servicetype': row[11],
+                'cost': service_data[2],
+            }
+            storeData.append(data)
+
+        sendData = {
+            'payments': storeData,
+        }
+    return render(request, 'payment.html', sendData)
 
 
 
@@ -581,11 +604,8 @@ def admin_patient_view(request):
     return render(request, 'admin_patient.html', sendData)
 
 def admin_payment_view(request):
+
     return render(request, 'admin_payment.html')
-
-
-
-
 
 def usernav_view(request):
     return render(request, 'user_nav.html')
@@ -774,8 +794,9 @@ def delete_patient_admin(request):
 
 
 def userapp_view(request):
+    userid = request.user.email
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM booking_details")
+        cursor.execute("SELECT * FROM booking_details where email = %s", {userid})
         Appdata = cursor.fetchall()
 
         app_details = []
@@ -1130,11 +1151,38 @@ def login_view(request):
     if request.method == 'POST':
         getEmail = request.POST['login-email']
         getPassword = request.POST['login-password']
-        user = authenticate(request, username=getEmail, password=getPassword)
+        getUserRole = request.POST['user_role']
+
+        user = None
+        if getUserRole == 'patient':
+            user = authenticate(request, username=getEmail, password=getPassword)
+        elif getUserRole == 'doctor':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM doctor_details WHERE email = %s AND password = %s", (getEmail, getPassword))
+                getData = cursor.fetchone()
+            
+            if getData:
+                return HttpResponseRedirect('/doctordash_main')
+
+        elif getUserRole == 'operator':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM operator_details WHERE email = %s AND password = %s", (getEmail, getPassword))
+                getData = cursor.fetchone()
+            
+            if getData:
+                return HttpResponseRedirect('/odashboard')
+        elif getUserRole == 'admin':
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM admin_profile WHERE email = %s AND password = %s", (getEmail, getPassword))
+                getData = cursor.fetchone()
+            
+            if getData:
+                return HttpResponseRedirect('/admin_dashboard')
 
         if user is not None:
             login(request, user)
             return HttpResponseRedirect('/user_dashboard')
+
     return render(request, 'login.html')
 
 def register_view(request):

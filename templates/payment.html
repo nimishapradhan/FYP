@@ -472,18 +472,20 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr>
-                                  <td>2060/11/13</td>
-                                  <td>James</td>
-                                  <td>Lujana</td>
-                                  <td>Dental Care</td>
-                                  <td>500</td>
-                                  <td>
-                                      <a href="#" class="btn btn-danger" title="Delete product">
-                                          <i class="fa-solid fa-trash"></i>
-                                      </a>
-                                  </td>
-                              </tr>
+                            {% for payment in payments %}
+                                <tr>
+                                    <td>{{ payment.date }}</td>
+                                    <td>{{ payment.pet }}</td>
+                                    <td>{{ payment.email }}</td>
+                                    <td>{{ payment.servicetype }}</td>
+                                    <td>{{ payment.cost }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-danger" title="Delete product">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                               <!-- Add more rows as needed -->
                           </tbody>
                       </table>
