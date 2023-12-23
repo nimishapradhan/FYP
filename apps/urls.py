@@ -40,6 +40,12 @@ urlpatterns = [
     path('admin_cancelled_appointment', views.admin_cancelled_appointment, name='admin_cancelled_appointment'), 
 
 
+    path('edit_service_admin/<int:service_id>/', views.edit_service_admin, name='edit_service_admin'),
+    path('delete_service_admin/<int:service_id>/', views.delete_service_admin, name='delete_service_admin'),
+
+
+
+
 
     path('delete_operator/<int:operator_id>/', views.delete_operator, name='delete_operator'),
     path('edit_operator/<int:operator_id>/', views.edit_operator, name='edit_operator'),

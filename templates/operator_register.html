@@ -282,7 +282,10 @@
                         </a>
                         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="doc_register" class="sidebar-link">Register Staffs</a>
+                                <a href="doc_register" class="sidebar-link">Register Vet</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="operator_register" class="sidebar-link">Register Operator</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="admin_doctor" class="sidebar-link">Vet Records</a>
@@ -374,18 +377,8 @@
             <main class="content px-3 py-2">
                 <div class="card border-0">
                     <div class="container">
-                        <div class="row py-5">
-            
-                            <!-- Operator Registration on the Left Side -->
-                            <div class="col-md-6 col-12">
-                                <div class="fs-4 fw-light text-muted pb-2 text-center">Operator Registration</div>
-                                <form action="" method="post">
-                                    {% csrf_token %}
-            
-                                    <!-- Input Fields for Operator Registration -->
-                            
-            
-                            <!-- Opp Registration Form on the Right Side -->
+                        <div class="row py-5 justify-content-center">
+                            <!-- Doctor Registration Form in the Center -->
                             <div class="col-md-6 col-12">
                                 <div class="fs-4 fw-light text-muted pb-2 text-center">Operator Registration</div>
                                 <form action="" method="post">

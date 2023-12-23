@@ -282,7 +282,10 @@
                         </a>
                         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                             <li class="sidebar-item">
-                                <a href="doc_register" class="sidebar-link">Register Staffs</a>
+                                <a href="doc_register" class="sidebar-link">Register Vet</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="operator_register" class="sidebar-link">Register Operator</a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="admin_doctor" class="sidebar-link">Vet Records</a>
@@ -374,128 +377,8 @@
             <main class="content px-3 py-2">
                 <div class="card border-0">
                     <div class="container">
-                        <div class="row py-5">
-            
-                            <!-- Operator Registration on the Left Side -->
-                            <div class="col-md-6 col-12">
-                                <div class="fs-4 fw-light text-muted pb-2 text-center">Operator Registration</div>
-                                <form action="" method="post">
-                                    {% csrf_token %}
-            
-                                    <!-- Input Fields for Operator Registration -->
-                                                                            <!-- First Name Input Field -->
-                                        <div class="form-group pb-2">
-                                            <label for="op-first-name">First Name</label>
-                                            <input
-                                                class="form-control"
-                                                type="text"
-                                                id="op-first-name"
-                                                name="op-first-name"
-                                                required
-                                                style="border: 1px solid #0eb62f"
-                                            />
-                                        </div>
-
-                                        <!-- Last Name Input Field -->
-                                        <div class="form-group pb-2">
-                                            <label for="op-last-name">Last Name</label>
-                                            <input
-                                                class="form-control"
-                                                type="text"
-                                                id="op-last-name"
-                                                name="op-last-name"
-                                                required
-                                                style="border: 1px solid #0eb62f"
-                                            />
-                                        </div>
-
-                                        <!-- Gender Input Field -->
-                                        <div class="form-group pb-2">
-                                            <label for="op-gender">Gender</label>
-                                            <select class="form-select" id="op-gender" name="op-gender" required style="border: 1px solid #0eb62f">
-                                                <option value="male">Male</option>
-                                                <option value="female">Female</option>
-                                                <option value="other">Other</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Phone Number Input Field -->
-                                        <div class="form-group pb-2">
-                                            <label for="op-phone">Phone Number</label>
-                                            <input
-                                                class="form-control"
-                                                type="tel"
-                                                id="op-phone"
-                                                name="op-phone"
-                                                required
-                                                style="border: 1px solid #0eb62f"
-                                            />
-                                        </div>
-
-                                        <!-- Address Input Field -->
-                                        <div class="form-group pb-2">
-                                            <label for="op-address">Address</label>
-                                            <input
-                                                class="form-control"
-                                                type="text"
-                                                id="op-address"
-                                                name="op-address"
-                                                required
-                                                style="border: 1px solid #0eb62f"
-                                            />
-                                        </div>
-
-                                        <!-- Email Input Field -->
-                                        <div class="form-group pb-2">
-                                            <label for="op-email">Email</label>
-                                            <input
-                                                class="form-control"
-                                                type="email"
-                                                id="op-email"
-                                                name="op-email"
-                                                required
-                                                style="border: 1px solid #0eb62f"
-                                            />
-                                        </div>
-
-                                        <!-- Password Input Field -->
-                                        <div class="form-group pb-2">
-                                            <label for="op-password">Password</label>
-                                            <input
-                                                class="form-control"
-                                                type="password"
-                                                id="op-password"
-                                                name="op-password"
-                                                required
-                                                style="border: 1px solid #0eb62f"
-                                            />
-                                        </div>
-
-            
-                                    <!-- Submit Button -->
-                                    <div class="text-center">
-                                        <button
-                                            type="submit"
-                                            class="btn btn-blue"
-                                            style="
-                                                background: #0a461f;
-                                                border: none;
-                                                color: #fff;
-                                                padding: 12px 24px;
-                                                font-size: 18px;
-                                                cursor: pointer;
-                                                transition: background 0.3s ease;
-                                            "
-                                        >
-                                            Register
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            
-            
-                            <!-- Doctor Registration Form on the Right Side -->
+                        <div class="row py-5 justify-content-center">
+                            <!-- Doctor Registration Form in the Center -->
                             <div class="col-md-6 col-12">
                                 <div class="fs-4 fw-light text-muted pb-2 text-center">Doctor Registration</div>
                                 <form action="" method="post">

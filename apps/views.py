@@ -237,8 +237,79 @@ def payment_view(request):
 def adminnav_view(request):
     return render(request, 'admin_nav.html')
 
+
 def admin_service_view(request):
-    return render(request, 'admin_service.html')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM service_details")
+        service_details = cursor.fetchall()
+
+        services = []
+        for row in service_details:
+            service = {
+                'service_id': row[0],
+                'service_name': row[1],
+                'service_price': row[2],
+                'service_description': row[3],
+            }
+            services.append(service)
+
+        sendData = {
+            'service_details': services,
+        }
+
+    return render(request, 'admin_service.html', sendData)
+
+
+
+def edit_service_admin(request, service_id):
+    if request.method == 'POST':
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "UPDATE service_details SET service_name = %s, service_price = %s, "
+                    "service_description = %s WHERE service_id = %s",
+                    [
+                        request.POST.get('service_name', ''),
+                        request.POST.get('service_price', ''),
+                        request.POST.get('service_description', ''),
+                        service_id,
+                    ]
+                )
+        except Exception as e:
+            print(f"Error updating service details: {e}")
+            return redirect('error_page')  # Redirect to your error page
+
+        return redirect('admin_service')
+    else:
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM service_details WHERE service_id = %s", [service_id])
+                service_details = cursor.fetchone()
+
+                if not service_details:
+                    return redirect('not_found')  # Redirect to a not found page
+
+                service = {
+                    'service_id': service_details[0],
+                    'service_name': service_details[1],
+                    'service_price': service_details[2],
+                    'service_description': service_details[3],
+                }
+
+        except Exception as e:
+            print(f"Error fetching service details: {e}")
+            return redirect('error_page')  # Redirect to your error page
+
+        return render(request, 'edit_service_admin.html', {'service': service})
+
+
+def delete_service_admin(request, service_id):
+    with connection.cursor() as cursor:
+        cursor.execute("DELETE FROM service_details WHERE service_id = %s", [service_id])
+
+    return redirect('admin_service')
+
+
 
 def admin_cancelled_appointment(request):
      status = 'Cancelled'
@@ -1233,8 +1304,6 @@ def opatient(request):
 def oprofile(request):
     return render(request, 'oprofile.html')
 
-from django.shortcuts import render, redirect
-from django.db import connection
 
 def admin_operator(request):
     with connection.cursor() as cursor:
