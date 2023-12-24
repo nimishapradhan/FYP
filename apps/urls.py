@@ -55,6 +55,10 @@ urlpatterns = [
     path('edit_doctor_admin/<int:doctor_id>/', views.edit_doctor_admin, name='edit_doctor_admin'),
 
     path('delete_doctor_admin/<int:doctor_id>/', views.delete_doctor_admin, name='delete_doctor_admin'),
+
+
+  
+
    
 
 

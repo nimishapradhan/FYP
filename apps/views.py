@@ -1426,6 +1426,7 @@ def edit_operator(request, operator_id):
             }
 
         return render(request, 'edit_operator.html', {'operator': operator})
+    
 
 
 
