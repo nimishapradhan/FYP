@@ -149,7 +149,7 @@ section.about-section {
 
 /* Styling for individual service packages */
 .package {
-    height: 17rem;;
+    height: 20rem;;
     background-color: #88b4ab; /* Background color for packages */
     padding: 20px; /* Padding inside each package */
     border: 1px solid #ccc; /* Border around each package */
@@ -215,7 +215,7 @@ section.about-section {
 
 /* Styling for individual team members */
 .team-box {
-    height: 320px; /* Height of the team member box */
+    height: 350px; /* Height of the team member box */
     background-color: #88b4ab; /* Background color for team member boxes */
     padding: 20px; /* Padding inside each team member box */
     border: 1px solid #ccc; /* Border around each team member box */

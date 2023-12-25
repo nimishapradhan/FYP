@@ -1,0 +1,84 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+        <div class="container  py-5">
+            <div>
+                <div class="fs-4">Appointment History</div>
+            </div>
+
+            <hr />
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pet Owner Name</th>
+                        <th>Pet Owner Phone</th>
+                        <th>Service Type</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in appointments %}
+                    <tr>
+                        <td>{{ app.user.first_name }} {{ app.user.last_name }}</td>
+                        <td>{{ app.user.petowner.mobile }}</td>
+                        <td>{{ app.service.title }}</td>
+                        <td>{{ app.date }}</td>
+                        <td>{{ app.time }}</td>
+                        {% if app.status == 1 %}
+                        <td><i class="fa fa-check-circle text-success"></i></td>
+                        {% else %}
+                        <td><i class="fa fa-times-circle text-danger"></i></td>
+                        {% endif %}
+                        <!-- <td><button class="btn btn-primary open-modal" data-toggle="modal"
+                                data-target="#patientDetailsModal" title="View Details"><i
+                                    class="fa fa-eye"></i></button></td> -->
+                        <td><a href="{% url 'doctor_single_appointment' id=app.id %}" class="btn btn-primary" title="View Details"><i class="fa fa-eye"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Pet Details</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Pet Owner Name: </label>
+                            </div>
+                            <div class="col-9">
+                                <div></div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Contact: </label>
+                            </div>
+                            <div class="col-9">
+                                <div></div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+{% endblock %}

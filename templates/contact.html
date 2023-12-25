@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "main/base.html" %}
 
 {% load static %}
 
@@ -9,109 +9,80 @@
     <div class="row py-5">
         <div class="col-md-6 col-12">
             <!-- Image on the Left Side -->
-            <img src="{% static 'about3.jpg' %}" class="d-block w-100" alt="Contact Image" class="img-fluid" style="border-radius: 10px;">
+            <img src="{% static 'image/about3.jpg' %}" class="d-block w-100" alt="Contact Image" class="img-fluid"
+                style="border-radius: 10px;">
         </div>
 
         <div class="col-md-6 col-12">
-          <!-- Image on the Left Side -->
-          <img src="{% static 'about2.jpg' %}" class="d-block w-100" alt="Contact Image" class="img-fluid" style="border-radius: 10px;">
-      </div>
+            <!-- Image on the Left Side -->
+            <img src="{% static 'image/about2.jpg' %}" class="d-block w-100" alt="Contact Image" class="img-fluid"
+                style="border-radius: 10px;">
+        </div>
 
 
-            <div class="fs-3 text-primary py-2">
-                Have a question?
-            </div>
+        <div class="fs-3 text-primary py-2">
+            Have a question?
+        </div>
 
-            <div>
-                Contact us whenever you have any questions. For emergency call us: <a href="tel:+9779849372055">+977-9849372055</a>
-            </div>
-            
+        <div>
+            Contact us whenever you have any questions. For emergency call us: <a
+                href="tel:+9779849372055">+977-9849372055</a>
+        </div>
 
-            <!-- Contact Form -->
-            <form action="{% url 'contact' %}" method="post">
-                <div class="row py-4">
-                    {% csrf_token %} 
-                    <!-- First Name Input Field -->
-                    <div class="col-lg-6 col-12">
-                        <div class="form-group pb-2">
-                            <label for="contact-first-name">First Name</label>
-                            <input
-                                class="form-control"
-                                type="text"
-                                id="c-first-name"
-                                name="first-name"
-                                required
-                                style="border: 1px solid #0eb62f"
-                            />
-                        </div>
-                    </div>
 
-                    <!-- Last Name Input Field -->
-                    <div class="col-lg-6 col-12">
-                        <div class="form-group pb-2">
-                            <label for="contact-last-name">Last Name</label>
-                            <input
-                                class="form-control"
-                                type="text"
-                                id="c-last-name"
-                                name="last-name"
-                                required
-                                style="border: 1px solid #0eb62f"
-                            />
-                        </div>
-                    </div>
-                    <!-- Email Address Input Field -->
-                    <div class="col-lg-6 col-12">
-                        <div class="form-group pb-2">
-                            <label for="contact-email">Email address</label>
-                            <input
-                                class="form-control"
-                                type="email"
-                                id="c-email"
-                                name="email"
-                                required
-                                style="border: 1px solid #0eb62f"
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Phone Input Field -->
-                    <div class="col-lg-6 col-12">
-                        <div class="form-group pb-2">
-                            <label for="contact-phone">Phone</label>
-                            <input
-                                class="form-control"
-                                type="tel"
-                                id="c-phone"
-                                name="phone"
-                                style="border: 1px solid #0eb62f;"
-                            />
-                        </div>
-                    </div>
-
-                    <!-- Notes Textarea -->
-                    <div class="col-12">
-                        <div class="form-group pb-2">
-                            <label for="contact-notes">Notes</label>
-                            <textarea
-                                class="form-control"
-                                id="c-notes"
-                                name="notes"
-                                rows="4"
-                                style="
-                                     border: 1px solid #0eb62f;
-                                     resize: vertical"
-                            ></textarea>
-                        </div>
+        <!-- Contact Form -->
+        <form action="" method="post">
+            <div class="row py-4">
+                {% csrf_token %}
+                <!-- First Name Input Field -->
+                <div class="col-lg-6 col-12">
+                    <div class="form-group pb-2">
+                        <label for="contact-first-name">First Name</label>
+                        <input class="form-control" type="text" id="c-first-name" name="first-name" required
+                            style="border: 1px solid #0eb62f" />
                     </div>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="text-center">
-                    <button
-                        type="submit"
-                        class="btn btn-blue "
-                        style="
+                <!-- Last Name Input Field -->
+                <div class="col-lg-6 col-12">
+                    <div class="form-group pb-2">
+                        <label for="contact-last-name">Last Name</label>
+                        <input class="form-control" type="text" id="c-last-name" name="last-name" required
+                            style="border: 1px solid #0eb62f" />
+                    </div>
+                </div>
+                <!-- Email Address Input Field -->
+                <div class="col-lg-6 col-12">
+                    <div class="form-group pb-2">
+                        <label for="contact-email">Email address</label>
+                        <input class="form-control" type="email" id="c-email" name="email" required
+                            style="border: 1px solid #0eb62f" />
+                    </div>
+                </div>
+
+                <!-- Phone Input Field -->
+                <div class="col-lg-6 col-12">
+                    <div class="form-group pb-2">
+                        <label for="contact-phone">Phone</label>
+                        <input class="form-control" type="tel" id="c-phone" name="phone"
+                            style="border: 1px solid #0eb62f;" />
+                    </div>
+                </div>
+
+                <!-- Notes Textarea -->
+                <div class="col-12">
+                    <div class="form-group pb-2">
+                        <label for="contact-notes">Notes</label>
+                        <textarea class="form-control" id="c-notes" name="notes" rows="4" style="
+                                     border: 1px solid #0eb62f;
+                                     resize: vertical"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-blue " style="
                             background: #0a461f;
                             border: none;
                             color: #fff;
@@ -119,13 +90,11 @@
                             font-size: 18px;
                             cursor: pointer;
                             transition: background 0.3s ease;
-                        "
-                    >
-                        SUBMIT
-                    </button>
-                </div>
-            </form>
-        </div>
+                        ">
+                    SUBMIT
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}

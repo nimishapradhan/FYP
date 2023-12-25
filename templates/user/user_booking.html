@@ -1,0 +1,278 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+        <div class="container">
+            <div class="py-5">
+                <div class="fs-4 fw-light text-muted pb-2 text-center">Book Online Now</div>
+                <div class="text-center">Request a new appointment</div>
+                <div class="pt-3 w-75 mx-auto">
+                    <div class="card border-0 bg-light">
+                        <div class="card-body">
+                            <form action="{% url 'do_appointment_booking' %}" method="post">
+                                <div class="row">
+                                    {% csrf_token %}
+                                    <h6 class="pb-2">Pet Owner Details</h6>
+
+                                    <div class="col-lg-6 col-12" hidden>
+                                        <div class="form-group pb-2">
+                                            <label for="user">User</label>
+                                            <input class="form-control" type="text" id="user"
+                                                name="user" required style="border: 1px solid #0eb62f"
+                                                value="{{request.user.id}}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="petname">Pet Owner Name</label>
+                                            <input class="form-control" type="text" id="petname"
+                                                name="petname" required style="border: 1px solid #0eb62f"
+                                                value="{{request.user.first_name}} {{request.user.last_name}}" readonly />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="user_booking_email">Email</label>
+                                            <input class="form-control" type="text" id="ubooking_email"
+                                                name="booking_email" required style="border: 1px solid #0eb62f"
+                                                value="{{request.user.username}}" readonly/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_phone">Phone</label>
+                                            <input class="form-control" type="text" id="ubooking_phone" name="phone"
+                                                required style="border: 1px solid #0eb62f"
+                                                value="{{request.user.petowner.mobile}}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_address">Address</label>
+                                            <input class="form-control" type="text" id="ubooking_address" name="address"
+                                                required style="border: 1px solid #0eb62f"
+                                                value="{{request.user.petowner.address}}" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <h6 class="py-2">Pet Details</h6>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="service">Purpose of Visit (Our Services)</label>
+                                            <select class="form-select" id="service" name="service" required style="border: 1px solid #0eb62f" onchange="updateModalContent()">
+                                                <option value="" selected disabled>Select service</option>
+                                                {% for s in service %}
+                                                    <option value="{{ s.id }}" data-price="{{ s.price }}">{{ s.title }} Price -- NPR.{{ s.price }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_pname">Pet Name</label>
+                                            <input class="form-control" type="text" id="ubooking_pname" name="pname"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_pbreed">Breed</label>
+                                            <input class="form-control" type="text" id="ubooking_pbreed" name="pbreed"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_page">Age</label>
+                                            <input class="form-control" type="text" id="ubooking_page" name="page"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_pcolor">Color</label>
+                                            <input class="form-control" type="text" id="ubooking_pcolor" name="pcolor"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_pgender">Pet Gender</label>
+                                            <select class="form-select" name="pgender" id="booking_pgender" style="border: 1px solid #0eb62f">
+                                                <option value="" selected disabled>Select gender</option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="nameOfDisease">Name Of Disease</label>
+                                            <input class="form-control" type="text" id="nameOfDisease" name="pdisease"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="onGoingMedication">On Going Medication</label>
+                                            <input class="form-control" type="text" id="onGoingMedication" name="pmedication"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="purposeOfVisit">Purpose Of Visit</label>
+                                            <input class="form-control" type="text" id="purposeOfVisit" name="visit"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="symptomOfDisease">Symptom Of Disease</label>
+                                            <input class="form-control" type="text" id="symptomOfDisease" name="symptoms"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <h6 class="py-2">Method of Treatment</h6>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="ubooking_doctor">Available Doctors</label>
+                                            <select class="form-select" id="ubooking_doctor" name="doctor" required
+                                                style="border: 1px solid #0eb62f">
+                                                <option value="" selected disabled>Select doctor</option>
+                                                {% for d in doctor %}
+                                                <option value="{{ d.id }}">{{ d.user.first_name }} {{d.user.last_name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_method">Booking Type(Home / Clinic)</label>
+                                            <select class="form-select" id="ubooking_type" name="method" required
+                                                style="border: 1px solid #0eb62f">
+                                                <option value="" selected disabled>Select type</option>
+                                                <option value="Home">Home</option>
+                                                <option value="Clinic">Clinic</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_city">City</label>
+                                            <input class="form-control" type="text" id="ubooking_city" name="city"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_tole">Address</label>
+                                            <input class="form-control" type="text" id="ubooking_tole" name="tole"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_house">House Number</label>
+                                            <input class="form-control" type="text" id="ubooking_house"
+                                                name="house_number" required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_bdate">Date</label>
+                                            <input class="form-control" type="date" id="ubooking_bdate" name="bdate"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12">
+                                        <div class="form-group pb-2">
+                                            <label for="booking_btime">Time</label>
+                                            <input class="form-control" type="time" id="ubooking_btime" name="btime"
+                                                required style="border: 1px solid #0eb62f" />
+                                        </div>
+                                        <div class="text-muted">Time may vary according to availability.</div>
+                                    </div>
+
+
+                                    <br>
+                                    <!-- <div class="text-center pt-2">
+                                        <button type="button" class="btn btn-blue"
+                                            style="background: #0a461f; border: none; color: #fff; font-size: 18px; cursor: pointer; transition: background 0.3s ease;"
+                                            data-bs-toggle="modal" data-bs-target="#confirmbooking">
+                                            Confirm
+                                        </button>
+                                    </div> -->
+                                    <div class="text-center pt-2">
+                                        <button type="submit" class="btn btn-blue"
+                                            style="background: #0a461f; border: none; color: #fff; font-size: 18px; cursor: pointer; transition: background 0.3s ease;">
+                                            Confirm
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="confirmbooking" tabindex="-1" aria-labelledby="confirmbooking" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirm Booking</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Dear customer, the payment of NPR. <span id="serviceprice"></span> must be done to confirm your
+                        booking. Thank you.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a href="" button type="submit" class="btn btn-success">Ok</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function updateModalContent() {
+        var selectedService = document.getElementById("service");
+        var selectedPrice = selectedService.options[selectedService.selectedIndex].getAttribute("data-price");
+
+        document.getElementById("serviceprice").innerText = selectedPrice;
+
+    }
+</script>
+
+{% endblock %}

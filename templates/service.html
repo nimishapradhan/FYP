@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "main/base.html" %}
 {% load static %}
 
 {% block title %}
@@ -7,75 +7,74 @@ Service
 
 {% block content %}
 <style>
-  /* Section Divider Styles */
-  .section-divider {
-    border: 1px solid #ccc;
-    margin: 20px 0;
-  }
+    /* Section Divider Styles */
+    .section-divider {
+        border: 1px solid #ccc;
+        margin: 20px 0;
+    }
 
-  /* Service Package Styles */
-  .service-package {
-    margin-bottom: 40px;
-    border: 1px solid #e1e1e1;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
+    /* Service Package Styles */
+    .service-package {
+        margin-bottom: 40px;
+        border: 1px solid #e1e1e1;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
 
-  .service-package:hover {
-    transform: scale(1.02);
-  }
+    .service-package:hover {
+        transform: scale(1.02);
+    }
 
-  .service-image {
-    width: 100%;
-    height: auto;
-    border-bottom: 1px solid #e1e1e1;
-  }
+    .service-image {
+        width: 100%;
+        height: auto;
+        border-bottom: 1px solid #e1e1e1;
+    }
 
-  .carousel-control-prev,
-  .carousel-control-next {
-      color: #fff;
-  }
+    .carousel-control-prev,
+    .carousel-control-next {
+        color: #fff;
+    }
 
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-      background-color: #000;
-  }
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #000;
+    }
 
-  .carousel-inner {
-    border-radius: 15px;
-    overflow: hidden;
-  }
+    .carousel-inner {
+        border-radius: 15px;
+        overflow: hidden;
+    }
 
-  .carousel-item {
-    padding: 20px;
-  }
+    .carousel-item {
+        padding: 20px;
+    }
 
-  .carousel-caption {
-    text-align: left;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+    .carousel-caption {
+        text-align: left;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-  .price {
-    font-size: 18px;
-    font-weight: bold;
-    color: #27ae60;
-  }
+    .price {
+        font-size: 18px;
+        font-weight: bold;
+        color: #27ae60;
+    }
 
-  .book-now-btn {
-    background-color: #27ae60;
-    color: #fff;
-    transition: background-color 0.3s ease;
-  }
+    .book-now-btn {
+        background-color: #27ae60;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
 
-  .book-now-btn:hover {
-    background-color: #218c53;
-  }
-
+    .book-now-btn:hover {
+        background-color: #218c53;
+    }
 </style>
 
 <!-- Service Packages Section Description -->
@@ -86,7 +85,13 @@ Service
     </div>
     <div class="text-center">
         <p>
-            At TailTales Veterinary Clinic, we are devoted to offering a wide array of comprehensive and personalized pet care services. Our dedicated team of experienced veterinarians and staff members is committed to ensuring the health and happiness of your beloved pets. From routine checkups to specialized treatments, we provide top-quality medical care tailored to your pet's specific needs. Beyond medical expertise, we prioritize building enduring relationships with our clients and their pets, fostering trust and understanding. When you choose TailTales, you're choosing a partner in your pet's well-being. Experience exceptional veterinary care with a compassionate touch—because your pets deserve nothing but the best.
+            At TailTales Veterinary Clinic, we are devoted to offering a wide array of comprehensive and personalized
+            pet care services. Our dedicated team of experienced veterinarians and staff members is committed to
+            ensuring the health and happiness of your beloved pets. From routine checkups to specialized treatments, we
+            provide top-quality medical care tailored to your pet's specific needs. Beyond medical expertise, we
+            prioritize building enduring relationships with our clients and their pets, fostering trust and
+            understanding. When you choose TailTales, you're choosing a partner in your pet's well-being. Experience
+            exceptional veterinary care with a compassionate touch—because your pets deserve nothing but the best.
         </p>
     </div>
 </div>
@@ -111,57 +116,66 @@ Service
             <div class="carousel-item active">
                 <div class="row service-package py-3">
                     <div class="col-md-4">
-                        <img src="{% static 'img19.jpg' %}" alt="general Checkup Image" class="service-image">
+                        <img src="{% static 'image/img19.jpg' %}" alt="general Checkup Image" class="service-image">
                     </div>
                     <div class="col-md-8">
                         <h3>General Checkup</h3>
                         <p>
-                            Our general checkup service ensures a comprehensive health examination for your pet. Our experienced veterinarians conduct routine health checks and provide valuable nutrition advice to keep your furry friend in top shape. Regular checkups are essential for early detection of health issues and maintaining your pet's overall well-being.
+                            Our general checkup service ensures a comprehensive health examination for your pet. Our
+                            experienced veterinarians conduct routine health checks and provide valuable nutrition
+                            advice to keep your furry friend in top shape. Regular checkups are essential for early
+                            detection of health issues and maintaining your pet's overall well-being.
                         </p>
                         <p class="price">NPR 500</p>
-                        <a href="login" class="btn btn-success book-now-btn">Book Now</a>
+                        <a href="" class="btn btn-success book-now-btn">Book Now</a>
                     </div>
                 </div>
             </div>
 
-           
-<!-- ... (similar structure for other carousel items) ... -->
 
-<div class="carousel-item">
-    <div class="row service-package py-3">
-        <div class="col-md-4">
-            <img src="{% static 'ser3.jpg' %}" alt="Vaccination Image" class="service-image">
-        </div>
-        <div class="col-md-8">
-            <h3>Vaccination</h3>
-            <p>
-                Our vaccination service provides essential vaccinations tailored to your pet's specific needs. Our veterinarians customize vaccination plans to ensure your pet is protected against common diseases. Vaccinations are crucial for preventing various illnesses and maintaining your pet's overall health and longevity.
-            </p>
-            <p class="price">NPR 4000</p>
-            <a href="login" class="btn btn-success book-now-btn">Book Now</a>
-        </div>
-    </div>
-</div>
+            <!-- ... (similar structure for other carousel items) ... -->
 
-<div class="carousel-item">
-    <div class="row service-package py-3">
-        <div class="col-md-4">
-            <img src="{% static 'ser4.jpg' %}" alt="Dental Care Image" class="service-image">
-        </div>
-        <div class="col-md-8">
-            <h3>Dental Care</h3>
-            <p>
-                Our dental care service focuses on your pet's oral health. We provide thorough dental cleaning and oral examinations to prevent dental issues such as plaque buildup and gum diseases. Proper dental care ensures your pet's teeth and gums remain healthy, promoting overall well-being and a happy smile.
-            </p>
-            <p class="price">NPR 600</p>
-            <a href="login" class="btn btn-success book-now-btn">Book Now</a>
-        </div>
-    </div>
-</div>
+            <div class="carousel-item">
+                <div class="row service-package py-3">
+                    <div class="col-md-4">
+                        <img src="{% static 'image/ser3.jpg' %}" alt="Vaccination Image" class="service-image">
+                    </div>
+                    <div class="col-md-8">
+                        <h3>Vaccination</h3>
+                        <p>
+                            Our vaccination service provides essential vaccinations tailored to your pet's specific
+                            needs. Our veterinarians customize vaccination plans to ensure your pet is protected against
+                            common diseases. Vaccinations are crucial for preventing various illnesses and maintaining
+                            your pet's overall health and longevity.
+                        </p>
+                        <p class="price">NPR 4000</p>
+                        <a href="" class="btn btn-success book-now-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
 
-<!-- Add more carousel items as needed -->
+            <div class="carousel-item">
+                <div class="row service-package py-3">
+                    <div class="col-md-4">
+                        <img src="{% static 'image/ser4.jpg' %}" alt="Dental Care Image" class="service-image">
+                    </div>
+                    <div class="col-md-8">
+                        <h3>Dental Care</h3>
+                        <p>
+                            Our dental care service focuses on your pet's oral health. We provide thorough dental
+                            cleaning and oral examinations to prevent dental issues such as plaque buildup and gum
+                            diseases. Proper dental care ensures your pet's teeth and gums remain healthy, promoting
+                            overall well-being and a happy smile.
+                        </p>
+                        <p class="price">NPR 600</p>
+                        <a href="" class="btn btn-success book-now-btn">Book Now</a>
+                    </div>
+                </div>
+            </div>
 
-<!-- End of Carousel Items -->
+            <!-- Add more carousel items as needed -->
+
+            <!-- End of Carousel Items -->
 
         </div>
     </div>

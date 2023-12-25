@@ -1,0 +1,42 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <div class="card border-0">
+        <div class="container py-3">
+            <div class="fs-4 text-center">Appointment details of {{ app.user.first_name }} {{ app.user.last_name }}</div>
+            <hr />
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-4">
+                    <p><strong>Appointment date and time:</strong> {{ app.date }} {{ app.time }}</p>
+                    <p><strong>Pet Owner Name:</strong> {{ app.user.first_name }} {{ app.user.last_name }}</p>
+                    <p><strong>Service:</strong> {{ app.service }}</p>
+                    <p><strong>Email:</strong> {{ app.email }}</p>
+                    <p><strong>Contact:</strong> {{ app.phone }}</p>
+                    <p><strong>Address:</strong> {{ app.address }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Petname:</strong> {{ app.petname }}</p>
+                    <p><strong>Breed:</strong> {{ app.breed }}</p>
+                    <p><strong>Color:</strong> {{ app.color }}</p>
+                    <p><strong>Gender:</strong> {{ app.gender }}</p>
+                    <p><strong>Name of Disease:</strong> {{ app.name_of_Disease }}</p>
+                    <p><strong>Ongoing Medication:</strong> {{ app.on_going_medication }}</p>
+                    <p><strong>Symptom of Disease:</strong> {{ app.symptonm_of_Disease }}</p>
+                    <p><strong>Booking Type:</strong> {{ app.booking_type }}</p>
+                    <p><strong>City:</strong> {{ app.city }}</p>
+                    <p><strong>Tole:</strong> {{ app.tole }}</p>
+                    <p><strong>House Number:</strong> {{ app.houseNumber }}</p>
+                    <p><strong>Location:</strong> {{ app.location }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

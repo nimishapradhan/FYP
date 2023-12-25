@@ -1,0 +1,117 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+        <div class="container  py-5">
+            <div>
+                <div class="fs-4">Patient History</div>
+            </div>
+            <hr />
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pet Name</th>
+                        <th>Owner Name</th>
+                        <th>Service Type</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patient %}
+                    <tr>
+                        <td>{{ patient.petname }}</td>
+                        <td>{{ patient.user.first_name }} {{ patient.user.last_name }}</td>
+                        <td>{{ patient.service }}</td>
+                        <td>{{ patient.date }}</td>
+                        {% if patient.status == 1 %}
+                            <td><i class="fa fa-check-circle text-success"></i></td>
+                            {% else %}
+                            <td><i class="fa fa-times-circle text-danger"></i></td>
+                        {% endif %}
+                        <td>
+                            <a href="{% url 'doctor_single_patient' id=patient.id %}" class="btn btn-primary" title="View patient history"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Pet Details</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Age</label>
+                            </div>
+                            <div class="col-9">
+                                <div>10</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Breed</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Test</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Color</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Brown</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Address</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Nepal</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Contact</label>
+                            </div>
+                            <div class="col-9">
+                                <div>+977 9849372055</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="submit" class="btn btn-blue">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

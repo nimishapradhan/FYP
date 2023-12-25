@@ -1,0 +1,16 @@
+{% if messages %}
+<div class="container-fluid" id="response-message" style="width: 100%; left:25%; font: optional; font-size: 16px;">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} text-center">
+        {{ message }} <br />
+    </div>
+    {% endfor %}
+</div>
+<script>
+    setTimeout(hideMsg, 3000);
+
+    function hideMsg() {
+        $('#response-message').hide();
+    }
+</script>
+{% endif %}

@@ -1,0 +1,39 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+        <div class="container py-5 w3-margin-top" style="max-width:1400px; margin-left: 600px;">
+            <div class="w3-container" style="height:300px;width:300px; margin-top:80px;">
+                <h4 class="text-center">Generate Invoice</h4>
+                
+                <div class="text-center">
+                    <input class="custom-select" type="text" id="search" name="search" placeholder="username" style="width:180px; border: black; background-color: rgb(225, 237, 237);">
+                </div>
+
+                <br>
+
+                <div class="text-center">
+                    <input class="custom-select" type="text" id="search" name="search" placeholder="petname" style="width:180px; border: black; background-color: rgb(225, 237, 237);">
+                </div>
+
+                <br>
+
+                <div class="text-center">
+                    <input class="custom-select datepicker" type="date" placeholder="Date" style="width:180px; border: black; background-color: rgb(225, 237, 237);">
+                </div>
+
+                <br>
+
+                <div class="text-center">
+                    <a href="" class="btn btn-success" style="width:100px; border: none;">Generate</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
