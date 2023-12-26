@@ -1,0 +1,56 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+        <div class="container py-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="fs-4">Pet Owner Records</h4>
+                <div class="d-flex">
+                    <a href="{% url 'admin_add_petowner' %}" class="btn btn-success me-2" title="Add Pet Owner">Add Pet
+                        Owner
+                    </a>
+                </div>
+            </div>
+            <hr />
+            <!-- Add the table-responsive class here -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Gender</th>
+                            <th>Contact</th>
+                            <th>Address</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pet in petowner %}
+                        <tr>
+                            <td>{{ pet.user.first_name }} {{ pet.user.last_name }}</td>
+                            <td>{{ pet.user.email }}</td>
+                            <td>{{ pet.gender }}</td>
+                            <td>{{ pet.mobile }}</td>
+                            <td>{{ pet.address }}</td>
+                            <td>
+                                <a href="{% url 'admin_edit_petowner' id=pet.id %}" class="btn btn-success"
+                                    title="Edit pet owner"><i class="fa fa-edit"></i></a>
+                                <a href="{% url 'admin_delete_petowner' id=pet.id %}" class="btn btn-danger"
+                                    onclick="return confirm('Do you want to delete the data?')"
+                                    title="Delete pet owner"><i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

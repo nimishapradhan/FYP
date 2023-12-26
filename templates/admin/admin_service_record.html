@@ -1,0 +1,59 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+
+
+        <div class="container py-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="fs-4">Service Records</h4>
+                <div class="d-flex">
+                    <a href="{% url 'admin_add_service' %}" class="btn btn-success me-2" title="Add Service"> Add Service
+                    </a>
+
+                </div>
+            </div>
+
+            <hr />
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Service Name</th>
+                        <th>Service Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ser in services %}
+                    <tr>
+                        <td>{{ ser.title }}</td>
+                        <td>NPR. {{ ser.price }}</td>
+                        {% if ser.status == 1 %}
+                        <td><i class="fa fa-check-circle text-success"></i></td>
+                        {% else %}
+                        <td><i class="fa fa-times-circle text-danger"></i></td>
+                        {% endif %}
+                        <td>
+                            <a href="{% url 'admin_edit_service' id=ser.id %}" class="btn btn-success" title="Edit service">
+                                <i class="fa fa-edit"></i>
+                            </a>
+
+                            <a href="{% url 'admin_delete_service' id=ser.id %}" onclick="return confirm('Do you want to delete the data?')" class="btn btn-danger" title="Delete service">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

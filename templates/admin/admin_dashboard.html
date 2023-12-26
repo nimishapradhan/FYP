@@ -1,0 +1,208 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+        <div class="col-lg-10 col-md-8">
+            <div class="container py-5">
+
+                <div class="pb-4">
+                    <div class="row">
+                        <div class="col-lg-4 pt-lg-0 pt-2">
+                            <div class="card" style="background-color: #88b4ab;">
+                                <div class="card-body text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3>Total Patients</h3>
+                                            <h4>{{ total_patients }}</h4>
+                                        </div>
+                                        <div class="border p-2 rounded-4">
+                                            <h3><i class="fa-solid fa-dog"></i></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 pt-lg-0 pt-3">
+                            <div class="card" style="background-color: #88b4ab;">
+                                <div class="card-body text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3>Total Vet</h3>
+                                            <h4>{{ total_doc }}</h4>
+                                        </div>
+                                        <div class="border p-2 rounded-4">
+                                            <h3><i class="fa-solid fa-user-doctor"></i></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 pt-lg-0 pt-3">
+                            <div class="card" style="background-color: #88b4ab;">
+                                <div class="card-body text-white">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h3>Total Appointment</h3>
+                                            <h4>{{ total_app }}</h4>
+                                        </div>
+                                        <div class="border p-2 rounded-4">
+                                            <h3><i class="fa-solid fa-calendar-check"></i></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <hr />
+                <div>
+                    <div class="fs-4">Upcoming Appointments</div>
+                </div>
+                <hr />
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Pet Name</th>
+                            <th>Owner Name</th>
+                            <th>Appointment Type</th>
+                            <th>Service Type</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointment_details %}
+                        <tr>
+                            <td>{{ appointment.petname }}</td>
+                            <td>{{ appointment.user.first_name }} {{ appointment.user.last_name }}</td>
+                            <td>{{ appointment.booking_type }}</td>
+                            <td>{{ appointment.service }}</td>
+                            <td>{{ appointment.date }}</td>
+                            <td>{{ appointment.time }}</td>
+                            {% if appointment.status == 1 %}
+                            <td><i class="fa fa-check-circle text-success"></i></td>
+                            {% else %}
+                            <td><i class="fa fa-times-circle text-danger"></i></td>
+                            {% endif %}
+                            <td>
+                                <a href="" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Patient Details Modal -->
+        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#patientModal">
+Launch demo modal
+</button> -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Pet Details</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Age</label>
+                            </div>
+                            <div class="col-9">
+                                <div>10</div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Breed</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Test</div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Color</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Brown</div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Address</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Nepal</div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Contact</label>
+                            </div>
+                            <div class="col-9">
+                                <div>+977 9849372055</div>
+                            </div>
+                        </div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Description</label>
+                            </div>
+                            <div class="col-9">
+                                <div>test</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="submit" class="btn btn-blue">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Reviews Section -->
+
+        <div class="col-lg-10 col-md-8">
+            <div class="container py-5">
+                <hr />
+                <div class="reviews">
+                    <div class="fs-4">User Reviews</div>
+                    <hr />
+                    <div class="review">
+                        <strong>User: Nimisha Pradhan</strong><br>
+                        <strong>Email:</strong> pradhan.nimi13@gmail.com<br>
+                        <strong>Review:</strong><br>
+                        "Loved the service."
+                    </div>
+                    <!-- Add more review divs for each user review -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}

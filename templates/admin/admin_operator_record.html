@@ -1,0 +1,59 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+        <div class="container  py-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="fs-4">Operator Records</h4>
+                <div class="d-flex">
+                    <a href="{% url 'admin_add_operator' %}" class="btn btn-success me-2" title="Add Operator">Add
+                        Operator
+                    </a>
+                </div>
+            </div>
+
+            <hr />
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for operator in operator %}
+                    <tr>
+                        <td>{{ operator.user.first_name }}</td>
+                        <td>{{ operator.user.last_name }}</td>
+                        <td>{{ operator.user.email }}</td>
+                        <td>{{ operator.gender }}</td>
+                        <td>{{ operator.mobile }}</td>
+                        <td>{{ operator.address }}</td>
+                        <td>
+                            <a href="{% url 'admin_edit_operator' id=operator.id %}" class="btn btn-success"
+                                title="Edit operator">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="{% url 'admin_delete_operator' id=operator.id %}" class="btn btn-danger"
+                                title="Delete operator" onclick="return confirm('Do you want to delete the data?')">
+
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

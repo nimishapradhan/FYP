@@ -1,0 +1,128 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+
+        <div class="container py-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="fs-4">Appointment Records</h4>
+                <div class="d-flex">
+                </div>
+            </div>
+            <hr />
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pet Name</th>
+                        <th>Owner Email</th>
+                        <th>Vet Name</th>
+                        <th>Appointment Type</th>
+                        <th>Service Type</th>
+                        <th>Time</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments_all %}
+                    <tr>
+                        <td>{{ appointment.petname }}</td>
+                        <td>{{ appointment.user.first_name }} {{ appointment.user.last_name }}</td>
+                        <td>{{ appointment.doctor }}</td>
+                        <td>{{ appointment.booking_type }}</td>
+                        <td>{{ appointment.service}}</td>
+                        <td>{{ appointment.time }}</td>
+                        <td>{{ appointment.date }}</td>
+                        {% if appointment.status == 1 %}
+                        <td><i class="fa fa-check-circle text-success"></i></td>
+                        {% else %}
+                        <td><i class="fa fa-times-circle text-danger"></i></td>
+                        {% endif %}
+                        <td>
+                            <a href="" class="btn btn-primary" title="View appointment details"><i
+                                    class="fa fa-eye"></i></a>
+                            <a href="" class="btn btn-secondary" title="Cancel appointment"><i
+                                    class="fa fa-cancel"></i></a>
+                            <a href="" class="btn btn-danger delete-appointment" title="Delete appointment"> <i
+                                    class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="patientDetailsModal" tabindex="-1" aria-labelledby="patientDetailsModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Pet Details</h1>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Your modal body content goes here -->
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Age</label>
+                            </div>
+                            <div class="col-9">
+                                <div>10</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Breed</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Test</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Color</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Brown</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Address</label>
+                            </div>
+                            <div class="col-9">
+                                <div>Nepal</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                        <div class="row form-group pb-2">
+                            <div class="col-3">
+                                <label for="pet_age">Contact</label>
+                            </div>
+                            <div class="col-9">
+                                <div>+977 9849372055</div>
+                            </div>
+                        </div>
+                        <div class="mt-2"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
