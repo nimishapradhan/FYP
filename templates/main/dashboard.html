@@ -366,7 +366,9 @@
                                 {% elif request.user.is_doctor %}
                                 <a href="{% url 'doctor_profile' %}" class="dropdown-item">Edit Profile</a>
                                 {% elif request.user.is_admin %}
-                                <a href="" class="dropdown-item">Edit Profile</a>
+                                <a href="{% url 'admin_profile' %}" class="dropdown-item">Edit Profile</a>
+                                {% elif request.user.is_operator %}
+                                <a href="{% url 'operator_profile' %}" class="dropdown-item">Edit Profile</a>
                                 {% endif %}
                                 <a href="{% url 'logout' %}" class="dropdown-item">Log out</a>
                             </div>

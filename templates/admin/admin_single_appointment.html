@@ -1,0 +1,42 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <div class="card border-0">
+        <div class="container py-3">
+            <div class="fs-4 text-center">Appointment details of {{ appointment.user.first_name }} {{ appointment.user.last_name }}</div>
+            <hr />
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-4">
+                    <p><strong>Appointment date and time:</strong> {{ appointment.date }} {{ appointment.time }}</p>
+                    <p><strong>Pet Owner Name:</strong> {{ appointment.user.first_name }} {{ appointment.user.last_name }}</p>
+                    <p><strong>Service:</strong> {{ appointment.service }}</p>
+                    <p><strong>Email:</strong> {{ appointment.email }}</p>
+                    <p><strong>Contact:</strong> {{ appointment.phone }}</p>
+                    <p><strong>Address:</strong> {{ appointment.address }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Petname:</strong> {{ appointment.petname }}</p>
+                    <p><strong>Breed:</strong> {{ appointment.breed }}</p>
+                    <p><strong>Color:</strong> {{ appointment.color }}</p>
+                    <p><strong>Gender:</strong> {{ appointment.gender }}</p>
+                    <p><strong>Name of Disease:</strong> {{ appointment.name_of_Disease }}</p>
+                    <p><strong>Ongoing Medication:</strong> {{ appointment.on_going_medication }}</p>
+                    <p><strong>Symptom of Disease:</strong> {{ appointment.symptonm_of_Disease }}</p>
+                    <p><strong>Booking Type:</strong> {{ appointment.booking_type }}</p>
+                    <p><strong>City:</strong> {{ appointment.city }}</p>
+                    <p><strong>Tole:</strong> {{ appointment.tole }}</p>
+                    <p><strong>House Number:</strong> {{ appointment.houseNumber }}</p>
+                    <p><strong>Location:</strong> {{ appointment.location }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

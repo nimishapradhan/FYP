@@ -34,6 +34,13 @@
                     Admin Dashboard
                 </a>
             </li>
+            {% elif request.user.is_operator %}
+            <li class="sidebar-item">
+                <a href="{% url 'operator_dashboard' %}" class="sidebar-link">
+                    <i class="fa-solid fa-list pe-2"></i>
+                    Operator Dashboard
+                </a>
+            </li>
             {% endif %}
             <!--  -->
             {% if request.user.is_patient %}
@@ -75,6 +82,18 @@
                     </li>
                     <li class="sidebar-item">
                         <a href="{% url 'admin_service_records' %}" class="sidebar-link">Service Records</a>
+                    </li>
+                </ul>
+            </li>
+            {% elif request.user.is_operator %}
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed" data-bs-target="#pages" data-bs-toggle="collapse"
+                    aria-expanded="false"><i class="fas fa-calendar-alt pe-2"></i>
+                    Appointment
+                </a>
+                <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="{% url 'operator_appointment_all' %}" class="sidebar-link">Appointments History</a>
                     </li>
                 </ul>
             </li>
@@ -128,6 +147,35 @@
                     </li>
                 </ul>
             </li>
+            {% elif request.user.is_operator %}
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed" data-bs-target="#posts" data-bs-toggle="collapse"
+                    aria-expanded="false"><i class="fas fa-file-invoice-dollar pe-2"></i>
+                    User details
+                </a>
+                <ul id="posts" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="{% url 'operator_doctor' %}" class="sidebar-link">Doctor / Vet Records</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{% url 'operator_petowner' %}" class="sidebar-link">Pet Owner / Patient Records</a>
+                    </li>
+                </ul>
+            </li>
+            {% endif %}
+            <!--  -->
+            {% if request.user.is_admin %}
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed" data-bs-target="#au" data-bs-toggle="collapse"
+                    aria-expanded="false"><i class="fa-regular fa-credit-card pe-2"></i>
+                    Payment
+                </a>
+                <ul id="au" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="" class="sidebar-link">Payment History</a>
+                    </li>
+                </ul>
+            </li>
             {% endif %}
             <!--  -->
             {% if request.user.is_patient %}
@@ -162,7 +210,19 @@
                 </a>
                 <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">Admin Profile</a>
+                        <a href="{% url 'admin_profile' %}" class="sidebar-link">Admin Profile</a>
+                    </li>
+                </ul>
+            </li>
+            {% elif request.user.is_operator %}
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed" data-bs-target="#auth" data-bs-toggle="collapse"
+                    aria-expanded="false"><i class="fa-regular fa-user pe-2"></i>
+                    Settings
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="{% url 'operator_profile' %}" class="sidebar-link">Operator Profile</a>
                     </li>
                 </ul>
             </li>

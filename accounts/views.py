@@ -86,8 +86,8 @@ def do_login(request):
             return redirect('doctor_dashboard')
         elif user is not None and user.is_operator:
             auth.login(request, user)
-            # messages.success(request, 'Login Successful')
-            return HttpResponse("This is operator")
+            messages.success(request, 'Login Successful')
+            return redirect('operator_dashboard')
         else:
             messages.warning(request, 'Username or Password is invalid.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -343,6 +343,74 @@ def admin_appointment_details(request):
     else:
         return HttpResponse('Invalid Role action')
 
+@login_required
+def admin_single_appointment(request, id):
+    if request.user.is_admin:
+        single_appointment = Booking.objects.get(id=id)
+        return render(request, 'admin/admin_single_appointment.html', {'appointment': single_appointment})
+    else:
+        return HttpResponse('Invalid Role action')
+
+@login_required
+def admin_cancel_appointment(request, id):
+    if request.user.is_admin:
+        app = Booking.objects.get(id=id)
+        if app.status:
+            app.status = False
+            app.save()
+            messages.success(request, 'Appointment Cancelled.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            messages.warning(request, 'Appointment is already canceled.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid Role action')
+    
+@login_required
+def admin_delete_appointment(request, id):
+    if request.user.is_admin:
+        appoint = Booking.objects.get(id=id)
+        appoint.delete()
+        messages.success(request, 'Appointment deleted successfully')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid Role action')
+
+@login_required
+def admin_profile(request):
+    if request.user.is_admin:
+        return render(request, 'admin/admin_profile.html')
+    else:
+        return HttpResponse('Invalid action role')
+
+@login_required
+def admin_profile_update(request):
+    if request.user.is_admin:
+        if request.method == 'POST':
+            first_name = request.POST['admin-first-name']
+            last_name = request.POST['admin-last-name']
+            email = request.POST['admin-email']
+            username = request.POST['admin-email']
+
+            if email != request.user.email and User.objects.filter(email=email):
+                messages.warning(request, 'Email already exists')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+            user = User.objects.get(id=request.user.id)
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.username = username
+
+            user.save()
+            messages.success(request, 'Your profile has been updated.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            messages.warning(request, 'Invalid Error')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid action role')
+
 # service ----- crud operation
 
 @login_required
@@ -559,6 +627,27 @@ def admin_delete_petowner(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
+@login_required
+def admin_petowner_change_password(request, id):
+    if request.user.is_admin:
+        if request.method == 'POST':
+            petowner = PetOwner.objects.get(id=id)
+
+            new_password = request.POST['new-password']
+            confirm_password = request.POST['confirm-password']
+
+            if new_password != confirm_password:
+                messages.warning(request, 'Password did not match')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+            user = petowner.user
+            user.password = make_password(new_password)
+            user.save()
+            messages.success(request, 'Password has been changed.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid role action')
+
 # doctor ---- crud operation
 
 @login_required
@@ -655,6 +744,8 @@ def admin_update_doctor(request, id):
             service_type = request.POST['doc_service_type']
             nmc_number = request.POST['doc_nmc_number']
 
+            status = request.POST.get('doc_status')
+
             for value in [first_name, last_name, username, password, confirm_password]:
                 if value is None or value == '':
                     messages.success(request, 'Provide all information')
@@ -685,6 +776,14 @@ def admin_update_doctor(request, id):
             doctor.qualification = qualification
             doctor.service_type = service_type
             doctor.nmc_number = nmc_number
+
+            if status == "0":
+                doctor.status = False
+            elif status == "1":
+                doctor.status = True
+            else:
+                return HttpResponse('Invalid')
+
             doctor.save()
 
             messages.success(request, 'Doctor updated successfully.')
@@ -703,6 +802,27 @@ def admin_delete_doctor(request, id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('Invalid Role action')
+
+@login_required
+def admin_doctor_change_password(request, id):
+    if request.user.is_admin:
+        if request.method == 'POST':
+            doctor = Doctor.objects.get(id=id)
+
+            new_password = request.POST['new-password']
+            confirm_password = request.POST['confirm-password']
+
+            if new_password != confirm_password:
+                messages.warning(request, 'Password did not match')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+            user = doctor.user
+            user.password = make_password(new_password)
+            user.save()
+            messages.success(request, 'Password has been changed.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid role action')
 
 
 # operator -----crud operation
@@ -788,11 +908,9 @@ def admin_update_operator(request, id):
             username = request.POST['op_email']
             mobile = request.POST['op_phone']
             gender = request.POST.get('op_gender')
-            password = request.POST['op_password']
-            confirm_password = request.POST['op_confirm_password']
             address = request.POST['op_address']
 
-            for value in [first_name, last_name, username, password, confirm_password]:
+            for value in [first_name, last_name, username]:
                 if value is None or value == '':
                     messages.success(request, 'Provide all information')
                     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -803,10 +921,6 @@ def admin_update_operator(request, id):
 
             if Operator.objects.filter(mobile=mobile).exclude(id=id):
                 messages.warning(request, 'Phone number already exists')
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-            if password != confirm_password:
-                messages.warning(request, 'Password did not match')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
             user = operator.user
@@ -837,3 +951,106 @@ def admin_delete_operator(request, id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('Invalid Role action')
+
+@login_required
+def admin_operator_change_password(request, id):
+    if request.user.is_admin:
+        if request.method == 'POST':
+            operator = Operator.objects.get(id=id)
+
+            new_password = request.POST['new-password']
+            confirm_password = request.POST['confirm-password']
+
+            if new_password != confirm_password:
+                messages.warning(request, 'Password did not match')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+            user = operator.user
+            user.password = make_password(new_password)
+            user.save()
+            messages.success(request, 'Password has been changed.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid role action')
+
+        
+# operator dashboard --------------------------------------
+@login_required
+def operator_dashboard(request):
+    if request.user.is_operator:
+        doctor_op = Doctor.objects.filter(status = True)[:4]
+        app_op = Booking.objects.filter(status = True).order_by('created_on')[:4]
+        return render(request, 'operator/operator_dashboard.html', {'doctors':doctor_op, 'appointment':app_op})
+    else:
+        return HttpResponse('Invalid action role')
+
+@login_required
+def operator_appointment_all(request):
+    if request.user.is_operator:
+        app_op_all = Booking.objects.all()
+        return render(request, 'operator/operator_appointment_all.html', {'appointment':app_op_all})
+    else:
+        return HttpResponse('Invalid action role')
+    
+@login_required
+def operator_doctor(request):
+    if request.user.is_operator:
+        doctor_oper = Doctor.objects.all()
+        return render(request, 'operator/operator_doctor.html', {'doctors':doctor_oper})
+    else:
+        return HttpResponse('Invalid action role')
+    
+@login_required
+def operator_doctor_edit(request, id):
+    if request.user.is_operator:
+        doctor = Doctor.objects.get(id=id)
+        return render(request, 'operator/operator_doctor_edit.html', {'doctor':doctor})
+    else:
+        return HttpResponse('Invalid action role')
+    
+@login_required
+def operator_doctor_change_status(request, id):
+    if request.user.is_operator:
+        if request.method == 'POST':
+            doctor = Doctor.objects.get(id=id)
+
+            status = request.POST.get('doc_status')
+
+            user = doctor.user
+            user.save()
+
+            if status == "0":
+                doctor.status = False
+            elif status == "1":
+                doctor.status = True
+            else:
+                return HttpResponse('Invalid')
+
+            doctor.save()
+            messages.success(request, 'Doctor status changed.')
+            return redirect('operator_doctor')
+    else:
+        return HttpResponse('Invalid action role')
+
+@login_required
+def operator_petowner(request):
+    if request.user.is_operator:
+        patient_op = Booking.objects.all()
+        return render(request, 'operator/operator_petowner.html', {'patients':patient_op})
+    else:
+        return HttpResponse('Invalid action role')
+    
+@login_required
+def operator_petowner_details(request, id):
+    if request.user.is_operator:
+        single_pet_details = Booking.objects.get(id=id)
+        return render(request, 'operator/operator_petowner_details.html', {'appointment': single_pet_details})
+    else:
+        return HttpResponse('Invalid action role')
+
+@login_required
+def operator_profile(request):
+    if request.user.is_operator:
+        return render(request, 'operator/operator_profile.html')
+    else:
+        return HttpResponse('Invalid action role')

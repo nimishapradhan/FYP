@@ -94,8 +94,16 @@
                             <td><i class="fa fa-times-circle text-danger"></i></td>
                             {% endif %}
                             <td>
-                                <a href="" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                                <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                <a href="{% url 'admin_single_appointment' id=appointment.id %}" class="btn btn-primary"
+                                    title="View appointment"><i class="fa fa-eye"></i></a>
+                                <a href="{% url 'admin_cancel_appointment' id=appointment.id %}"
+                                    onclick="return confirm('Do you want to cancel the appointment?')"
+                                    class="btn btn-secondary" title="Cancel appointment"><i
+                                        class="fa fa-cancel"></i></a>
+                                <a href="{% url 'admin_delete_appointment' id=appointment.id %}"
+                                    onclick="return confirm('Do you want to delete the appointment?')"
+                                    class="btn btn-danger delete-appointment" title="Delete appointment"> <i
+                                        class="fa fa-trash"></i>
                             </td>
                         </tr>
                         {% endfor %}

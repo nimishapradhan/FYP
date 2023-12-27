@@ -1,0 +1,81 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+
+        <div class="container py-5">
+            <!-- Doctor Availability Section -->
+            <div class="availability-form">
+                <div class="fs-4">Doctor Availability</div>
+                <hr />
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Doctor Name</th>
+                            <th>Specialization</th>
+                            <th>Qualification</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in doctors %}
+                        <tr>
+                            <td>{{ doc.user.first_name }} {{ doc.user.last_name }}</td>
+                            <td>{{ doc.service_type }}</td>
+                            <td>{{ doc.qualification }}</td>
+                            {% if doc.status == 1 %}
+                            <td><i class="fa fa-check-circle text-success"></i></td>
+                            {% else %}
+                            <td><i class="fa fa-times-circle text-danger"></i></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <hr />
+            <div>
+                <div class="fs-4">Upcoming Appointment</div>
+            </div>
+            <hr />
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pet Name</th>
+                        <th>Owner Name</th>
+                        <th>Appointment Type</th>
+                        <th>Service Type</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointment %}
+                    <tr>
+                        <td>{{ appointment.petname }}</td>
+                        <td>{{ appointment.user.first_name }} {{ appointment.user.last_name }}</td>
+                        <td>{{ appointment.booking_type }}</td>
+                        <td>{{ appointment.service }}</td>
+                        <td>{{ appointment.date }}</td>
+                        <td>{{ appointment.time }}</td>
+                        {% if appointment.status == 1 %}
+                        <td><i class="fa fa-check-circle text-success"></i></td>
+                        {% else %}
+                        <td><i class="fa fa-times-circle text-danger"></i></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

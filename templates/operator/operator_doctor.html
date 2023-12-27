@@ -1,0 +1,60 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+        <div class="container  py-5">
+            <div>
+                <div class="fs-4">Vet Records</div>
+            </div>
+
+            <hr />
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Gender</th>
+                        <th>Phone Number</th>
+                        <th>Qualification</th>
+                        <th>Service Type</th>
+                        <th>NMC Number</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor.user.first_name }}</td>
+                        <td>{{ doctor.user.last_name }}</td>
+                        <td>{{ doctor.gender }}</td>
+                        <td>{{ doctor.mobile }}</td>
+                        <td>{{ doctor.qualification }}</td>
+                        <td>{{ doctor.service_type }}</td>
+                        <td>{{ doctor.nmc_number }}</td>
+                        <td>{{ doctor.address }}</td>
+                        <td>{{ doctor.user.email }}</td>
+                        {% if doctor.status == 1 %}
+                        <td><i class="fa fa-check-circle text-success"></i></td>
+                        {% else %}
+                        <td><i class="fa fa-times-circle text-danger"></i></td>
+                        {% endif %}
+                        <td>
+                            <a href="{% url 'operator_doctor_edit' id=doctor.id %}" class="btn btn-success" title="Edit vet">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

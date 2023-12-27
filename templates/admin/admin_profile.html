@@ -1,0 +1,123 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+
+        <div class="container">
+            <div class="row justify-content-center py-5">
+
+                <!-- Edit profile Form on the Right Side -->
+                <div class="col-md-6 col-12">
+                    <div class="fs-4 fw-light text-muted pb-2 text-center">Edit Profile</div>
+
+                    <!-- Edit Profile Form -->
+                    <form method="post" action="{% url 'admin_profile_update' %}">
+                        {% csrf_token %}
+                        <!-- First Name Input Field -->
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="admin_first_name">First Name</label>
+                                <input class="form-control" type="text" id="u-first-name" name="admin-first-name"
+                                    required style="border: 1px solid #0eb62f" value="{{ user.first_name }}" />
+                            </div>
+                        </div>
+
+                        <!-- Last Name Input Field -->
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="admin_last_name">Last Name</label>
+                                <input class="form-control" type="text" id="u-last-name" name="admin-last-name" required
+                                    style="border: 1px solid #0eb62f" value="{{ user.last_name }}" />
+                            </div>
+                        </div>
+
+                        <!-- Email Input Field -->
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="admin_registration_email">Email</label>
+                                <input class="form-control" type="email" id="u-email" name="admin-email" required
+                                    style="border: 1px solid #0eb62f" value="{{ user.email }}" />
+                            </div>
+                        </div>
+
+                        <!-- Phone Number Input Field -->
+                        <!-- ... (similar modifications for other fields) -->
+
+                        <!-- Submit Button -->
+                        <div class="text-center py-4">
+                            <button type="submit" class="btn btn-blue" name="update_profile" style="
+                                background: #4CAF50; /* Green color */
+                                border: none;
+                                color: #fff;
+                                padding: 12px 24px;
+                                font-size: 18px;
+                                cursor: pointer;
+                                transition: background 0.3s ease;
+                                ">
+                                Confirm
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Edit profile Form on the Right Side -->
+                <div class="col-md-6 col-12">
+                    <div class="fs-4 fw-light text-muted pb-2 text-center">Password Change</div>
+
+                    <!-- Password Change Form -->
+                    <form method="post" action="{% url 'user_change_password' %}">
+                        {% csrf_token %}
+
+                        <!-- Current Password Input Field -->
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="current_password">Current Password</label>
+                                <input class="form-control" type="password" id="current-password"
+                                    name="current-password" required style="border: 1px solid #0eb62f" />
+                            </div>
+                        </div>
+
+                        <!-- New Password Input Field -->
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="new_password">New Password</label>
+                                <input class="form-control" type="password" id="new-password" name="new-password"
+                                    required style="border: 1px solid #0eb62f" />
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password Input Field -->
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="confirm_password">Confirm Password</label>
+                                <input class="form-control" type="password" id="confirm-password"
+                                    name="confirm-password" required style="border: 1px solid #0eb62f" />
+                            </div>
+                        </div>
+
+                        <!-- First Name Input Field -->
+                        <!-- ... (existing fields for first name, last name, email, etc.) -->
+
+                        <!-- Submit Button -->
+                        <div class="text-center py-4">
+                            <button type="submit" class="btn btn-blue" name="change_password" style="
+                                background: #4CAF50; /* Green color */
+                                border: none;
+                                color: #fff;
+                                padding: 12px 24px;
+                                font-size: 18px;
+                                cursor: pointer;
+                                transition: background 0.3s ease;">
+                                Change Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</main>
+
+{% endblock %}

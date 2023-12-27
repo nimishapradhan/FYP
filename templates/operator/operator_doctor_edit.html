@@ -1,0 +1,48 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <div class="card border-0">
+        <div class="container">
+            <div class="row justify-content-center py-5">
+                <div class="col-md-6 col-12">
+                    <div class="fs-4 fw-light text-muted pb-2 text-center">{% if doctor %}Edit Doctor{% endif %}</div>
+                    <form method="post" {% if doctor %}action="{% url 'operator_doctor_change_status' id=doctor.id %}" {% endif %}>
+                        {% csrf_token %}
+                        {% if doctor %}
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="doc_status">Status</label>
+                                <select class="form-select" id="doc_status" name="doc_status" required
+                                    style="border: 1px solid #0eb62f">
+                                    <option value="" selected disabled>Select status</option>
+                                    <option {% if doctor and doctor.status %} selected {% endif %} value="1">Available
+                                    </option>
+                                    <option {% if doctor and not doctor.status %} selected {% endif %} value="0">
+                                        Unavailable</option>
+                                </select>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="text-center py-4">
+                            <button type="submit" class="btn btn-blue" style="
+                                background: #4CAF50; /* Green color */
+                                border: none;
+                                color: #fff;
+                                padding: 12px 24px;
+                                font-size: 18px;
+                                cursor: pointer;
+                                transition: background 0.3s ease;">
+                                Confirm
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}
