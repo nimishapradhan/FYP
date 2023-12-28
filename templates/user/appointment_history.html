@@ -23,6 +23,7 @@
                         <th>Doctor / Vet</th>
                         <th>Appointment Type</th>
                         <th>Total Cost</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -34,16 +35,17 @@
                         <td>{{ app.doctor.user.first_name }} {{ app.doctor.user.last_name }}</td>
                         <td>{{ app.service.title }}</td>
                         <td>NPR. {{ app.service.price }}</td>
+                        {% if app.status == 1 %}
+                        <td><i class="fa fa-check-circle text-success"></i></td>
+                        {% else %}
+                        <td><i class="fa fa-times-circle text-danger"></i></td>
+                        {% endif %}
                         <td>
-                            <a href=""
-                                class="btn btn-primary" title="Edit appointment"
-                                data-appointment-id="">
-                                <i class="fa-solid fa-edit"></i>
-                            </a>
-                            <a href=""
-                                class="btn btn-danger delete-appointment" title="Delete appointment"
-                                data-appointment-id="">
-                                <i class="fa-solid fa-trash"></i>
+                            <a href="{% url 'user_appointment_detail' id=app.id %}" class="btn btn-primary" title="View appointment"><i class="fa fa-eye"></i></a>
+                            <a href="{% url 'user_cancel_appointment' id=app.id %}"
+                                class="btn btn-danger delete-appointment" title="Cancel appointment"
+                                data-appointment-id="" onclick="return confirm('Do you want to cancel appointment?')">
+                                <i class="fa fa-cancel"></i>
                             </a>
                         </td>
                     </tr>

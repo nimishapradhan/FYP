@@ -5,8 +5,9 @@ from django.contrib import messages, auth
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-
-from service.models import Booking, Service
+from datetime import datetime, timedelta
+from django.utils import timezone
+from service.models import Booking, Service, Time
 # Create your views here.
 
 
@@ -107,9 +108,10 @@ def logout(request):
 @login_required
 def user_dashboard(request):
     if request.user.is_patient:
+        today_date = datetime.now().date()
+
         doctor = Doctor.objects.filter(status=True)
-        appointment = Booking.objects.filter(user=request.user).filter(
-            status=True).order_by('created_on')[:4]
+        appointment = Booking.objects.filter(user=request.user, status=True, date__gte=today_date).order_by('date')[:4]
         return render(request, 'user/user_dashboard.html', {'appointment': appointment, 'doctor': doctor})
     else:
         return HttpResponse('Invalid role')
@@ -207,19 +209,49 @@ def user_change_password(request):
         auth.logout(request)
         return redirect('login')
 
+@login_required
+def user_cancel_appointment(request, id):
+    if request.user.is_patient:
+        app = Booking.objects.get(id=id)
+        if app.status:
+            app.status = False
+            app.save()
+            messages.success(request, 'Appointment Cancelled.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            messages.warning(request, 'Appointment is already Cancelled.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid Role action')
+
+@login_required
+def user_appointment_detail(request, id):
+    if request.user.is_patient:
+        try:
+            appointment_detail = Booking.objects.get(
+                user=request.user, id=id)
+        except Booking.DoesNotExist:
+            return HttpResponse("You do not have permission to access it.")
+        
+        return render(request, 'user/user_single_appointment.html', {'app': appointment_detail})
+    else:
+        return HttpResponse('Invalid action role')
 
 # for doctor ----
 
 @login_required
 def doctor_dashboard(request):
     if request.user.is_doctor:
+        today_date = datetime.now().date()
+
         home_appointments = Booking.objects.filter(
             doctor=request.user.doctor, status=True, booking_type='home')
         clinic_appointments = Booking.objects.filter(
             doctor=request.user.doctor, status=True, booking_type='clinic')
 
         appointments = Booking.objects.filter(
-            doctor=request.user.doctor, status=True).order_by('created_on')[:4]
+            doctor=request.user.doctor, status=True, date__gte=today_date).order_by('date')[:4]
+        
         totalPatients = appointments.count()
         home = home_appointments.count()
         clinic = clinic_appointments.count()
@@ -322,8 +354,10 @@ def doctor_profile_update(request):
 @login_required
 def admin_dashboard(request):
     if request.user.is_admin:
+        today_date = datetime.now().date()
+
         all_appointment_details = Booking.objects.filter(
-            status=True).order_by('created_on')[:4]
+            status=True, date__gte=today_date).order_by('date')[:4]
         all_doctor = Doctor.objects.all()
         all_patients = PetOwner.objects.all()
 
@@ -338,7 +372,7 @@ def admin_dashboard(request):
 @login_required
 def admin_appointment_details(request):
     if request.user.is_admin:
-        appointments_all = Booking.objects.all().order_by('created_on')
+        appointments_all = Booking.objects.all().order_by('date')
         return render(request, 'admin/admin_appointment_history.html', {'appointments_all': appointments_all})
     else:
         return HttpResponse('Invalid Role action')
@@ -361,7 +395,7 @@ def admin_cancel_appointment(request, id):
             messages.success(request, 'Appointment Cancelled.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         else:
-            messages.warning(request, 'Appointment is already canceled.')
+            messages.warning(request, 'Appointment is already Cancelled.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('Invalid Role action')
@@ -577,11 +611,9 @@ def admin_update_petowner(request, id):
             username = request.POST['pet_email']
             mobile = request.POST['pet_phone']
             gender = request.POST.get('pet_gender')
-            password = request.POST['pet_password']
-            confirm_password = request.POST['pet_confirm_password']
             address = request.POST['pet_address']
 
-            for value in [first_name, last_name, username, password, confirm_password]:
+            for value in [first_name, last_name, username]:
                 if value is None or value == '':
                     messages.success(request, 'Provide all information')
                     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -592,10 +624,6 @@ def admin_update_petowner(request, id):
 
             if PetOwner.objects.filter(mobile=mobile).exclude(id=id):
                 messages.warning(request, 'Phone number already exists')
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-            if password != confirm_password:
-                messages.warning(request, 'Password did not match')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
             user = petowner.user
@@ -737,8 +765,6 @@ def admin_update_doctor(request, id):
             username = request.POST['doc_email']
             mobile = request.POST['doc_phone']
             gender = request.POST.get('doc_gender')
-            password = request.POST['doc_password']
-            confirm_password = request.POST['doc_confirm_password']
             address = request.POST['doc_address']
             qualification = request.POST['doc_qualification']
             service_type = request.POST['doc_service_type']
@@ -746,7 +772,7 @@ def admin_update_doctor(request, id):
 
             status = request.POST.get('doc_status')
 
-            for value in [first_name, last_name, username, password, confirm_password]:
+            for value in [first_name, last_name, username]:
                 if value is None or value == '':
                     messages.success(request, 'Provide all information')
                     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -757,10 +783,6 @@ def admin_update_doctor(request, id):
 
             if Doctor.objects.filter(mobile=mobile).exclude(id=id):
                 messages.warning(request, 'Phone number already exists')
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-            if password != confirm_password:
-                messages.warning(request, 'Password did not match')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
             user = doctor.user
@@ -975,11 +997,13 @@ def admin_operator_change_password(request, id):
 
         
 # operator dashboard --------------------------------------
+
 @login_required
 def operator_dashboard(request):
     if request.user.is_operator:
+        today_date = datetime.now().date()
         doctor_op = Doctor.objects.filter(status = True)[:4]
-        app_op = Booking.objects.filter(status = True).order_by('created_on')[:4]
+        app_op = Booking.objects.filter(status = True, date__gte=today_date).order_by('date')[:4]
         return render(request, 'operator/operator_dashboard.html', {'doctors':doctor_op, 'appointment':app_op})
     else:
         return HttpResponse('Invalid action role')
@@ -1054,3 +1078,71 @@ def operator_profile(request):
         return render(request, 'operator/operator_profile.html')
     else:
         return HttpResponse('Invalid action role')
+
+
+@login_required
+def admin_timeslots(request):
+    if request.user.is_admin:
+        time_slots = Time.objects.all()
+        return render(request, 'admin/admin_timeslots.html', {'time_slots':time_slots})
+    else:
+        return HttpResponse('Invalid action role')
+
+@login_required
+def admin_add_timeslots(request):
+    if request.user.is_admin:
+        return render(request, 'admin/admin_add_timeslots.html')
+    else:
+        return HttpResponse('Invalid action role')
+    
+@login_required
+def admin_register_timeslots(request):
+    if request.user.is_admin:
+        if request.method == 'POST':
+            start_time = request.POST['start_time']
+            end_time = request.POST['end_time']
+
+            time = Time(start_time=start_time, end_time=end_time)
+            time.save()
+
+            messages.success(request, 'New time added.')
+            return redirect('admin_timeslots')
+
+    else:
+        return HttpResponse('Invalid action role')
+    
+@login_required
+def admin_edit_timeslots(request, id):
+    if request.user.is_admin:
+        time = Time.objects.get(id=id)
+        return render(request, 'admin/admin_add_timeslots.html', {'time':time})
+    else:
+        return HttpResponse('Invalid action role.')
+
+@login_required
+def admin_update_timeslots(request, id):
+    if request.user.is_admin:
+        if request.method == 'POST':
+            time = Time.objects.get(id=id)
+            start_time = request.POST['start_time']
+            end_time = request.POST['end_time']
+
+            time.start_time = start_time
+            time.end_time = end_time
+            time.save()
+
+            messages.success(request, 'Time updated successfully.')
+            return redirect('admin_timeslots')
+    else:
+        return HttpResponse('Invalid Role action')
+
+@login_required
+def admin_delete_timeslots(request, id):
+    if request.user.is_admin:
+        time = Time.objects.get(id=id)
+        time.delete()
+
+        messages.success(request, 'Time deleted successfully')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid Role action')

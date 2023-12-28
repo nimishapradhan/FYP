@@ -1,7 +1,19 @@
 from django.db import models
-from accounts.models import User, Doctor
+from accounts.models import User, Doctor, PetOwner
 # Create your models here.
 
+class Time(models.Model):
+    start_time = models.TimeField(default=None, null=True, blank=True)
+    end_time = models.TimeField(default=None, null=True, blank=True)
+    duration = models.IntegerField(default=None, null=True, blank=True)
+
+    available_daytimes = models.TextField(null=True, blank=True, default='')
+    occupied_daytimes = models.TextField(null=True, blank=True, default='')
+    status = models.BooleanField(default=True)
+
+
+    def __str__(self):
+        return f"{self.start_time.strftime('%I:%M %p')} - {self.end_time.strftime('%I:%M %p')}"
 
 class Service(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True)
@@ -45,8 +57,9 @@ class Booking(models.Model):
     tole = models.CharField(max_length=255, null=True, blank=True)
     houseNumber = models.CharField(max_length=255, null=True, blank=True)
     location = models.CharField(max_length=255, null=True, blank=True)
+
     date = models.DateField(null=True, blank=True)
-    time = models.TimeField(null=True, blank=True)
+    time = models.ForeignKey(Time, on_delete=models.CASCADE, null=True, blank=True, default=None)
 
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
 

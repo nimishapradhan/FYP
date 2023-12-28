@@ -1,51 +1,75 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from service.models import Service, Booking
+from service.models import Service, Booking, Time
 from accounts.models import User, Doctor
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from datetime import date
 # Create your views here.
+
 
 def service(request):
     return render(request, 'service.html')
 
 @login_required
 def appointment_booking(request):
-    service = Service.objects.filter(status = True)
-    doctor = Doctor.objects.filter(status = True)
+    if request.user.is_patient:
+        service = Service.objects.filter(status = True)
+        doctor = Doctor.objects.filter(status = True)
+        time= Time.objects.filter(status = True)
 
-    return render(request, 'user/user_booking.html', {'service':service, 'doctor':doctor})
+        return render(request, 'user/user_booking.html', {'service':service, 'doctor':doctor, 'time':time})
+    else:
+        return HttpResponse('Invalid role action')
 
 @login_required
 def do_appointment_booking(request):
-    if request.method == 'POST':
-        email = request.POST['booking_email']
-        phone = request.POST['phone']
-        address = request.POST['address']
-        petname = request.POST['pname']
-        breed = request.POST['pbreed']
-        age = request.POST['page']
-        color = request.POST['pcolor']
-        gender = request.POST['pgender']
-        nameOfDisease = request.POST['pdisease']
-        onGoingMedication = request.POST['pmedication']
-        symptomOfDisease = request.POST['symptoms']
-        booking_type = request.POST['method']
-        city = request.POST['city']
-        tole = request.POST['page']
-        houseNumber = request.POST['house_number']
-        date = request.POST['bdate']
-        time = request.POST['btime']
-        doctor = request.POST['doctor']
-        service = request.POST['service']
-        user = request.POST['user']
+    if request.user.is_patient:
+        if request.method == 'POST':
+            email = request.POST['booking_email']
+            phone = request.POST['phone']
+            address = request.POST['address']
+            petname = request.POST['pname']
+            breed = request.POST['pbreed']
+            age = request.POST['page']
+            color = request.POST['pcolor']
+            gender = request.POST.get('pgender')
+            nameOfDisease = request.POST['pdisease']
+            onGoingMedication = request.POST['pmedication']
+            symptomOfDisease = request.POST['symptoms']
+            booking_type = request.POST['method']
+            city = request.POST['city']
+            tole = request.POST['page']
+            houseNumber = request.POST['house_number']
+            date = request.POST['bdate']
+            time = request.POST['btime']
+            doctor = request.POST['doctor']
+            service = request.POST['service']
+            user = request.POST['user']
 
-        booking = Booking(service_id=service, user_id=user, email=email, phone=phone, address=address, petname=petname, breed=breed, 
-                          age=age, color=color, gender=gender, name_of_Disease = nameOfDisease, on_going_medication = onGoingMedication,
-                          symptonm_of_Disease=symptomOfDisease, booking_type=booking_type, city=city, tole=tole, houseNumber=houseNumber,
-                          date=date, time=time, doctor_id=doctor)
-        
-        booking.save()
+            bookings = Booking.objects.filter(date=date, time_id=time)
+            count = bookings.count()
 
-        messages.success(request, 'Appointment Booked with Success!!!')
-        return redirect('user_appointment_list')
+            if count > 0:
+                messages.warning(request, 'Already Booked')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            
+            else:
+
+                # booking = Booking(service_id=service, user_id=user, email=email, phone=phone, address=address, petname=petname, breed=breed, 
+                #                 age=age, color=color, gender=gender, name_of_Disease = nameOfDisease, on_going_medication = onGoingMedication,
+                #                 symptonm_of_Disease=symptomOfDisease, booking_type=booking_type, city=city, tole=tole, houseNumber=houseNumber,
+                #                 date=date, time_id=time, doctor_id=doctor, status = 0)
+                # booking.save()
+
+                booking = Booking(service_id=service, user_id=user, email=email, phone=phone, address=address, petname=petname, breed=breed, 
+                                age=age, color=color, gender=gender, name_of_Disease = nameOfDisease, on_going_medication = onGoingMedication,
+                                symptonm_of_Disease=symptomOfDisease, booking_type=booking_type, city=city, tole=tole, houseNumber=houseNumber,
+                                date=date, time_id=time, doctor_id=doctor)
+                
+                booking.save()
+
+            messages.success(request, 'Appointment Booked with Success!!!')
+            return redirect('user_appointment_list')
+    else:
+        return HttpResponse('Invalid action role.')

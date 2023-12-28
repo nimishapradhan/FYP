@@ -27,6 +27,12 @@ urlpatterns = [
     path('admin_delete_service/<id>', views.admin_delete_service, name='admin_delete_service'),
 
     path('admin_patient_records', views.admin_patient_record, name='admin_patient_records'),
+    path('admin_timeslots', views.admin_timeslots, name='admin_timeslots'),
+    path('admin_add_timeslots', views.admin_add_timeslots, name='admin_add_timeslots'),
+    path('admin_register_timeslots', views.admin_register_timeslots, name='admin_register_timeslots'),
+    path('admin_edit_timeslots/<id>', views.admin_edit_timeslots, name='admin_edit_timeslots'),
+    path('admin_update_timeslots/<id>', views.admin_update_timeslots, name='admin_update_timeslots'),
+    path('admin_delete_timeslots/<id>', views.admin_delete_timeslots, name='admin_delete_timeslots'),
 
     path('admin_petowner_records', views.admin_petowner_record, name='admin_petowner_records'),
     path('admin_add_petowner', views.admin_add_petowner, name='admin_add_petowner'),
@@ -59,6 +65,8 @@ urlpatterns = [
     path('user_profile', views.user_profile, name='user_profile'),
     path('user_profile_update', views.user_profile_update, name='user_profile_update'),
     path('user_change_password', views.user_change_password, name='user_change_password'),
+    path('user_cancel_appointment/<id>', views.user_cancel_appointment, name='user_cancel_appointment'),
+    path('user_appointment_detail/<id>', views.user_appointment_detail, name='user_appointment_detail'),
 
 
     path('doctor_dashboard', views.doctor_dashboard, name='doctor_dashboard'),

@@ -1,0 +1,46 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <div class="card border-0">
+        <div class="container">
+            <div class="row justify-content-center py-5">
+                <div class="col-md-6 col-12">
+                    <div class="fs-4 fw-light text-muted pb-2 text-center">Add time</div>
+                    <form method="post" {% if time %}action="{% url 'admin_update_timeslots' id=time.id %}" {% else %} action="{% url 'admin_register_timeslots' %}" {% endif %}>
+                        {% csrf_token %}
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="start_time">Start time</label>
+                                <input class="form-control" type="time" id="start_time" name="start_time" required
+                                    style="border: 1px solid #0eb62f" {% if time %} value="{{ time.start_time|time:'H:i' }}" {% endif %} />
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                            <div class="form-group pb-2">
+                                <label for="end_time">End time</label>
+                                <input class="form-control" type="time" id="end_time" name="end_time" required
+                                    style="border: 1px solid #0eb62f" {% if time %} value="{{ time.end_time|time:'H:i' }}" {% endif %} />
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <button type="submit" class="btn btn-blue" style="
+                                background: #4CAF50; /* Green color */
+                                border: none;
+                                color: #fff;
+                                padding: 12px 24px;
+                                font-size: 18px;
+                                cursor: pointer;
+                                transition: background 0.3s ease;">
+                                Confirm
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

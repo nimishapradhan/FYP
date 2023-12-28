@@ -14,3 +14,7 @@ class BookingAdmin(admin.ModelAdmin):
     list_display = ( 'user','phone', 'petname', 'date', 'time', 'doctor', 'status')
     search_fields = ('user','phone', 'petname')
     list_filter = ('status',)
+
+@admin.register(Time)
+class TimeAdmin(admin.ModelAdmin):
+    list_display = ('start_time', 'end_time','status')

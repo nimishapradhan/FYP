@@ -1,0 +1,58 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+
+
+        <div class="container py-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="fs-4">Time table</h4>
+                <div class="d-flex">
+                    <a href="{% url 'admin_add_timeslots' %}" class="btn btn-success me-2" title="Add Service"> Add time
+                    </a>
+
+                </div>
+            </div>
+
+            <hr />
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for time in time_slots %}
+                    <tr>
+                        <td>{{ time.start_time }} </td>
+                        <td>{{ time.end_time }} </td>
+                        <td>{{ time.duration }} </td>
+                        {% if time.status == 1 %}
+                        <td><i class="fa fa-check-circle text-success"></i></td>
+                        {% else %}
+                        <td><i class="fa fa-times-circle text-danger"></i></td>
+                        {% endif %}
+                        <td>
+                            <a href="{% url 'admin_edit_timeslots' id=time.id %}" class="btn btn-success"><i
+                                    class="fa fa-edit"></i></a>
+                            <a href="{% url 'admin_delete_timeslots' id=time.id %}"
+                                onclick="return confirm('Do you want to delete the time?')" class="btn btn-danger"><i
+                                    class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

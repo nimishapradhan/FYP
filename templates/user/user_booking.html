@@ -98,7 +98,7 @@
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group pb-2">
                                             <label for="booking_page">Age</label>
-                                            <input class="form-control" type="text" id="ubooking_page" name="page"
+                                            <input class="form-control" type="number" min="0" id="ubooking_page" name="page"
                                                 required style="border: 1px solid #0eb62f" />
                                         </div>
                                     </div>
@@ -133,13 +133,6 @@
                                         <div class="form-group pb-2">
                                             <label for="onGoingMedication">On Going Medication</label>
                                             <input class="form-control" type="text" id="onGoingMedication" name="pmedication"
-                                                required style="border: 1px solid #0eb62f" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-12">
-                                        <div class="form-group pb-2">
-                                            <label for="purposeOfVisit">Purpose Of Visit</label>
-                                            <input class="form-control" type="text" id="purposeOfVisit" name="visit"
                                                 required style="border: 1px solid #0eb62f" />
                                         </div>
                                     </div>
@@ -215,9 +208,14 @@
 
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group pb-2">
-                                            <label for="booking_btime">Time</label>
-                                            <input class="form-control" type="time" id="ubooking_btime" name="btime"
-                                                required style="border: 1px solid #0eb62f" />
+                                            <label for="btime">Time</label>
+                                            <select class="form-select" id="btime" name="btime" required
+                                                style="border: 1px solid #0eb62f">
+                                                <option value="" selected disabled>Select time</option>
+                                                {% for t in time %}
+                                                <option value="{{ t.id }}">{{ t.start_time }} - {{ t.end_time }}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                         <div class="text-muted">Time may vary according to availability.</div>
                                     </div>
