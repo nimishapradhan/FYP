@@ -5,11 +5,13 @@ from accounts.models import User, Doctor
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from datetime import date
+import uuid
 # Create your views here.
 
 
 def service(request):
-    return render(request, 'service.html')
+    service = Service.objects.filter(status = True)
+    return render(request, 'service.html', {'service':service})
 
 @login_required
 def appointment_booking(request):
@@ -18,7 +20,10 @@ def appointment_booking(request):
         doctor = Doctor.objects.filter(status = True)
         time= Time.objects.filter(status = True)
 
-        return render(request, 'user/user_booking.html', {'service':service, 'doctor':doctor, 'time':time})
+        uid = uuid.uuid4()
+        print(uid)
+
+        return render(request, 'user/user_booking.html', {'service':service, 'doctor':doctor, 'time':time, 'uid':uid})
     else:
         return HttpResponse('Invalid role action')
 
@@ -73,3 +78,5 @@ def do_appointment_booking(request):
             return redirect('user_appointment_list')
     else:
         return HttpResponse('Invalid action role.')
+    
+

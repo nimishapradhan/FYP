@@ -102,45 +102,17 @@
                 <!-- General Checkup Package -->
                 <div class="container">
                     <div class="row">
+                        {% for s in service %}
                         <div class="col-md-4">
                             <div class="package">
-                                <h3>General Checkup</h3>
-                                <ul>
-                                    <li>Routine health examination</li>
-                                    <li>Nutrition advice</li>
-                                </ul>
-                                <p class="price">NPR 500</p>
-                                <a href="login" class="btn btn-success book-now-btn">Book Now</a>
+                                <h3>{{ s.title }}</h3>
+                                <p>{{ s.details }}</p>
+                                <br>
+                                <p class="price">NPR. {{ s.price }}</p>
+                                <a href="{% url 'appointment_booking' %}" class="btn btn-success book-now-btn">Book Now</a>
                             </div>
                         </div>
-
-                        <!-- Add similar sections for other services -->
-
-                        <div class="col-md-4">
-                            <!-- Vaccination Package -->
-                            <div class="package">
-                                <h3>Vaccination</h3>
-                                <ul>
-                                    <li>Essential vaccinations</li>
-                                    <li>Customized for specific needs</li>
-                                </ul>
-                                <p class="price">NPR 4000</p>
-                                <a href="login" class="btn btn-success book-now-btn">Book Now</a>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <!-- Dental Care Package -->
-                            <div class="package">
-                                <h3>Dental Care</h3>
-                                <ul>
-                                    <li>Dental cleaning</li>
-                                    <li>Oral examinations</li>
-                                </ul>
-                                <p class="price">NPR 600</p>
-                                <a href="login" class="btn btn-success book-now-btn">Book Now</a>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </section>
@@ -158,6 +130,7 @@
                 <!-- Individual Team Members -->
                 <div class="container">
                     <div class="row">
+                        {% for doctor in doctor %}
                         <div class="col-md-4">
                             <!-- Doctor 1 -->
                             <div class="team-box">
@@ -165,45 +138,15 @@
                                     <img src="{% static 'image/vet3.jpg' %}" alt="Doctor 1" />
                                 </div>
                                 <div class="team-info">
-                                    <h3>Dhiraj Kumar Shah Kanu</h3>
-                                    <p>Veterinary Specialist</p>
-                                    <p>Ph.D. in Veterinary Medicine</p>
-                                    <a href="login" class="btn btn-success book-appointment-btn">Book Appointment</a>
+                                    <h3>{{ doctor.user.first_name }} {{ doctor.user.last_name }}</h3>
+                                    <p>{{ doctor.service_type }}</p>
+                                    <p>{{ doctor.qualification }}</p>
+                                    <a href="{% url 'appointment_booking' %}" class="btn btn-success book-appointment-btn">Book Appointment</a>
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
 
-                        <!-- Add similar sections for other team members -->
-
-                        <div class="col-md-4">
-                            <!-- Doctor 2 -->
-                            <div class="team-box">
-                                <div class="team-img">
-                                    <img src="{% static 'image/vet4.jpg' %}" alt="Doctor 2" />
-                                </div>
-                                <div class="team-info">
-                                    <h3>Lujana Bajracharya</h3>
-                                    <p>Veterinary Surgeon</p>
-                                    <p>Doctor of Veterinary Medicine (DVM)</p>
-                                    <a href="login" class="btn btn-success book-appointment-btn">Book Appointment</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <!-- Doctor 3 -->
-                            <div class="team-box">
-                                <div class="team-img">
-                                    <img src="{% static 'image/vet1.jpg' %}" alt="Doctor 3" />
-                                </div>
-                                <div class="team-info">
-                                    <h3>Manoj Karki</h3>
-                                    <p>Animal Care Specialist</p>
-                                    <p>Master's in Animal Science</p>
-                                    <a href="login" class="btn btn-success book-appointment-btn">Book Appointment</a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -229,7 +172,7 @@
                             always here for you!
                         </p>
                         <!-- Contact Form -->
-                        <form action="" method="post">
+                        <form action="{% url 'save_contact' %}" method="post">
                             <div class="row">
                                 {% csrf_token %}
                                 <!-- First Name Input Field -->
@@ -265,7 +208,7 @@
                                     <div class="form-group pb-2">
                                         <label for="contact-phone">Phone</label>
                                         <input class="form-control" type="tel" id="c-phone" name="phone"
-                                            class="p-1 fs-4 bg-transparent" style=" border: 1px solid #0eb62f" />
+                                            class="p-1 fs-4 bg-transparent" style=" border: 1px solid #0eb62f" required />
                                     </div>
                                 </div>
 
@@ -273,7 +216,7 @@
                                 <div class="col-12">
                                     <div class="form-group pb-2">
                                         <label for="contact-notes">Notes</label>
-                                        <textarea class="form-control" id="c-notes" name="notes" rows="4"
+                                        <textarea class="form-control" id="c-notes" name="notes" rows="4" required
                                             class="p-1 fs-4 bg-transparent" style="
                  border: 1px solid #0eb62f;
                  resize: vertical"></textarea>

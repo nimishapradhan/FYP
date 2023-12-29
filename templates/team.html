@@ -7,86 +7,89 @@ Team
 
 {% block content %}
 <style>
-  /* Section Divider Styles */
-  .section-divider {
-    border: 1px solid #ccc;
-    margin: 20px 0;
-  }
+    /* Section Divider Styles */
+    .section-divider {
+        border: 1px solid #ccc;
+        margin: 20px 0;
+    }
 
-  /* Service Package Styles */
-  .team-member {
-    margin-bottom: 40px;
-    border: 1px solid #e1e1e1;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
+    /* Service Package Styles */
+    .team-member {
+        margin-bottom: 40px;
+        border: 1px solid #e1e1e1;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
 
-  .team-member:hover {
-    transform: scale(1.02);
-  }
+    .team-member:hover {
+        transform: scale(1.02);
+    }
 
-  .team-image {
-    width: 100%;
-    height: auto;
-    border-bottom: 1px solid #e1e1e1;
-  }
+    .team-image {
+        width: 100%;
+        height: auto;
+        border-bottom: 1px solid #e1e1e1;
+    }
 
-  .carousel-control-prev,
-  .carousel-control-next {
-      color: #fff;
-  }
+    .carousel-control-prev,
+    .carousel-control-next {
+        color: #fff;
+    }
 
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-      background-color: #000;
-  }
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: #000;
+    }
 
-  .carousel-inner {
-    border-radius: 15px;
-    overflow: hidden;
-  }
+    .carousel-inner {
+        border-radius: 15px;
+        overflow: hidden;
+    }
 
-  .carousel-item {
-    padding: 20px;
-  }
+    .carousel-item {
+        padding: 20px;
+    }
 
-  .carousel-caption {
-    text-align: left;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+    .carousel-caption {
+        text-align: left;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-  .qualification {
-    font-size: 18px;
-    font-weight: bold;
-    color: #27ae60;
-  }
+    .qualification {
+        font-size: 18px;
+        font-weight: bold;
+        color: #27ae60;
+    }
 
-  .book-now-btn {
-    background-color: #27ae60;
-    color: #fff;
-    transition: background-color 0.3s ease;
-  }
+    .book-now-btn {
+        background-color: #27ae60;
+        color: #fff;
+        transition: background-color 0.3s ease;
+    }
 
-  .book-now-btn:hover {
-    background-color: #218c53;
-  }
-
+    .book-now-btn:hover {
+        background-color: #218c53;
+    }
 </style>
 
 <!-- Service Packages Section Description -->
 <div class="container">
     <div class="text-center py-5">
         <h3>Meet Our Professional Veterinarians</h3>
-        <h6 class="fw-light fs-4">Experienced veterinary professionals dedicated to providing top-quality care for your pets.</h6>
+        <h6 class="fw-light fs-4">Experienced veterinary professionals dedicated to providing top-quality care for your
+            pets.</h6>
     </div>
     <div class="text-center">
         <p>
-            Get to know our team of highly skilled veterinarians who are passionate about providing exceptional care for your pets. Each member brings a unique set of skills and expertise to ensure the well-being and happiness of your furry friends. Meet them below and discover the dedicated professionals behind TailTales Veterinary Clinic.
+            Get to know our team of highly skilled veterinarians who are passionate about providing exceptional care for
+            your pets. Each member brings a unique set of skills and expertise to ensure the well-being and happiness of
+            your furry friends. Meet them below and discover the dedicated professionals behind TailTales Veterinary
+            Clinic.
         </p>
     </div>
 </div>
@@ -107,64 +110,36 @@ Team
     <!-- Service Packages Section -->
 
     <div id="serviceCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
+        <div class="carousel-inner {% if forloop.first %}active{% endif %}">
+            {% for d in doctor %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
                 <div class="row team-member py-3">
                     <div class="col-md-4">
                         <img src="{% static 'image/vet3.jpg' %}" alt="vet1" class="team-image">
                     </div>
                     <div class="col-md-8">
-                        <h3>Dhiraj Kumar Sah Kanu</h3>
+                        <h3>{{ d.user.first_name }} {{ d.user.last_name }}</h3>
                         <p>
-                            Meet our highly skilled veterinary specialist with a passion for animal care. His extensive knowledge and expertise in veterinary medicine have saved countless pets, earning him the respect and gratitude of pet owners.
+                            Meet our highly skilled veterinary specialist with a passion for animal care. His extensive
+                            knowledge and expertise in veterinary medicine have saved countless pets, earning him the
+                            respect and gratitude of pet owners.
                         </p>
-                        <p class="lead">Veterinary Specialist</p>
-                        <p class="qualification">Ph.D. in Veterinary Medicine</p>
-                        <a href="" class="btn btn-success book-now-btn">Book Appointment Now</a>
+                        <p class="lead">{{ d.service_type }}</p>
+                        <p class="qualification">{{ d.qualification }}</p>
+                        <a href="{% url 'appointment_booking' %}" class="btn btn-success book-now-btn">Book Appointment
+                            Now</a>
                     </div>
                 </div>
             </div>
+            {% endfor %}
 
-           
-<!-- ... (similar structure for other carousel items) ... -->
 
-<div class="carousel-item">
-    <div class="row team-member py-3">
-        <div class="col-md-4">
-            <img src="{% static 'image/vet4.jpg' %}" alt="Vet2" class="team-image">
-        </div>
-        <div class="col-md-8">
-            <h3>Lujana Bajracharya</h3>
-            <p>
-                Meet our dedicated veterinary surgeon, who brings compassion and expertise to her practice. Her commitment to providing exceptional veterinary care has made her a trusted professional among pet owners.
-            </p>
-            <p class="lead">Veterinary Surgeon</p>
-            <p class="qualification">Doctor of Veterinary Medicine (DVM)</p>
-            <a href="" class="btn btn-success book-now-btn">Book Appointment Now</a>
-        </div>
-    </div>
-</div>
+            <!-- ... (similar structure for other carousel items) ... -->
 
-<div class="carousel-item">
-    <div class="row team-member py-3">
-        <div class="col-md-4">
-            <img src="{% static 'image/vet1.jpg' %}" alt="Vet3" class="team-image">
-        </div>
-        <div class="col-md-8">
-            <h3>Manoj Karki</h3>
-            <p>
-                Meet our animal care specialist with a wealth of knowledge in animal science. His dedication to ensuring the happiness and health of pets is evident in his work. Pet owners trust him for his expertise and caring nature.
-            </p>
-            <p class="lead">Animal Care Specialist</p>
-            <p class="qualification">Master's in Animal Science</p>       
-            <a href="" class="btn btn-success book-now-btn">Book Appointment Now</a>
-        </div>
-    </div>
-</div>
 
-<!-- Add more carousel items as needed -->
+            <!-- Add more carousel items as needed -->
 
-<!-- End of Carousel Items -->
+            <!-- End of Carousel Items -->
 
         </div>
     </div>

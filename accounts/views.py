@@ -1,3 +1,5 @@
+import json
+import requests
 from django.shortcuts import render, redirect
 from accounts.models import *
 from django.contrib.auth.hashers import make_password
@@ -111,7 +113,8 @@ def user_dashboard(request):
         today_date = datetime.now().date()
 
         doctor = Doctor.objects.filter(status=True)
-        appointment = Booking.objects.filter(user=request.user, status=True, date__gte=today_date).order_by('date')[:4]
+        appointment = Booking.objects.filter(
+            user=request.user, status=True, date__gte=today_date).order_by('date')[:4]
         return render(request, 'user/user_dashboard.html', {'appointment': appointment, 'doctor': doctor})
     else:
         return HttpResponse('Invalid role')
@@ -209,6 +212,7 @@ def user_change_password(request):
         auth.logout(request)
         return redirect('login')
 
+
 @login_required
 def user_cancel_appointment(request, id):
     if request.user.is_patient:
@@ -224,6 +228,7 @@ def user_cancel_appointment(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
+
 @login_required
 def user_appointment_detail(request, id):
     if request.user.is_patient:
@@ -232,12 +237,13 @@ def user_appointment_detail(request, id):
                 user=request.user, id=id)
         except Booking.DoesNotExist:
             return HttpResponse("You do not have permission to access it.")
-        
+
         return render(request, 'user/user_single_appointment.html', {'app': appointment_detail})
     else:
         return HttpResponse('Invalid action role')
 
 # for doctor ----
+
 
 @login_required
 def doctor_dashboard(request):
@@ -251,7 +257,7 @@ def doctor_dashboard(request):
 
         appointments = Booking.objects.filter(
             doctor=request.user.doctor, status=True, date__gte=today_date).order_by('date')[:4]
-        
+
         totalPatients = appointments.count()
         home = home_appointments.count()
         clinic = clinic_appointments.count()
@@ -377,6 +383,7 @@ def admin_appointment_details(request):
     else:
         return HttpResponse('Invalid Role action')
 
+
 @login_required
 def admin_single_appointment(request, id):
     if request.user.is_admin:
@@ -384,6 +391,7 @@ def admin_single_appointment(request, id):
         return render(request, 'admin/admin_single_appointment.html', {'appointment': single_appointment})
     else:
         return HttpResponse('Invalid Role action')
+
 
 @login_required
 def admin_cancel_appointment(request, id):
@@ -399,7 +407,8 @@ def admin_cancel_appointment(request, id):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('Invalid Role action')
-    
+
+
 @login_required
 def admin_delete_appointment(request, id):
     if request.user.is_admin:
@@ -410,12 +419,14 @@ def admin_delete_appointment(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
+
 @login_required
 def admin_profile(request):
     if request.user.is_admin:
         return render(request, 'admin/admin_profile.html')
     else:
         return HttpResponse('Invalid action role')
+
 
 @login_required
 def admin_profile_update(request):
@@ -447,6 +458,7 @@ def admin_profile_update(request):
 
 # service ----- crud operation
 
+
 @login_required
 def admin_service_records(request):
     if request.user.is_admin:
@@ -455,12 +467,14 @@ def admin_service_records(request):
     else:
         return HttpResponse('Invalid Role action')
 
+
 @login_required
 def admin_add_service(request):
     if request.user.is_admin:
         return render(request, 'admin/admin_add_service.html')
     else:
         return HttpResponse('Invalid Role action')
+
 
 @login_required
 def admin_register_service(request):
@@ -478,13 +492,15 @@ def admin_register_service(request):
     else:
         return HttpResponse('Invalid Role action')
 
+
 @login_required
 def admin_edit_service(request, id):
     if request.user.is_admin:
         service = Service.objects.get(id=id)
-        return render(request, 'admin/admin_add_service.html', {'service':service})
+        return render(request, 'admin/admin_add_service.html', {'service': service})
     else:
         return HttpResponse('Invalid Role action')
+
 
 @login_required
 def admin_update_service(request, id):
@@ -505,6 +521,7 @@ def admin_update_service(request, id):
             return redirect('admin_service_records')
     else:
         return HttpResponse('Invalid Role action')
+
 
 @login_required
 def admin_delete_service(request, id):
@@ -530,6 +547,7 @@ def admin_patient_record(request):
 
 # petowner ----- crud operation
 
+
 @login_required
 def admin_petowner_record(request):
     if request.user.is_admin:
@@ -537,13 +555,15 @@ def admin_petowner_record(request):
         return render(request, 'admin/admin_petowner_record.html', {'petowner': petowner_record})
     else:
         return HttpResponse('Invalid Role action')
-    
+
+
 @login_required
 def admin_add_petowner(request):
     if request.user.is_admin:
         return render(request, 'admin/admin_add_petowner.html')
     else:
         return HttpResponse('Invalid Role action')
+
 
 @login_required
 def admin_register_petowner(request):
@@ -583,13 +603,14 @@ def admin_register_petowner(request):
             user.save()
 
             petowner = PetOwner(user=user, mobile=mobile,
-                            gender=gender, address=address)
+                                gender=gender, address=address)
             petowner.save()
 
             messages.success(request, 'New Pet Owner added with success.')
             return redirect('admin_petowner_records')
     else:
         return HttpResponse('Invalid Role action')
+
 
 @login_required
 def admin_edit_petowner(request, id):
@@ -655,6 +676,7 @@ def admin_delete_petowner(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
+
 @login_required
 def admin_petowner_change_password(request, id):
     if request.user.is_admin:
@@ -677,6 +699,7 @@ def admin_petowner_change_password(request, id):
         return HttpResponse('Invalid role action')
 
 # doctor ---- crud operation
+
 
 @login_required
 def admin_doctor_record(request):
@@ -824,6 +847,7 @@ def admin_delete_doctor(request, id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('Invalid Role action')
+
 
 @login_required
 def admin_doctor_change_password(request, id):
@@ -974,6 +998,7 @@ def admin_delete_operator(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
+
 @login_required
 def admin_operator_change_password(request, id):
     if request.user.is_admin:
@@ -995,43 +1020,48 @@ def admin_operator_change_password(request, id):
     else:
         return HttpResponse('Invalid role action')
 
-        
+
 # operator dashboard --------------------------------------
 
 @login_required
 def operator_dashboard(request):
     if request.user.is_operator:
         today_date = datetime.now().date()
-        doctor_op = Doctor.objects.filter(status = True)[:4]
-        app_op = Booking.objects.filter(status = True, date__gte=today_date).order_by('date')[:4]
-        return render(request, 'operator/operator_dashboard.html', {'doctors':doctor_op, 'appointment':app_op})
+        doctor_op = Doctor.objects.filter(status=True)[:4]
+        app_op = Booking.objects.filter(
+            status=True, date__gte=today_date).order_by('date')[:4]
+        return render(request, 'operator/operator_dashboard.html', {'doctors': doctor_op, 'appointment': app_op})
     else:
         return HttpResponse('Invalid action role')
+
 
 @login_required
 def operator_appointment_all(request):
     if request.user.is_operator:
         app_op_all = Booking.objects.all()
-        return render(request, 'operator/operator_appointment_all.html', {'appointment':app_op_all})
+        return render(request, 'operator/operator_appointment_all.html', {'appointment': app_op_all})
     else:
         return HttpResponse('Invalid action role')
-    
+
+
 @login_required
 def operator_doctor(request):
     if request.user.is_operator:
         doctor_oper = Doctor.objects.all()
-        return render(request, 'operator/operator_doctor.html', {'doctors':doctor_oper})
+        return render(request, 'operator/operator_doctor.html', {'doctors': doctor_oper})
     else:
         return HttpResponse('Invalid action role')
-    
+
+
 @login_required
 def operator_doctor_edit(request, id):
     if request.user.is_operator:
         doctor = Doctor.objects.get(id=id)
-        return render(request, 'operator/operator_doctor_edit.html', {'doctor':doctor})
+        return render(request, 'operator/operator_doctor_edit.html', {'doctor': doctor})
     else:
         return HttpResponse('Invalid action role')
-    
+
+
 @login_required
 def operator_doctor_change_status(request, id):
     if request.user.is_operator:
@@ -1056,14 +1086,16 @@ def operator_doctor_change_status(request, id):
     else:
         return HttpResponse('Invalid action role')
 
+
 @login_required
 def operator_petowner(request):
     if request.user.is_operator:
         patient_op = Booking.objects.all()
-        return render(request, 'operator/operator_petowner.html', {'patients':patient_op})
+        return render(request, 'operator/operator_petowner.html', {'patients': patient_op})
     else:
         return HttpResponse('Invalid action role')
-    
+
+
 @login_required
 def operator_petowner_details(request, id):
     if request.user.is_operator:
@@ -1071,6 +1103,7 @@ def operator_petowner_details(request, id):
         return render(request, 'operator/operator_petowner_details.html', {'appointment': single_pet_details})
     else:
         return HttpResponse('Invalid action role')
+
 
 @login_required
 def operator_profile(request):
@@ -1084,9 +1117,10 @@ def operator_profile(request):
 def admin_timeslots(request):
     if request.user.is_admin:
         time_slots = Time.objects.all()
-        return render(request, 'admin/admin_timeslots.html', {'time_slots':time_slots})
+        return render(request, 'admin/admin_timeslots.html', {'time_slots': time_slots})
     else:
         return HttpResponse('Invalid action role')
+
 
 @login_required
 def admin_add_timeslots(request):
@@ -1094,7 +1128,8 @@ def admin_add_timeslots(request):
         return render(request, 'admin/admin_add_timeslots.html')
     else:
         return HttpResponse('Invalid action role')
-    
+
+
 @login_required
 def admin_register_timeslots(request):
     if request.user.is_admin:
@@ -1110,14 +1145,16 @@ def admin_register_timeslots(request):
 
     else:
         return HttpResponse('Invalid action role')
-    
+
+
 @login_required
 def admin_edit_timeslots(request, id):
     if request.user.is_admin:
         time = Time.objects.get(id=id)
-        return render(request, 'admin/admin_add_timeslots.html', {'time':time})
+        return render(request, 'admin/admin_add_timeslots.html', {'time': time})
     else:
         return HttpResponse('Invalid action role.')
+
 
 @login_required
 def admin_update_timeslots(request, id):
@@ -1136,6 +1173,7 @@ def admin_update_timeslots(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
+
 @login_required
 def admin_delete_timeslots(request, id):
     if request.user.is_admin:
@@ -1146,3 +1184,77 @@ def admin_delete_timeslots(request, id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('Invalid Role action')
+
+
+def initkhalti(request):
+
+    url = "https://a.khalti.com/api/v2/epayment/initiate/"
+
+    return_url = request.POST.get('return_url')
+    website_url = request.POST.get('return_url')
+    amount = request.POST.get('amount')
+    purchase_order_id = request.POST.get('purchase_order_id')
+
+    print("url", url)
+    print("return_url", return_url)
+    print("web_url", website_url)
+    print("amount", amount)
+    print("purchase_order_id", purchase_order_id)
+
+    user = request.user
+
+    payload = json.dumps({
+        "return_url": return_url,
+        "website_url": website_url,
+        "amount": amount,
+        "purchase_order_id": purchase_order_id,
+        "purchase_order_name": "test",
+        "customer_info": {
+            "name": user.first_name,
+            "email": user.email,
+        }
+    })
+    headers = {
+        'Authorization': 'key live_secret_key_68791341fdd94846a146f0457ff7b455',
+        'Content-Type': 'application/json',
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response.text)
+    new_res = json.loads(response.text)
+    print(new_res)
+
+    return redirect(new_res['payment_url'])
+
+
+def verifyKhalti(request):
+    url = "https://a.khalti.com/api/v2/epayment/lookup/"
+    if request.method == 'GET':
+        headers = {
+            'Authorization': 'key live_secret_key_68791341fdd94846a146f0457ff7b455',
+            'Content-Type': 'application/json',
+        }
+        pidx = request.GET.get('pidx')
+        data = json.dumps({
+            'pidx': pidx
+        })
+        res = requests.request('POST', url, headers=headers, data=data)
+        print(res)
+        print(res.text)
+
+        new_res = json.loads(res.text)
+        print(new_res)
+
+        if new_res['status'] == 'Completed':
+            # user = request.user
+            # user.has_verified_dairy = True
+            # user.save()
+            # perform your db interaction logic
+            pass
+
+        # else:
+        #     # give user a proper error message
+            # raise BadRequest("sorry ")
+
+        return redirect('user_dashboard')

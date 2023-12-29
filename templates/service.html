@@ -112,66 +112,27 @@ Service
     <!-- Service Packages Section -->
 
     <div id="serviceCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
+        <div class="carousel-inner {% if forloop.first %}active{% endif %}">
+            {% for s in service %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
                 <div class="row service-package py-3">
                     <div class="col-md-4">
                         <img src="{% static 'image/img19.jpg' %}" alt="general Checkup Image" class="service-image">
                     </div>
                     <div class="col-md-8">
-                        <h3>General Checkup</h3>
+                        <h3>{{ s.title }}</h3>
                         <p>
-                            Our general checkup service ensures a comprehensive health examination for your pet. Our
-                            experienced veterinarians conduct routine health checks and provide valuable nutrition
-                            advice to keep your furry friend in top shape. Regular checkups are essential for early
-                            detection of health issues and maintaining your pet's overall well-being.
+                            {{ s.details }}
                         </p>
-                        <p class="price">NPR 500</p>
-                        <a href="" class="btn btn-success book-now-btn">Book Now</a>
+                        <p class="price">NPR. {{ s.price }}</p>
+                        <a href="{% url 'appointment_booking' %}" class="btn btn-success book-now-btn">Book Now</a>
                     </div>
                 </div>
             </div>
+            {% endfor %}
 
 
             <!-- ... (similar structure for other carousel items) ... -->
-
-            <div class="carousel-item">
-                <div class="row service-package py-3">
-                    <div class="col-md-4">
-                        <img src="{% static 'image/ser3.jpg' %}" alt="Vaccination Image" class="service-image">
-                    </div>
-                    <div class="col-md-8">
-                        <h3>Vaccination</h3>
-                        <p>
-                            Our vaccination service provides essential vaccinations tailored to your pet's specific
-                            needs. Our veterinarians customize vaccination plans to ensure your pet is protected against
-                            common diseases. Vaccinations are crucial for preventing various illnesses and maintaining
-                            your pet's overall health and longevity.
-                        </p>
-                        <p class="price">NPR 4000</p>
-                        <a href="" class="btn btn-success book-now-btn">Book Now</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="carousel-item">
-                <div class="row service-package py-3">
-                    <div class="col-md-4">
-                        <img src="{% static 'image/ser4.jpg' %}" alt="Dental Care Image" class="service-image">
-                    </div>
-                    <div class="col-md-8">
-                        <h3>Dental Care</h3>
-                        <p>
-                            Our dental care service focuses on your pet's oral health. We provide thorough dental
-                            cleaning and oral examinations to prevent dental issues such as plaque buildup and gum
-                            diseases. Proper dental care ensures your pet's teeth and gums remain healthy, promoting
-                            overall well-being and a happy smile.
-                        </p>
-                        <p class="price">NPR 600</p>
-                        <a href="" class="btn btn-success book-now-btn">Book Now</a>
-                    </div>
-                </div>
-            </div>
 
             <!-- Add more carousel items as needed -->
 

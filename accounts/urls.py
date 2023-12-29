@@ -85,4 +85,7 @@ urlpatterns = [
     path('operator_doctor_change_status/<id>', views.operator_doctor_change_status, name='operator_doctor_change_status'),
     path('operator_petowner_details/<id>', views.operator_petowner_details, name='operator_petowner_details'),
     path('operator_profile', views.operator_profile, name='operator_profile'),
+
+    path('initkhalti', views.initkhalti, name='initkhalti'),
+    path('verifyKhalti', views.verifyKhalti, name='verifyKhalti')
 ]

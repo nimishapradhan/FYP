@@ -31,7 +31,7 @@
 
 
         <!-- Contact Form -->
-        <form action="" method="post">
+        <form action="{% url 'save_contact' %}" method="post">
             <div class="row py-4">
                 {% csrf_token %}
                 <!-- First Name Input Field -->
@@ -65,7 +65,7 @@
                     <div class="form-group pb-2">
                         <label for="contact-phone">Phone</label>
                         <input class="form-control" type="tel" id="c-phone" name="phone"
-                            style="border: 1px solid #0eb62f;" />
+                            style="border: 1px solid #0eb62f;" required />
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                         <label for="contact-notes">Notes</label>
                         <textarea class="form-control" id="c-notes" name="notes" rows="4" style="
                                      border: 1px solid #0eb62f;
-                                     resize: vertical"></textarea>
+                                     resize: vertical" required></textarea>
                     </div>
                 </div>
             </div>
