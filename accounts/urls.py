@@ -87,5 +87,7 @@ urlpatterns = [
     path('operator_profile', views.operator_profile, name='operator_profile'),
 
     path('initkhalti', views.initkhalti, name='initkhalti'),
-    path('verifyKhalti', views.verifyKhalti, name='verifyKhalti')
+    path('verifyKhalti', views.verifyKhalti, name='verifyKhalti'),
+
+    path('khalti_request/<int:id>', views.khalti_request, name='khalti_request'),
 ]

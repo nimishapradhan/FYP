@@ -18,3 +18,7 @@ class BookingAdmin(admin.ModelAdmin):
 @admin.register(Time)
 class TimeAdmin(admin.ModelAdmin):
     list_display = ('start_time', 'end_time','status')
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = ('booking', 'payment_method', 'payment_completed')

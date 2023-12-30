@@ -1,3 +1,4 @@
+import uuid
 import json
 import requests
 from django.shortcuts import render, redirect
@@ -219,6 +220,7 @@ def user_cancel_appointment(request, id):
         app = Booking.objects.get(id=id)
         if app.status:
             app.status = False
+            app.booking_status = 'Cancelled'
             app.save()
             messages.success(request, 'Appointment Cancelled.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -399,6 +401,7 @@ def admin_cancel_appointment(request, id):
         app = Booking.objects.get(id=id)
         if app.status:
             app.status = False
+            app.booking_status = 'Cancelled'
             app.save()
             messages.success(request, 'Appointment Cancelled.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -1186,6 +1189,13 @@ def admin_delete_timeslots(request, id):
         return HttpResponse('Invalid Role action')
 
 
+def khalti_request(request, id):
+    booking = Booking.objects.get(pk=id)
+    price = booking.service.price * 100
+
+    return render(request, 'user/khalti_payment_request.html', {'booking': booking, 'price': price})
+
+
 def initkhalti(request):
 
     url = "https://a.khalti.com/api/v2/epayment/initiate/"
@@ -1200,9 +1210,7 @@ def initkhalti(request):
     print("web_url", website_url)
     print("amount", amount)
     print("purchase_order_id", purchase_order_id)
-
     user = request.user
-
     payload = json.dumps({
         "return_url": return_url,
         "website_url": website_url,
@@ -1215,46 +1223,35 @@ def initkhalti(request):
         }
     })
     headers = {
-        'Authorization': 'key live_secret_key_68791341fdd94846a146f0457ff7b455',
+        'Authorization': 'key cf584127ee45498ab259d4b328b2cf69',
         'Content-Type': 'application/json',
     }
-
     response = requests.request("POST", url, headers=headers, data=payload)
-
     print(response.text)
     new_res = json.loads(response.text)
     print(new_res)
 
     return redirect(new_res['payment_url'])
+    # return redirect('user_dashboard')
 
 
 def verifyKhalti(request):
-    url = "https://a.khalti.com/api/v2/epayment/lookup/"
-    if request.method == 'GET':
-        headers = {
-            'Authorization': 'key live_secret_key_68791341fdd94846a146f0457ff7b455',
-            'Content-Type': 'application/json',
-        }
-        pidx = request.GET.get('pidx')
-        data = json.dumps({
-            'pidx': pidx
-        })
-        res = requests.request('POST', url, headers=headers, data=data)
-        print(res)
-        print(res.text)
+    pidx = request.GET.get('pidx')
+    txnId = request.GET.get('txnId')
+    amount = request.GET.get('amount')
+    purchase_order_id = request.GET.get('purchase_order_id')
 
-        new_res = json.loads(res.text)
-        print(new_res)
+    if pidx and txnId and amount:
+        try:
+            booking = Booking.objects.get(purchase_id=purchase_order_id)
+            booking.booking_status = 'Confirmed'  
+            booking.status = True  
+            booking.save()
+            messages.success(request, 'Payment Verified. Booking Confirmed!')
+            return redirect('user_dashboard')
+        except Booking.DoesNotExist:
+            messages.error(request, 'Invalid Booking ID.')
+    else:
+        messages.error(request, 'Invalid parameters in the callback URL.')
 
-        if new_res['status'] == 'Completed':
-            # user = request.user
-            # user.has_verified_dairy = True
-            # user.save()
-            # perform your db interaction logic
-            pass
-
-        # else:
-        #     # give user a proper error message
-            # raise BadRequest("sorry ")
-
-        return redirect('user_dashboard')
+    return HttpResponse(status=400)

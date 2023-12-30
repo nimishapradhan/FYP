@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from datetime import date
 import uuid
+from django.urls import reverse_lazy
 # Create your views here.
 
 
@@ -21,7 +22,7 @@ def appointment_booking(request):
         time= Time.objects.filter(status = True)
 
         uid = uuid.uuid4()
-        print(uid)
+        # print(uid)
 
         return render(request, 'user/user_booking.html', {'service':service, 'doctor':doctor, 'time':time, 'uid':uid})
     else:
@@ -52,7 +53,9 @@ def do_appointment_booking(request):
             service = request.POST['service']
             user = request.POST['user']
 
-            bookings = Booking.objects.filter(date=date, time_id=time)
+            status = False
+
+            bookings = Booking.objects.filter(date=date, time_id=time).filter(status=True)
             count = bookings.count()
 
             if count > 0:
@@ -60,7 +63,6 @@ def do_appointment_booking(request):
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
             
             else:
-
                 # booking = Booking(service_id=service, user_id=user, email=email, phone=phone, address=address, petname=petname, breed=breed, 
                 #                 age=age, color=color, gender=gender, name_of_Disease = nameOfDisease, on_going_medication = onGoingMedication,
                 #                 symptonm_of_Disease=symptomOfDisease, booking_type=booking_type, city=city, tole=tole, houseNumber=houseNumber,
@@ -70,12 +72,11 @@ def do_appointment_booking(request):
                 booking = Booking(service_id=service, user_id=user, email=email, phone=phone, address=address, petname=petname, breed=breed, 
                                 age=age, color=color, gender=gender, name_of_Disease = nameOfDisease, on_going_medication = onGoingMedication,
                                 symptonm_of_Disease=symptomOfDisease, booking_type=booking_type, city=city, tole=tole, houseNumber=houseNumber,
-                                date=date, time_id=time, doctor_id=doctor)
+                                date=date, time_id=time, doctor_id=doctor, status=status)
                 
                 booking.save()
 
-            messages.success(request, 'Appointment Booked with Success!!!')
-            return redirect('user_appointment_list')
+            return HttpResponseRedirect(reverse_lazy('khalti_request', args=[booking.id]))
     else:
         return HttpResponse('Invalid action role.')
     

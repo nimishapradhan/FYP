@@ -13,14 +13,6 @@
                     <div class="card border-0 bg-light">
                         <div class="card-body">
 
-                            <form action="{% url 'initkhalti' %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="purchase_order_id" value="{{uid}}" id="">
-                                <input type="hidden" name="amount" value="1000" id="">
-                                <input type="hidden" name="return_url" value="http://127.0.0.1:8000/user/user_appointment_list" id="">
-                                <input type="submit" value="Pay With Khalti" name="" id="">
-                            </form>
-
                             <form action="{% url 'do_appointment_booking' %}" method="post">
                                 <div class="row">
                                     {% csrf_token %}
@@ -264,7 +256,6 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <a href="" button type="submit" class="btn btn-success">Pay with Khalti</a>
                     </div>
                 </div>
             </div>

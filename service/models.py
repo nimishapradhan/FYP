@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User, Doctor, PetOwner
+import uuid
 # Create your models here.
 
 class Time(models.Model):
@@ -33,6 +34,7 @@ class Service(models.Model):
 
 
 class Booking(models.Model):
+    purchase_id =  models.UUIDField(max_length=150, unique=True, default=uuid.uuid4)
     service = models.ForeignKey(
         Service, on_delete=models.CASCADE, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -76,3 +78,19 @@ class Booking(models.Model):
 
     class Meta:
         verbose_name_plural = '2. Booking'
+
+
+class Payment(models.Model):
+    booking = models.ForeignKey(Booking, on_delete = models.CASCADE)
+    payment_method = models.CharField(max_length=255, choices=[('Khalti', 'Khalti')])
+    payment_completed = models.BooleanField(default = False, null=True, blank=True)
+
+    status = models.BooleanField(default=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    updated_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'{self.booking.user.first_name} {self.booking.user.last_name}'
+
+    class Meta:
+        verbose_name_plural = '3. Payment'
