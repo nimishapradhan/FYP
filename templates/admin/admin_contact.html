@@ -1,0 +1,50 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+
+
+        <div class="container py-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="fs-4">Contact Records</h4>
+            </div>
+
+            <hr />
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Notes</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for con in contacts %}
+                    <tr>
+                        <td>{{ con.first_name }}</td>
+                        <td>{{ con.last_name }}</td>
+                        <td>{{ con.email }}</td>
+                        <td>{{ con.phone }}</td>
+                        <td>{{ con.notes }}</td>
+                        <td>
+                            <a href="{% url 'admin_contact_delete' id=con.id %}" onclick="return confirm('Do you want to delete the data?')" class="btn btn-danger" title="Delete contact">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

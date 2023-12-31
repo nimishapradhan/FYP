@@ -15,6 +15,7 @@
                     <p><strong>Appointment date and time:</strong> {{ appointment.date }} {{ appointment.time }}</p>
                     <p><strong>Pet Owner Name:</strong> {{ appointment.user.first_name }} {{ appointment.user.last_name }}</p>
                     <p><strong>Service:</strong> {{ appointment.service }}</p>
+                    <p><strong>Doctor:</strong> {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</p>
                     <p><strong>Email:</strong> {{ appointment.email }}</p>
                     <p><strong>Contact:</strong> {{ appointment.phone }}</p>
                     <p><strong>Address:</strong> {{ appointment.address }}</p>

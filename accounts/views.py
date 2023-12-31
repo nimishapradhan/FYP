@@ -10,7 +10,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timedelta
 from django.utils import timezone
-from service.models import Booking, Service, Time
+from service.models import Booking, Service, Time, Payment
+from information.models import Contact
+from django.utils.crypto import get_random_string
+from django.core.mail import send_mail
+from tailtales import settings
 # Create your views here.
 
 
@@ -1188,6 +1192,24 @@ def admin_delete_timeslots(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
+@login_required
+def admin_contact(request):
+    if request.user.is_admin:
+        contacts = Contact.objects.all()
+        return render(request, 'admin/admin_contact.html', {'contacts':contacts})
+    else:
+        return HttpResponse('Invalid Role action')
+
+@login_required
+def admin_contact_delete(request, id):
+    if request.user.is_admin:
+        contact = Contact.objects.get(id=id)
+        contact.delete()
+        messages.success(request, 'Contact deleted successfully')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid Role action')
+
 
 def khalti_request(request, id):
     booking = Booking.objects.get(pk=id)
@@ -1243,10 +1265,17 @@ def verifyKhalti(request):
 
     if pidx and txnId and amount:
         try:
+
             booking = Booking.objects.get(purchase_id=purchase_order_id)
             booking.booking_status = 'Confirmed'  
             booking.status = True  
             booking.save()
+
+            payment = Payment.objects.create(payment_id=pidx, booking=booking, payment_method='Khalti', payment_completed=True)
+            payment.save()
+
+            send_confirmation_emails(booking)
+
             messages.success(request, 'Payment Verified. Booking Confirmed!')
             return redirect('user_dashboard')
         except Booking.DoesNotExist:
@@ -1255,3 +1284,187 @@ def verifyKhalti(request):
         messages.error(request, 'Invalid parameters in the callback URL.')
 
     return HttpResponse(status=400)
+
+
+def send_confirmation_emails(booking):
+    send_email_to_user(booking)
+    send_email_to_doctor(booking)
+    send_email_to_admin(booking)
+    send_email_to_operator(booking)
+
+
+def send_email_to_user(booking):
+    subject = 'Appointment Confirmed'
+
+    message = f'Dear {booking.user.first_name} {booking.user.last_name},<br><br>'
+    message += f'Your appointment has been confirmed. Your appointment details:<br><br>'
+    message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}<br><br>'
+    message += f'<strong>Service:</strong> {booking.service}<br><br>'
+    message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
+    message += f'<strong>Date:</strong> {booking.date}<br><br>'
+    message += f'<strong>Time:</strong> {booking.time}<br><br>'
+    message += 'Thank You!'
+
+    from_email = settings.EMAIL_HOST_USER
+    to_email = [booking.user.email]
+
+    send_mail(subject, message, from_email, to_email, html_message=message)
+
+def send_email_to_doctor(booking):
+    subject = 'Appointment Confirmed'
+
+    message = f'Dear {booking.doctor.user.first_name} {booking.doctor.user.last_name},<br><br>'
+    message += f'Appointment has been confirmed:<br><br>'
+    message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
+    message += f'<strong>Service:</strong> {booking.service}<br><br>'
+    message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
+    message += f'<strong>Date:</strong> {booking.date}<br><br>'
+    message += f'<strong>Time:</strong> {booking.time}<br><br>'
+    message += 'Thank You!'
+
+    from_email = settings.EMAIL_HOST_USER
+    to_email = [booking.doctor.user.email]
+
+    send_mail(subject, message, from_email, to_email, html_message=message)
+
+def send_email_to_admin(booking):
+
+    admin_users = User.objects.filter(is_admin=True)
+
+    subject = 'Appointment Confirmed'
+
+    message = f'Appointment has been confirmed:<br><br>'
+    message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
+    message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}  <br><br>'
+    message += f'<strong>Service:</strong> {booking.service}<br><br>'
+    message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
+    message += f'<strong>Date:</strong> {booking.date}<br><br>'
+    message += f'<strong>Time:</strong> {booking.time}<br><br>'
+    message += 'Thank You!'
+
+    from_email = settings.EMAIL_HOST_USER
+    to_email = [admin_user.email for admin_user in admin_users]
+
+    send_mail(subject, message, from_email, to_email, html_message=message)
+
+def send_email_to_operator(booking):
+    operator_users = User.objects.filter(is_operator=True)
+
+    subject = 'Appointment Confirmed'
+
+    message = f'Appointment has been confirmed:<br><br>'
+    message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
+    message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}  <br><br>'
+    message += f'<strong>Service:</strong> {booking.service}<br><br>'
+    message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
+    message += f'<strong>Date:</strong> {booking.date}<br><br>'
+    message += f'<strong>Time:</strong> {booking.time}<br><br>'
+    message += 'Thank You!'
+
+    from_email = settings.EMAIL_HOST_USER
+    to_email = [operator_user.email for operator_user in operator_users]
+
+    send_mail(subject, message, from_email, to_email, html_message=message)
+
+
+# forget password
+
+def forget_password(request):
+    try:
+        if request.method == 'POST':
+            email = request.POST['email']
+
+            if not User.objects.filter(email=email).first():
+                messages.warning(request, 'No email found.')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+            otp = get_random_string(length=6, allowed_chars='1234567890')
+
+            request.session['reset_email'] = email 
+
+            user = User.objects.get(email=email)
+            user.otp = otp
+            user.save()
+
+            subject = 'Forget Password'
+        
+            message = f'Hello {user.first_name} {user.last_name},<br><br>'
+            message += 'You requested a password reset. Please use the following OTP to proceed:<br><br>'
+            message += f'<strong>OTP: {otp}</strong><br><br>'
+            message += 'This OTP is valid for 15 minutes.<br>'
+            message += 'If you did not request a password reset, please ignore this email.<br><br>'
+            message += 'Thank You!'
+
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [user.email]
+
+            send_mail(subject, message, from_email, recipient_list, html_message=message)
+
+            return render(request, 'forget_password/otp.html')
+    except:
+        messages.warning(request, 'Invalid')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+    return render(request,'forget_password/forget_password.html')
+
+def verify_otp(request):
+    try:
+        if request.method == 'POST':
+            email = request.session.get('reset_email')
+            otp_entered = request.POST.get('otp')
+
+            user = User.objects.filter(email=email).first()
+
+            if user and user.otp == otp_entered:
+                user.otp_verified = True
+                user.save()
+
+                return render(request, 'forget_password/reset_password.html', {'otp_verified': True, 'email': email})
+            else:
+                messages.warning(request, 'Invalid OTP. Please try again.')
+                return render(request, 'forget_password/otp.html', {'otp_verified': False, 'email': email})
+
+    except Exception as e:
+        print(e)
+        messages.warning(request, 'Invalid')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+    return HttpResponse("Unexpected error or invalid request.")
+
+def reset_password(request):
+    if request.method == 'POST':
+        email = request.session.get('reset_email')
+        new_password = request.POST.get('new-password')
+        confirm_password = request.POST.get('confirm-password')
+
+        if new_password == confirm_password:
+            user = User.objects.filter(email=email).first()
+
+            if user:
+                user.password = make_password(new_password)
+                user.otp = None
+                del request.session['reset_email']
+                user.save()
+
+                subject = 'Password Changed'
+        
+                message = f'Hello {user.first_name} {user.last_name},<br><br>'
+                message += 'Your password has been changed.<br><br>'
+                message += 'Thank You!'
+
+                from_email = settings.EMAIL_HOST_USER
+                recipient_list = [user.email]
+
+                send_mail(subject, message, from_email, recipient_list, html_message=message)
+
+                messages.success(request, 'Password changed with success.!!!')
+                return redirect('login')
+            else:
+                error = "User not found."
+                return render(request, 'forget_password/reset_password.html', {'error': error, 'email': email})
+        else:
+            error = "Passwords do not match."
+            return render(request, 'forget_password/reset_password.html', {'error': error, 'email': email})
+    else:
+        return HttpResponseRedirect('login')
+

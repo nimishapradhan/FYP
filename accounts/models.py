@@ -11,6 +11,10 @@ class User(AbstractUser):
     is_patient = models.BooleanField(default = False)
     is_doctor = models.BooleanField(default = False)
 
+    otp = models.CharField(max_length=255, default=None, null=True, blank=True)
+    otp_created_at = models.DateTimeField(auto_now_add = True)
+    otp_verified = models.BooleanField(default=False)
+
     class Meta:
         verbose_name_plural = '1. User'
 

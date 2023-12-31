@@ -58,6 +58,9 @@ urlpatterns = [
     path('admin_delete_operator/<id>', views.admin_delete_operator, name='admin_delete_operator'),
     path('admin_operator_change_password/<id>', views.admin_operator_change_password, name='admin_operator_change_password'),
 
+    path('admin_contact', views.admin_contact, name='admin_contact'),
+    path('admin_contact_delete/<id>', views.admin_contact_delete, name='admin_contact_delete'),
+
     path('user_dashboard', views.user_dashboard, name='user_dashboard'),
     path('user_appointment_list', views.user_appointment_list, name='user_appointment_list'),
     path('user_payment_list', views.user_payment_list, name='user_payment_list'),
@@ -90,4 +93,8 @@ urlpatterns = [
     path('verifyKhalti', views.verifyKhalti, name='verifyKhalti'),
 
     path('khalti_request/<int:id>', views.khalti_request, name='khalti_request'),
+
+    path('forget_password', views.forget_password, name='forget_password'),
+    path('verify_otp', views.verify_otp, name='verify_otp'),
+    path('reset_password', views.reset_password, name='reset_password'),
 ]

@@ -54,11 +54,24 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 3600
+
 ROOT_URLCONF = 'tailtales.urls'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'after_login'
+
+# email setup
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'pradhan.nimi13@gmail.com'
+EMAIL_HOST_PASSWORD = 'kfruykzrjbtvafgj'
+EMAIL_USE_TLS = True
+
 
 TEMPLATES = [
     {

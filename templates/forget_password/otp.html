@@ -1,0 +1,41 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} OTP {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="min-height: 50vh;">
+        <!-- Forget Password Form Container -->
+        <div class="col-md-6">
+            <div class="forget-password-container">
+                <h2 class="text-center">Verify OTP</h2>
+                <p class="text-center">Enter your otp from your email.</p>
+
+                <form class="forget-password-form" action="{% url 'verify_otp' %}" method="post">
+                    {% csrf_token %}
+                    <!-- Email Input Field -->
+                    <div class="form-group">
+                        <label for="email">Enter OTP</label>
+                        <input class="form-control" type="text" id="otp" name="otp" required
+                            style="border: 1px solid #ccc; margin-bottom: 1.5rem;" />
+                    </div>
+
+                    <!-- Reset Password Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-success" style="
+                                background-color: #4CAF50;
+                                color: white;
+                                padding: 10px 15px;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 16px;
+                            ">
+                            Verify OTP
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

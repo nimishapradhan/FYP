@@ -81,8 +81,9 @@ class Booking(models.Model):
 
 
 class Payment(models.Model):
+    payment_id = models.CharField(max_length = 255, null=True, blank=True)
     booking = models.ForeignKey(Booking, on_delete = models.CASCADE)
-    payment_method = models.CharField(max_length=255, choices=[('Khalti', 'Khalti')])
+    payment_method = models.CharField(max_length=255, choices=[('Khalti', 'Khalti')],default='Khalti')
     payment_completed = models.BooleanField(default = False, null=True, blank=True)
 
     status = models.BooleanField(default=True)

@@ -55,7 +55,7 @@ def do_appointment_booking(request):
 
             status = False
 
-            bookings = Booking.objects.filter(date=date, time_id=time).filter(status=True)
+            bookings = Booking.objects.filter(date=date, time_id=time, doctor_id=doctor).filter(status=True)
             count = bookings.count()
 
             if count > 0:

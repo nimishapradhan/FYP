@@ -190,6 +190,17 @@
                     </li>
                 </ul>
             </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed" data-bs-target="#co" data-bs-toggle="collapse"
+                    aria-expanded="false"><i class="fa fa-phone pe-2"></i>
+                    Contacts
+                </a>
+                <ul id="co" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="{% url 'admin_contact' %}" class="sidebar-link">Contact Records</a>
+                    </li>
+                </ul>
+            </li>
             {% endif %}
             <!--  -->
             {% if request.user.is_patient %}

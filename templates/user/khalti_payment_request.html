@@ -3,42 +3,36 @@
 {% block content %}
 
 <main class="content px-3 py-2">
-    <!-- Table Element -->
-    <div class="card border-0">
-        <div class="container py-5 w3-margin-top" style="max-width:1400px; margin-left: 600px;">
-            <div class="w3-container" style="height:300px;width:300px; margin-top:80px;">
-                <!-- <h4 class="text-center">Pay</h4> -->
+    <!-- Centered Container -->
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+        <!-- Payment Card -->
+        <div class="card border-0 p-5" style="max-width: 800px;">
+            <h5 class="text-center mb-4">Your payment is NPR. {{ booking.service.price }}</h5>
+            <p class="text-center mb-4">To confirm your booking, please pay with Khalti.</p>
 
-                <!-- <h2 class="text-center">In order to book your appointment. You have to pay.</h3> -->
-                    <h5>Your payment is {{ booking.service.price }}</h5>
-                    <br>
-                    <h6>To confirm your booking. Please pay with Khalti</h6>
-                    <br>
+            <!-- Pay With Khalti Form -->
+            <form id="initKhaltiForm" action="{% url 'initkhalti' %}" method="post" class="text-center">
+                {% csrf_token %}
+                <input type="hidden" name="purchase_order_id" value="{{ booking.purchase_id }}">
+                <input type="hidden" name="amount" value="{{ price }}">
+                <input type="hidden" name="return_url" value="http://localhost:8000/user/verifyKhalti">
+                <button type="submit" class="btn btn-success btn-block">Pay With Khalti</button>
+            </form>
 
-                    <form id="initKhaltiForm" action="{% url 'initkhalti' %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="purchase_order_id" value="{{ booking.purchase_id }}" id="">
-                        <input type="hidden" name="amount" value="{{ price }}" id="">
-                        <input type="hidden" name="return_url" value="http://localhost:8000/user/verifyKhalti" id="">
-                        <input type="submit" class="btn btn-success" value="Pay With Khalti">
-                    </form>
-                    
-                    <form id="verifyKhaltiForm" action="{% url 'verifyKhalti' %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" name="pidx" id="pidx">
-                    </form>
+            <!-- Verify Khalti Form -->
+            <form id="verifyKhaltiForm" action="{% url 'verifyKhalti' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="pidx" id="pidx">
+            </form>
 
-                    <script>
-                        document.getElementById('initKhaltiForm').addEventListener('submit', function(event) {
-                            
-                            var pidx = document.getElementById('pidx').value;
-                            document.getElementById('verifyKhaltiForm').elements.namedItem('pidx').value = pidx;
-                    
-                            document.getElementById('verifyKhaltiForm').submit();
-                        });
-                    </script>
-
-            </div>
+            <!-- Script for Form Submission -->
+            <script>
+                document.getElementById('initKhaltiForm').addEventListener('submit', function (event) {
+                    var pidx = document.getElementById('pidx').value;
+                    document.getElementById('verifyKhaltiForm').elements.namedItem('pidx').value = pidx;
+                    document.getElementById('verifyKhaltiForm').submit();
+                });
+            </script>
         </div>
     </div>
 </main>
