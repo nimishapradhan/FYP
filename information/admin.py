@@ -7,3 +7,7 @@ from information.models import *
 class ContactAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name',  'phone')
     search_fields = ('first_name', 'last_name',  'phone')
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email',  'details')

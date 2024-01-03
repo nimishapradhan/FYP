@@ -28,6 +28,7 @@ class Doctor(models.Model):
     qualification = models.TextField(null=True, blank=True)
     service_type = models.CharField(max_length=255, null=True, blank=True)
     nmc_number = models.CharField(max_length=255, null=True, blank=True)
+    image = models.ImageField(upload_to='doctor', null=True, blank=True)
 
     status = models.BooleanField(default=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -66,6 +67,3 @@ class Operator(models.Model):
 
     class Meta:
         verbose_name_plural = '4. Office Staff / Operator'
-
-
-

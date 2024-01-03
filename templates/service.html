@@ -29,7 +29,7 @@ Service
 
     .service-image {
         width: 100%;
-        height: auto;
+        height: 350px;
         border-bottom: 1px solid #e1e1e1;
     }
 
@@ -117,7 +117,11 @@ Service
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                 <div class="row service-package py-3">
                     <div class="col-md-4">
-                        <img src="{% static 'image/img19.jpg' %}" alt="general Checkup Image" class="service-image">
+                        {% if s.image %}
+                        <img src="{{ MEDIA_URL }}{{ s.image }}" alt="general Checkup Image" class="service-image">
+                        {% else %}
+                        <img src="{% static 'image/logo.png' %}" alt="general Checkup Image" class="service-image">
+                        {% endif %}
                     </div>
                     <div class="col-md-8">
                         <h3>{{ s.title }}</h3>

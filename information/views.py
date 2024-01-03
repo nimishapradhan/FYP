@@ -4,20 +4,21 @@ from information.models import Contact
 from django.http import HttpResponseRedirect
 from accounts.models import Doctor
 from service.models import Service
+from tailtales.settings import MEDIA_URL
 # Create your views here.
 
 def index_view(request):
-    doctor = Doctor.objects.filter(status = True)
-    service = Service.objects.filter(status = True)
+    doctor = Doctor.objects.filter(status = True)[:3]
+    service = Service.objects.filter(status = True)[:3]
 
-    return render(request, 'index.html', {'doctor':doctor, 'service':service})
+    return render(request, 'index.html', {'doctor':doctor, 'service':service, 'MEDIA_URL':MEDIA_URL})
 
 def about(request):
     return render(request, 'about.html')
 
 def team(request):
     doctor = Doctor.objects.filter(status = True)
-    return render(request, 'team.html', {'doctor':doctor})
+    return render(request, 'team.html', {'doctor':doctor, 'MEDIA_URL':MEDIA_URL})
 
 def contact(request):
     return render(request, 'contact.html')
@@ -28,8 +29,6 @@ def faq(request):
 def terms(request):
     return render(request, 'terms.html')
 
-def feedback(request):
-    return render(request, 'feedback.html')
 
 def save_contact(request):
     if request.method == 'POST':

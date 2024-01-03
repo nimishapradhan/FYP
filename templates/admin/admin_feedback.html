@@ -1,0 +1,46 @@
+{% extends 'main/dashboard.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content px-3 py-2">
+    <!-- Table Element -->
+    <div class="card border-0">
+
+
+        <div class="container py-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="fs-4">Feedback Records</h4>
+            </div>
+
+            <hr />
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Feedback</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fd in feedback %}
+                    <tr>
+                        <td>{{ fd.full_name }}</td>
+                        <td>{{ fd.email }}</td>
+                        <td>{{ fd.details }}</td>
+                        <td>
+                            <a href="{% url 'admin_feedback_delete' id=fd.id %}" onclick="return confirm('Do you want to delete the data?')" class="btn btn-danger" title="Delete feedback">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

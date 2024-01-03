@@ -2,6 +2,13 @@
 {% load static %}
 {% block content %}
 
+<style>
+    /* Initially hide the address-related fields */
+    .address-fields {
+        display: none;
+    }
+</style>
+
 <main class="content px-3 py-2">
     <!-- Table Element -->
     <div class="card border-0">
@@ -41,7 +48,7 @@
                                             <label for="user_booking_email">Email</label>
                                             <input class="form-control" type="text" id="ubooking_email"
                                                 name="booking_email" required style="border: 1px solid #0eb62f"
-                                                value="{{request.user.username}}" readonly/>
+                                                value="{{request.user.email}}" readonly/>
                                         </div>
                                     </div>
 
@@ -167,7 +174,7 @@
                                         <div class="form-group pb-2">
                                             <label for="booking_method">Booking Type(Home / Clinic)</label>
                                             <select class="form-select" id="ubooking_type" name="method" required
-                                                style="border: 1px solid #0eb62f">
+                                                style="border: 1px solid #0eb62f" onchange="toggleFields()">
                                                 <option value="" selected disabled>Select type</option>
                                                 <option value="Home">Home</option>
                                                 <option value="Clinic">Clinic</option>
@@ -175,27 +182,35 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6 col-12">
+                                    <div class="col-lg-6 col-12 address-fields">
                                         <div class="form-group pb-2">
                                             <label for="booking_city">City</label>
                                             <input class="form-control" type="text" id="ubooking_city" name="city"
-                                                required style="border: 1px solid #0eb62f" />
+                                                style="border: 1px solid #0eb62f" />
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6 col-12">
+                                    <div class="col-lg-6 col-12 address-fields">
                                         <div class="form-group pb-2">
                                             <label for="booking_tole">Address</label>
                                             <input class="form-control" type="text" id="ubooking_tole" name="tole"
-                                                required style="border: 1px solid #0eb62f" />
+                                                style="border: 1px solid #0eb62f" />
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-6 col-12">
+                                    <div class="col-lg-6 col-12 address-fields">
                                         <div class="form-group pb-2">
                                             <label for="booking_house">House Number</label>
                                             <input class="form-control" type="text" id="ubooking_house"
-                                                name="house_number" required style="border: 1px solid #0eb62f" />
+                                                name="house_number" style="border: 1px solid #0eb62f" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-12 address-fields">
+                                        <div class="form-group pb-2">
+                                            <label for="location">Location Details</label>
+                                            <input class="form-control" type="text" id="location"
+                                                name="location" style="border: 1px solid #0eb62f" />
                                         </div>
                                     </div>
 
@@ -271,6 +286,24 @@
         document.getElementById("serviceprice").innerText = selectedPrice;
 
     }
+
+    function toggleFields() {
+        var bookingType = document.getElementById('ubooking_type').value;
+        var addressFields = document.querySelectorAll('.address-fields');
+
+        if (bookingType === 'Home') {
+            addressFields.forEach(function (field) {
+                field.style.display = 'block';
+            });
+        } else {
+            addressFields.forEach(function (field) {
+                field.style.display = 'none';
+            });
+        }
+    }
+
+    const today = new Date();
+    document.getElementById("ubooking_bdate").min = today.toISOString().split("T")[0];
 </script>
 
 {% endblock %}

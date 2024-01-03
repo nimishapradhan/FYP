@@ -152,7 +152,7 @@ section.about-section {
 
 /* Styling for individual service packages */
 .package {
-    height: 20rem;;
+    height: 24rem;;
     background-color: #88b4ab; /* Background color for packages */
     padding: 20px; /* Padding inside each package */
     border: 1px solid #ccc; /* Border around each package */

@@ -8,29 +8,31 @@
   <div class="row">
     <!-- Image on the Left Side -->
     <div class="col-md-6 col-12">
-      <img src="{% static 'image/img10.jpg' %}" alt="Feedback Image" class="img-fluid rounded" style="width: 100%; height: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <img src="{% static 'image/img10.jpg' %}" alt="Feedback Image" class="img-fluid rounded"
+        style="width: 100%; height: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
     </div>
 
     <!-- Feedback Content on the Right Side -->
     <div class="col-md-6 col-12 d-flex align-items-center justify-content-center">
       <div class="feedback-container text-center">
         <h2 class="mb-4">We Appreciate Your Feedback</h2>
-        <form>
+        <form action="{% url 'save_feedback' %}" method="post">
+          {% csrf_token %}
           <div class="form-group mb-4">
-            <textarea id="feedback-text" placeholder="Enter your feedback" class="form-control" style="resize: none;"></textarea>
+            <input type="text" class="form-control" name="full_name" id="" placeholder="Name" required>
           </div>
-          <button id="submit-btn" onclick="submitFeedback()" class="btn btn-success">Submit Feedback</button>
+          <div class="form-group mb-4">
+            <input type="email" class="form-control" name="email" id="" placeholder="Email" required>
+          </div>
+          <div class="form-group mb-4">
+            <textarea id="feedback-text" placeholder="Enter your feedback" class="form-control"
+              style="resize: none;" name="details" required></textarea>
+          </div>
+          <button id="submit-btn" type="submit" class="btn btn-success">Submit Feedback</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-    function submitFeedback() {
-        const feedbackText = document.getElementById('feedback-text').value;
-        alert(`Feedback submitted!\nFeedback: ${feedbackText}`);
-        // You can send the feedback to your server for further processing.
-    }
-</script>
 {% endblock %}

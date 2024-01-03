@@ -14,3 +14,14 @@ class Contact(models.Model):
     
     class Meta:
         verbose_name_plural = '1. Contact'
+
+class Feedback(models.Model):
+    full_name = models.CharField(max_length = 255, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    details = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.full_name
+    
+    class Meta:
+        verbose_name_plural = '2. Feedback'

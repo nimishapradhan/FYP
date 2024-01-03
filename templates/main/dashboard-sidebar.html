@@ -123,9 +123,9 @@
                     <li class="sidebar-item">
                         <a href="{% url 'user_payment_list' %}" class="sidebar-link">Payment History</a>
                     </li>
-                    <li class="sidebar-item">
-                        <a href="{% url 'user_generate_bill' %}" class="sidebar-link">Generate Bill</a>
-                    </li>
+                    <!-- <li class="sidebar-item">
+                        <a href="" class="sidebar-link">Generate Bill</a>
+                    </li> -->
                 </ul>
             </li>
             {% elif request.user.is_doctor %}
@@ -186,7 +186,7 @@
                 </a>
                 <ul id="au" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
-                        <a href="" class="sidebar-link">Payment History</a>
+                        <a href="{% url 'admin_payment_history' %}" class="sidebar-link">Payment History</a>
                     </li>
                 </ul>
             </li>
@@ -198,6 +198,9 @@
                 <ul id="co" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
                         <a href="{% url 'admin_contact' %}" class="sidebar-link">Contact Records</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{% url 'admin_feedback' %}" class="sidebar-link">Feedback Records</a>
                     </li>
                 </ul>
             </li>

@@ -1,4 +1,4 @@
-import uuid
+import os
 import json
 import requests
 from django.shortcuts import render, redirect
@@ -7,14 +7,18 @@ from django.contrib.auth.hashers import make_password
 from django.contrib import messages, auth
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-from datetime import datetime, timedelta
-from django.utils import timezone
+from datetime import datetime
 from service.models import Booking, Service, Time, Payment
-from information.models import Contact
+from information.models import Contact, Feedback
 from django.utils.crypto import get_random_string
 from django.core.mail import send_mail
 from tailtales import settings
+from tailtales.settings import MEDIA_URL
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import Table, TableStyle
+from reportlab.lib import colors
+from reportlab.lib.utils import ImageReader
 # Create your views here.
 
 
@@ -107,8 +111,21 @@ def do_login(request):
 def logout(request):
     auth.logout(request)
     messages.success(request, 'Logged out')
-    return HttpResponseRedirect('login')
+    return HttpResponseRedirect('feedback')
 
+def feedback(request):
+    return render(request, 'feedback.html')
+
+def save_feedback(request):
+    if request.method == 'POST':
+        full_name = request.POST['full_name']
+        email = request.POST['email']
+        details = request.POST['details']
+
+        feed_back = Feedback(full_name=full_name, email=email, details=details)
+        feed_back.save()
+        messages.success(request, 'Thank you for your feedback.')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 # for pet owner / patient
 
@@ -133,21 +150,109 @@ def user_appointment_list(request):
     else:
         return HttpResponse('Invalid role')
 
+# -----------------------------------------------------------------------
+
+def generate_pdf(response, payments):
+    response['Content-Disposition'] = 'attachment; filename="payment_history.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+
+    image_path = os.path.abspath('././static/image/logo.png')
+    p.drawImage(ImageReader(image_path), 200, 680, width=200, height=100, preserveAspectRatio=True)
+
+    main_header_text = "------- Tailtales Transaction Details -------"
+    p.setFont("Helvetica-Bold", 16)
+    p.setFillColorRGB(0, 0.5, 0)
+    p.drawString(165, 645, main_header_text)
+
+    header_data = [["Booking ID", "Pet Owner", "Doctor","Service", "Booking Type", "Amount", "Payment Method", "Paid Date"]]
+    
+    data = [[
+        str(pa.booking.id),
+        pa.booking.user.get_full_name(),
+        pa.booking.doctor.user.get_full_name(),
+        pa.booking.service.title,
+        pa.booking.booking_type,
+        str(pa.booking.service.price),
+        pa.payment_method,
+        pa.created_on.strftime("%Y-%m-%d %H:%M:%S")
+    ] for pa in payments]
+
+    all_data = header_data + data
+
+    total_amount = sum(float(pa.booking.service.price) for pa in payments)
+    total_row = ["Total Amount", "", "", "","", f"{total_amount}", "", ""]
+    all_data.append(total_row)
+    table = Table(all_data)
+
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.green),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.whitesmoke),
+    ])
+
+    table.setStyle(style)
+
+    table.wrapOn(p, 0, 0)
+    table.drawOn(p, 0, 450)
+
+    p.save()
+
+@login_required
+def user_download_payment_all(request):
+    if request.user.is_patient:
+        try:
+            bookings = Booking.objects.filter(user=request.user)
+            pay_ment = Payment.objects.filter(booking__in=bookings)
+
+            response = HttpResponse(content_type='application/pdf')
+
+            generate_pdf(response, pay_ment)
+
+            return response
+        except:
+            return HttpResponse('No payment history found')
+    else:
+        return HttpResponse('Invalid role')
+
+
+@login_required
+def user_download_single_payment(request, id):
+    if request.user.is_patient:
+        try:
+            payment_user = Payment.objects.get(id=id, booking__user=request.user)
+
+            response = HttpResponse(content_type='application/pdf')
+
+            generate_single_bill(response, payment_user)
+
+            return response
+        except Payment.DoesNotExist:
+            return HttpResponse('Payment not found')
+    else:
+        return HttpResponse('Invalid role')
+    
+# -------------------------------------------------------
 
 @login_required
 def user_payment_list(request):
     if request.user.is_patient:
-        return render(request, 'user/payment_history.html')
+        booking = Booking.objects.filter(user=request.user)
+        payment = Payment.objects.filter(booking__in=booking)
+        return render(request, 'user/payment_history.html', {'payment':payment})
     else:
         return HttpResponse('Invalid role')
 
 
-@login_required
-def user_generate_bill(request):
-    if request.user.is_patient:
-        return render(request, 'user/generate_bill.html')
-    else:
-        return HttpResponse('Invalid role')
+# @login_required
+# def user_generate_bill(request):
+#     if request.user.is_patient:
+#         return render(request, 'user/generate_bill.html')
+#     else:
+#         return HttpResponse('Invalid role')
 
 
 @login_required
@@ -490,8 +595,9 @@ def admin_register_service(request):
             title = request.POST['ser_title']
             price = request.POST['ser_price']
             details = request.POST['ser_details']
+            image = request.FILES.get('ser_image')
 
-            service = Service(title=title, price=price, details=details)
+            service = Service(title=title, price=price, details=details, image=image)
             service.save()
 
             messages.success(request, 'New Service added.')
@@ -504,7 +610,7 @@ def admin_register_service(request):
 def admin_edit_service(request, id):
     if request.user.is_admin:
         service = Service.objects.get(id=id)
-        return render(request, 'admin/admin_add_service.html', {'service': service})
+        return render(request, 'admin/admin_add_service.html', {'service': service, 'MEDIA_URL':MEDIA_URL})
     else:
         return HttpResponse('Invalid Role action')
 
@@ -517,10 +623,14 @@ def admin_update_service(request, id):
             title = request.POST['ser_title']
             price = request.POST['ser_price']
             details = request.POST['ser_details']
+            image = request.FILES.get('ser_image', None)
 
             service.title = title
             service.price = price
             service.details = details
+
+            if image:
+                service.image = image
 
             service.save()
 
@@ -529,6 +639,16 @@ def admin_update_service(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
+@login_required
+def admin_service_img_remove(request, id):
+    if request.user.is_admin:
+        ser = Service.objects.get(id=id)
+        ser.image = None
+        ser.save()
+        messages.success(request, 'Image removed successfully')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid Role action')
 
 @login_required
 def admin_delete_service(request, id):
@@ -551,6 +671,78 @@ def admin_patient_record(request):
         return render(request, 'admin/admin_patient_record.html', {'patient': patient_record})
     else:
         return HttpResponse('Invalid Role action')
+    
+# admin - payment records
+    
+@login_required
+def admin_payment_history(request):
+    if request.user.is_admin:
+        payment_record = Payment.objects.all()
+        return render(request, 'admin/admin_payment_history.html', {'payment': payment_record})
+    else:
+        return HttpResponse('Invalid Role action')
+    
+@login_required
+def admin_download_payment_history(request):
+    if request.user.is_admin:
+        try:
+            payment_rec = Payment.objects.all()
+            response = HttpResponse(content_type='application/pdf')
+
+            generate_pdf(response, payment_rec)
+
+            return response
+        except:
+            return HttpResponse('No payment history found')
+    else:
+        return HttpResponse('Invalid role action')
+
+def generate_single_bill(response, pa):
+    response['Content-Disposition'] = 'attachment; filename="single_payment_detail.pdf"'
+    p = canvas.Canvas(response)
+
+    image_path = os.path.abspath('././static/image/logo.png')
+    p.drawImage(ImageReader(image_path), 210, 700, width=200, height=100, preserveAspectRatio=True)
+
+    # Title
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(240, 670, "Payment Details")
+
+    # Details
+    p.setFont("Helvetica", 12)
+    p.drawString(100, 640, f"Booking ID: {pa.booking.id}")
+    p.drawString(100, 620, f"Pet Owner Name: {pa.booking.user.get_full_name()}")
+    p.drawString(100, 600, f"Doctor: {pa.booking.doctor.user.get_full_name()}")
+    p.drawString(100, 580, f"Service: {pa.booking.service.title}")
+    p.drawString(100, 560, f"Booking Type: {pa.booking.booking_type}")
+    p.drawString(100, 540, f"Amount: NPR. {pa.booking.service.price}")
+    p.drawString(100, 520, f"Payment Method: {pa.payment_method}")
+    p.drawString(100, 500, f"Paid Date: {pa.created_on.strftime('%Y-%m-%d %H:%M:%S')}")
+    p.drawString(100, 480, f"Booking Date: {pa.booking.date}")
+    p.drawString(100, 460, f"Booking Time: {pa.booking.time}")
+
+    if pa.booking.location:
+        p.drawString(100, 440, f"Location: {pa.booking.location}")
+    p.drawString(100, 400, "Thank You")
+    p.drawString(100, 360, "Clinic Name: TailTales")
+    p.drawString(100, 340, "Address: Naxal")
+
+    p.save()
+
+
+@login_required
+def admin_payment_single_download(request, id):
+    if request.user.is_admin:
+        single_pay = Payment.objects.get(id=id)
+
+        response = HttpResponse(content_type='application/pdf')
+
+        generate_single_bill(response, single_pay)
+
+        return response
+
+    else:
+        return HttpResponse('Invalid role action')
 
 # petowner ----- crud operation
 
@@ -740,6 +932,7 @@ def admin_register_doctor(request):
             qualification = request.POST['doc_qualification']
             service_type = request.POST['doc_service_type']
             nmc_number = request.POST['doc_nmc_number']
+            image = request.FILES.get('doc_image')
 
             is_doctor = True
 
@@ -766,7 +959,7 @@ def admin_register_doctor(request):
             user.save()
 
             doctor = Doctor(user=user, mobile=mobile,
-                            gender=gender, address=address, qualification=qualification, service_type=service_type, nmc_number=nmc_number)
+                            gender=gender, address=address, qualification=qualification, service_type=service_type, nmc_number=nmc_number, image=image)
             doctor.save()
 
             messages.success(request, 'New Doctor added with success.')
@@ -779,7 +972,7 @@ def admin_register_doctor(request):
 def admin_edit_doctor(request, id):
     if request.user.is_admin:
         doctor = Doctor.objects.get(id=id)
-        return render(request, 'admin/admin_add_doctor.html', {'doctor': doctor})
+        return render(request, 'admin/admin_add_doctor.html', {'doctor': doctor,'MEDIA_URL':MEDIA_URL})
     else:
         return HttpResponse('Invalid Role action')
 
@@ -799,6 +992,7 @@ def admin_update_doctor(request, id):
             qualification = request.POST['doc_qualification']
             service_type = request.POST['doc_service_type']
             nmc_number = request.POST['doc_nmc_number']
+            image = request.FILES.get('doc_image', None)
 
             status = request.POST.get('doc_status')
 
@@ -829,6 +1023,9 @@ def admin_update_doctor(request, id):
             doctor.service_type = service_type
             doctor.nmc_number = nmc_number
 
+            if image:
+                doctor.image=image
+
             if status == "0":
                 doctor.status = False
             elif status == "1":
@@ -851,6 +1048,17 @@ def admin_delete_doctor(request, id):
         user = doctor.user
         user.delete()
         messages.success(request, 'Doctor deleted successfully')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid Role action')
+
+@login_required
+def admin_doctor_img_remove(request, id):
+    if request.user.is_admin:
+        doc_image = Doctor.objects.get(id=id)
+        doc_image.image = None
+        doc_image.save()
+        messages.success(request, 'Image removed successfully')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('Invalid Role action')
@@ -1209,6 +1417,24 @@ def admin_contact_delete(request, id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     else:
         return HttpResponse('Invalid Role action')
+    
+@login_required
+def admin_feedback(request):
+    if request.user.is_admin:
+        feedbacks = Feedback.objects.all()
+        return render(request, 'admin/admin_feedback.html', {'feedback':feedbacks})
+    else:
+        return HttpResponse('Invalid Role action')
+
+@login_required
+def admin_feedback_delete(request, id):
+    if request.user.is_admin:
+        feedback = Feedback.objects.get(id=id)
+        feedback.delete()
+        messages.success(request, 'Feedback deleted successfully')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        return HttpResponse('Invalid Role action')
 
 
 def khalti_request(request, id):
@@ -1220,71 +1446,77 @@ def khalti_request(request, id):
 
 def initkhalti(request):
 
-    url = "https://a.khalti.com/api/v2/epayment/initiate/"
+    if request.user.is_patient:
 
-    return_url = request.POST.get('return_url')
-    website_url = request.POST.get('return_url')
-    amount = request.POST.get('amount')
-    purchase_order_id = request.POST.get('purchase_order_id')
+        url = "https://a.khalti.com/api/v2/epayment/initiate/"
 
-    print("url", url)
-    print("return_url", return_url)
-    print("web_url", website_url)
-    print("amount", amount)
-    print("purchase_order_id", purchase_order_id)
-    user = request.user
-    payload = json.dumps({
-        "return_url": return_url,
-        "website_url": website_url,
-        "amount": amount,
-        "purchase_order_id": purchase_order_id,
-        "purchase_order_name": "test",
-        "customer_info": {
-            "name": user.first_name,
-            "email": user.email,
+        return_url = request.POST.get('return_url')
+        website_url = request.POST.get('return_url')
+        amount = request.POST.get('amount')
+        purchase_order_id = request.POST.get('purchase_order_id')
+
+        print("url", url)
+        print("return_url", return_url)
+        print("web_url", website_url)
+        print("amount", amount)
+        print("purchase_order_id", purchase_order_id)
+        user = request.user
+        payload = json.dumps({
+            "return_url": return_url,
+            "website_url": website_url,
+            "amount": amount,
+            "purchase_order_id": purchase_order_id,
+            "purchase_order_name": "test",
+            "customer_info": {
+                "name": user.first_name,
+                "email": user.email,
+            }
+        })
+        headers = {
+            'Authorization': 'key cf584127ee45498ab259d4b328b2cf69',
+            'Content-Type': 'application/json',
         }
-    })
-    headers = {
-        'Authorization': 'key cf584127ee45498ab259d4b328b2cf69',
-        'Content-Type': 'application/json',
-    }
-    response = requests.request("POST", url, headers=headers, data=payload)
-    print(response.text)
-    new_res = json.loads(response.text)
-    print(new_res)
+        response = requests.request("POST", url, headers=headers, data=payload)
+        print(response.text)
+        new_res = json.loads(response.text)
+        print(new_res)
 
-    return redirect(new_res['payment_url'])
-    # return redirect('user_dashboard')
+        return redirect(new_res['payment_url'])
+        # return redirect('user_dashboard')
+    else:
+        return HttpResponse('Invalid Role action')
 
 
 def verifyKhalti(request):
-    pidx = request.GET.get('pidx')
-    txnId = request.GET.get('txnId')
-    amount = request.GET.get('amount')
-    purchase_order_id = request.GET.get('purchase_order_id')
+   
+        pidx = request.GET.get('pidx')
+        txnId = request.GET.get('txnId')
+        amount = request.GET.get('amount')
+        purchase_order_id = request.GET.get('purchase_order_id')
 
-    if pidx and txnId and amount:
-        try:
+        if pidx and txnId and amount:
+            try:
 
-            booking = Booking.objects.get(purchase_id=purchase_order_id)
-            booking.booking_status = 'Confirmed'  
-            booking.status = True  
-            booking.save()
+                booking = Booking.objects.get(purchase_id=purchase_order_id)
+                booking.booking_status = 'Confirmed'  
+                booking.status = True  
+                booking.save()
 
-            payment = Payment.objects.create(payment_id=pidx, booking=booking, payment_method='Khalti', payment_completed=True)
-            payment.save()
+                payment = Payment.objects.create(payment_id=pidx, booking=booking, payment_method='Khalti', payment_completed=True)
+                payment.save()
 
-            send_confirmation_emails(booking)
+                send_confirmation_emails(booking)
 
-            messages.success(request, 'Payment Verified. Booking Confirmed!')
-            return redirect('user_dashboard')
-        except Booking.DoesNotExist:
-            messages.error(request, 'Invalid Booking ID.')
-    else:
-        messages.error(request, 'Invalid parameters in the callback URL.')
+                messages.success(request, 'Payment Verified. Booking Confirmed!')
+                return HttpResponseRedirect('user_appointment_list')
+            except Booking.DoesNotExist:
+                messages.error(request, 'Invalid Booking ID.')
+        else:
+            messages.error(request, 'Invalid parameters in the callback URL.')
 
-    return HttpResponse(status=400)
-
+        return HttpResponse(status=400)
+   
+  
 
 def send_confirmation_emails(booking):
     send_email_to_user(booking)
@@ -1467,4 +1699,3 @@ def reset_password(request):
             return render(request, 'forget_password/reset_password.html', {'error': error, 'email': email})
     else:
         return HttpResponseRedirect('login')
-

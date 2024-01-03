@@ -7,12 +7,13 @@ from django.http import HttpResponseRedirect, HttpResponse
 from datetime import date
 import uuid
 from django.urls import reverse_lazy
+from tailtales.settings import MEDIA_URL
 # Create your views here.
 
 
 def service(request):
     service = Service.objects.filter(status = True)
-    return render(request, 'service.html', {'service':service})
+    return render(request, 'service.html', {'service':service, 'MEDIA_URL':MEDIA_URL})
 
 @login_required
 def appointment_booking(request):
@@ -52,6 +53,7 @@ def do_appointment_booking(request):
             doctor = request.POST['doctor']
             service = request.POST['service']
             user = request.POST['user']
+            location = request.POST['location']
 
             status = False
 
@@ -72,7 +74,7 @@ def do_appointment_booking(request):
                 booking = Booking(service_id=service, user_id=user, email=email, phone=phone, address=address, petname=petname, breed=breed, 
                                 age=age, color=color, gender=gender, name_of_Disease = nameOfDisease, on_going_medication = onGoingMedication,
                                 symptonm_of_Disease=symptomOfDisease, booking_type=booking_type, city=city, tole=tole, houseNumber=houseNumber,
-                                date=date, time_id=time, doctor_id=doctor, status=status)
+                                date=date, time_id=time, doctor_id=doctor, status=status, location=location)
                 
                 booking.save()
 

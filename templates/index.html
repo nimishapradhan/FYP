@@ -22,7 +22,7 @@
 
                 <!-- Buttons for user interaction -->
                 <div class="btn-main">
-                    <a href="" class="btn btn-outline-light">Book Appointment</a>
+                    <a href="{% url 'appointment_booking' %}" class="btn btn-outline-light">Book Appointment</a>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
                             compassionate care, advanced medical services, and client
                             education. We want the best for you and your pet.
                         </p>
-                        <a href="about" class="read-more-btn">Read More</a>
+                        <a href="{% url 'about' %}" class="read-more-btn">Read More</a>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                             to provide personalized and comprehensive healthcare for your
                             beloved pets.
                         </p>
-                        <a href="about" class="read-more-btn">Read More</a>
+                        <a href="{% url 'about' %}" class="read-more-btn">Read More</a>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
                             programs and health services to promote responsible pet ownership
                             and animal welfare.
                         </p>
-                        <a href="about" class="read-more-btn">Read More</a>
+                        <a href="{% url 'about' %}" class="read-more-btn">Read More</a>
                     </div>
                 </div>
             </div>
@@ -97,17 +97,21 @@
                 <div class="intro-main text-center">
                     <h2>Our Services</h2>
                     <p>All our services are available for you!</p>
+                    <a href="{% url 'service' %}" class="btn btn-primary">View all services</a>
                 </div>
-
+                <br>
                 <!-- General Checkup Package -->
                 <div class="container">
                     <div class="row">
                         {% for s in service %}
                         <div class="col-md-4">
                             <div class="package">
+                                {% if s.image %}
+                                <img src="{{MEDIA_URL}}{{s.image}}" alt="" style="height: 150px; width: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 20px;">
+                                {% else %}
+                                <img src="{% static 'image/logo.png' %}" alt="" style="height: 150px; width: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 20px;">
+                                {% endif %}
                                 <h3>{{ s.title }}</h3>
-                                <p>{{ s.details }}</p>
-                                <br>
                                 <p class="price">NPR. {{ s.price }}</p>
                                 <a href="{% url 'appointment_booking' %}" class="btn btn-success book-now-btn">Book Now</a>
                             </div>
@@ -125,8 +129,9 @@
                     <h2>Our VetCare Team</h2>
                     <p>Meet our experienced veterinary professionals dedicated to providing top-quality care for your
                         pets.</p>
+                    <a href="{% url 'team' %}" class="btn btn-primary">View all doctors</a>
                 </div>
-
+                <br>
                 <!-- Individual Team Members -->
                 <div class="container">
                     <div class="row">
@@ -135,7 +140,11 @@
                             <!-- Doctor 1 -->
                             <div class="team-box">
                                 <div class="team-img">
-                                    <img src="{% static 'image/vet3.jpg' %}" alt="Doctor 1" />
+                                    {% if doctor.image %}
+                                    <img src="{{ MEDIA_URL }}{{ doctor.image }}" alt="Doctor img" />
+                                    {% else %}
+                                    <img src="{% static 'image/logo.png' %}" alt="ALternative img">
+                                    {% endif %}
                                 </div>
                                 <div class="team-info">
                                     <h3>{{ doctor.user.first_name }} {{ doctor.user.last_name }}</h3>

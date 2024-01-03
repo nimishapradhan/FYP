@@ -9,7 +9,7 @@
                 <div class="col-md-6 col-12">
                     <div class="fs-4 fw-light text-muted pb-2 text-center">{% if doctor %}Edit Doctor{% else %}Add doctor{% endif %}</div>
                     <form method="post" {% if doctor %}action="{% url 'admin_update_doctor' id=doctor.id %}"
-                    {% else %}action="{% url 'admin_register_doctor' %}" {% endif %}>
+                    {% else %}action="{% url 'admin_register_doctor' %}" {% endif %} enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="col-lg-7 col-md-12 col-8 mx-auto">
                             <div class="form-group pb-2">
@@ -106,6 +106,19 @@
                             </div>
                           </div>
                           {% endif %}
+                          <div class="col-lg-7 col-md-12 col-8 mx-auto">
+                              <div class="form-group pb-2">
+                                  <label for="doc_image">{% if doctor %} Change Image {% else %} Upload Image {% endif %}</label>
+                                  <input class="form-control" type="file" id="doc_image" name="doc_image"
+                                      style="border: 1px solid #0eb62f" accept="image/jpeg, image/png, image/jpg, image/gif"/>
+                                  {% if doctor.image %}
+                                  <div class="text-center">
+                                      <img src="{{ MEDIA_URL }}{{ doctor.image }}" class="form-control" alt="image" style="width: 300px; height: 300px;"><br>
+                                      <a class="btn btn-danger" id="removeImageButton" href="{% url 'admin_doctor_img_remove' id=doctor.id %}" title="Remove Image" onclick="return confirm('Do you want to remove image?')"><i class="fa fa-trash"></i></a>
+                                  </div>
+                                  {% endif %}
+                              </div>
+                          </div>
                           <!-- Password Input Field -->
                           {% if doctor %}
                           <div class="text-center py-4">

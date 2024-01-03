@@ -11,7 +11,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="fs-4">Payment History</h4>
                 <div class="d-flex">
-                    <a href="{% url 'user_download_payment_all' %}" class="btn btn-success me-2" id="pdfExportButton" title="Download">Download statement</a>
+                    <a href="{% url 'admin_download_payment_history' %}" class="btn btn-success me-2" id="pdfExportButton" title="Download">Download statement</a>
                 </div>
 
             </div>
@@ -45,7 +45,7 @@
                         <td>{{ pay.payment_method }}</td>
                         <td>{{ pay.created_on }}</td>
                         <td>
-                            <a href="{% url 'user_download_single_payment' id=pay.id %}" class="btn btn-success" title="Download Invoice">
+                            <a href="{% url 'admin_payment_single_download' id=pay.id %}" class="btn btn-success" title="Download Invoice">
                                 <i class="fa-solid fa-download"></i>
                             </a>
                         </td>
