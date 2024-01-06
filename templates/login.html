@@ -7,15 +7,18 @@
 {% block content %}
 <div class="container">
   <div class="row py-5">
-    <!-- Image on the Left Side -->
-    <div class="col-md-6 col-12">
-      <img src="{% static 'image/img16.jpg' %}" alt="Login Image" class="img-fluid"
-        style="border-radius: 10px; width: 100%; height: 800px;">
-    </div>
 
-    <!-- Login Form on the Right Side -->
-    <div class="col-md-6 col-12">
-      <div class="fs-4 fw-light text-muted pb-2 text-center">Login</div>
+    <!-- Login Form Centered in the Entire Row -->
+    <div class="col-md-6 offset-md-3 col-12">
+    
+          <!-- Box around the Login Form -->
+          <div class="login-box p-4" style="
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        ">
+
+        <div class="fs-4 fw-light text-muted pb-2 text-center">Login</div>
 
       <!-- Login Form -->
       <form method="post" action="{% url 'do_login' %}">
