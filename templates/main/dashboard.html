@@ -290,6 +290,49 @@
         }
     }
 
+    .availability-form {
+        margin-bottom: 4em;
+        /* Adjust the space as needed */
+    }
+
+
+
+
+    /* Add these styles for the search bar */
+    .search-bar {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .search-input {
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        width: 100%;
+        font-size: 16px;
+        background-color: #e0e8f0;
+        /* Dark background color */
+        color: #ecf0f1;
+        /* Light text color */
+    }
+
+    .search-btn {
+        background-color: #20713f;
+        /* Button color */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        margin-left: 10px;
+        cursor: pointer;
+        color: #ecf0f1;
+        /* Light text color */
+    }
+
+    .search-btn:hover {
+        background-color: #2980b9;
+        /* Hover state color */
+    }
 </style>
 
 <body>
@@ -302,12 +345,21 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-             
+                <!-- Search Bar -->
+                <div class="container mt-2 search-bar">
+                    <input type="text" class="form-control search-input" placeholder="Search" aria-label="Search"
+                        aria-describedby="searchIcon">
+                    <button class="btn btn-primary search-btn" type="button" id="searchIcon">
+                        <i class="bi bi-search"></i> Search
+                    </button>
+                </div>
+
                 <div class="navbar-collapse navbar">
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
                             <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
-                                Welcome, {{ request.user.first_name }}
+                                <img src="{% static 'image/logo.png' %}" class="avatar img-fluid rounded" alt="logo"
+                                    style="max-width: 100px; max-height: 200px;"> {{ request.user.first_name }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 {% if request.user.is_patient %}

@@ -49,14 +49,14 @@
                         <!-- Submit Button -->
                         <div class="text-center py-4">
                             <button type="submit" class="btn btn-blue" name="update_profile" style="
-        background: #4CAF50; /* Green color */
-        border: none;
-        color: #fff;
-        padding: 12px 24px;
-        font-size: 18px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        ">
+                                background: #4CAF50; /* Green color */
+                                border: none;
+                                color: #fff;
+                                padding: 12px 24px;
+                                font-size: 18px;
+                                cursor: pointer;
+                                transition: background 0.3s ease;
+                                ">
                                 Confirm
                             </button>
                         </div>
@@ -115,6 +115,9 @@
                             </button>
                         </div>
                     </form>
+                </div>
+                <div class="text-center">
+                    <a href="{% url 'user_delete_account' id=user.id %}" onclick="return confirm('Are you sure about deleting your account?')" class="btn btn-danger">Delete Account</a>
                 </div>
             </div>
         </div>

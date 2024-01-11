@@ -19,6 +19,9 @@ from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
+from django.contrib.auth.password_validation import validate_password
+from django.urls import reverse, reverse_lazy
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
 
@@ -58,6 +61,12 @@ def do_register(request):
 
         if password != confirm_password:
             messages.warning(request, 'Password did not match')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        try:
+            validate_password(password)
+        except:
+            messages.warning(request, 'Password must match all the requirements.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         user = User.objects.create_user(username=username, password=password,
@@ -262,6 +271,16 @@ def user_profile(request):
     else:
         return HttpResponse('Invalid role')
 
+@login_required
+def user_delete_account(request, id):
+    remove_user = User.objects.get(id=id)
+    remove_user.delete()
+
+    auth.logout(request)
+
+    messages.success(request, 'Your account has been deleted.')
+    return redirect('login')
+
 
 @login_required
 def user_profile_update(request):
@@ -381,7 +400,7 @@ def doctor_dashboard(request):
 @login_required
 def doctor_all_appointment(request):
     if request.user.is_doctor:
-        appointments = Booking.objects.filter(doctor=request.user.doctor)
+        appointments = Booking.objects.filter(doctor=request.user.doctor, status=True)
         return render(request, 'doctor/doctor_all_appointments.html', {"appointments": appointments})
     else:
         return HttpResponse('Invalid role action.')
@@ -404,7 +423,7 @@ def doctor_single_appointment(request, id):
 @login_required
 def doctor_patient_details(request):
     if request.user.is_doctor:
-        patient = Booking.objects.filter(doctor=request.user.doctor)
+        patient = Booking.objects.filter(doctor=request.user.doctor, status=True)
         return render(request, 'doctor/doctor_patient_details.html', {'patient': patient})
     else:
         return HttpResponse('Invalid role action')
@@ -795,6 +814,13 @@ def admin_register_petowner(request):
             if password != confirm_password:
                 messages.warning(request, 'Password did not match')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            
+            try:
+                validate_password(password)
+            except:
+                messages.warning(request, 'Password must match all the requirements.')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
             user = User.objects.create_user(username=username, password=password,
                                             first_name=first_name, last_name=last_name, email=username,
@@ -941,7 +967,7 @@ def admin_register_doctor(request):
                     messages.success(request, 'Provide all information')
                     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-            if User.objects.filter(username=username):
+            if User.objects.filter(username=username, email=username):
                 messages.warning(request, 'Email already exists')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -951,6 +977,12 @@ def admin_register_doctor(request):
 
             if password != confirm_password:
                 messages.warning(request, 'Password did not match')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            
+            try:
+                validate_password(password)
+            except:
+                messages.warning(request, 'Password must match all the requirements.')
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
             user = User.objects.create_user(username=username, password=password,
@@ -1135,6 +1167,13 @@ def admin_register_operator(request):
         if password != confirm_password:
             messages.warning(request, 'Password did not match')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+        try:
+            validate_password(password)
+        except:
+            messages.warning(request, 'Password must match all the requirements.')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
         user = User.objects.create_user(username=username, password=password,
                                         first_name=first_name, last_name=last_name, email=username,
@@ -1436,16 +1475,18 @@ def admin_feedback_delete(request, id):
     else:
         return HttpResponse('Invalid Role action')
 
-
+@login_required
 def khalti_request(request, id):
-    booking = Booking.objects.get(pk=id)
-    price = booking.service.price * 100
+    if request.user.is_patient:
+        booking = Booking.objects.get(pk=id)
+        price = booking.service.price * 100
 
-    return render(request, 'user/khalti_payment_request.html', {'booking': booking, 'price': price})
+        return render(request, 'user/khalti_payment_request.html', {'booking': booking, 'price': price})
+    else:
+        return HttpResponse('Invalid Role action')
 
-
+@login_required
 def initkhalti(request):
-
     if request.user.is_patient:
 
         url = "https://a.khalti.com/api/v2/epayment/initiate/"
@@ -1488,7 +1529,7 @@ def initkhalti(request):
 
 
 def verifyKhalti(request):
-   
+    # if request.user.is_patient:
         pidx = request.GET.get('pidx')
         txnId = request.GET.get('txnId')
         amount = request.GET.get('amount')
@@ -1505,7 +1546,7 @@ def verifyKhalti(request):
                 payment = Payment.objects.create(payment_id=pidx, booking=booking, payment_method='Khalti', payment_completed=True)
                 payment.save()
 
-                send_confirmation_emails(booking)
+                # send_confirmation_emails(booking)
 
                 messages.success(request, 'Payment Verified. Booking Confirmed!')
                 return HttpResponseRedirect('user_appointment_list')
@@ -1515,8 +1556,9 @@ def verifyKhalti(request):
             messages.error(request, 'Invalid parameters in the callback URL.')
 
         return HttpResponse(status=400)
-   
-  
+    # else:
+    #     return HttpResponse('Invalid Role action.')
+         
 
 def send_confirmation_emails(booking):
     send_email_to_user(booking)

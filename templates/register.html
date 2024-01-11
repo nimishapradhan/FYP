@@ -20,7 +20,7 @@
 
         <div class="fs-4 fw-light text-muted pb-2 text-center">Register</div>
 
-
+        
       <form action="{% url 'do_register' %}" method="post">
         <!-- Registration Form -->
         <div class="row py-4">
@@ -89,7 +89,8 @@
             <div class="form-group pb-2">
               <label for="user_registration_password">Password</label>
               <input class="form-control" type="password" id="ureg-password" name="reg-password" required
-                style="border: 1px solid #0eb62f" />
+                style="border: 1px solid #0eb62f" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+								title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"/>
             </div>
           </div>
           <div class="col-lg-7 col-md-12 col-8 mx-auto">
@@ -147,9 +148,8 @@
 
       <!-- Google Icon on Another Line -->
       <div class="text-center text-muted py-3">
-        <h3><a class="btn btn-danger" href="{% url 'social:begin' 'google-oauth2' %}"><i class="fab fa-google"></i></a></h3>
+        <h3><i class="fab fa-google"></i></h3>
       </div>
-      
     </div>
 
   </div>

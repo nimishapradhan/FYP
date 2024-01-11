@@ -129,7 +129,8 @@
                             <div class="form-group pb-2">
                               <label for="doc_password">Password</label>
                               <input class="form-control" type="password" id="doc_password" name="doc_password" required
-                                style="border: 1px solid #0eb62f" />
+                                style="border: 1px solid #0eb62f" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"/>
                             </div>
                           </div>
                           <div class="col-lg-7 col-md-12 col-8 mx-auto">

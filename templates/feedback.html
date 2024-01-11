@@ -3,7 +3,6 @@
 
 {% block title %} Feedback Page {% endblock %}
 
-{% block content %}
 <div class="container py-5">
   <div class="row">
     <!-- Image on the Left Side -->
@@ -17,7 +16,6 @@
       <div class="feedback-container text-center">
         <h2 class="mb-4">We Appreciate Your Feedback</h2>
 
-        
         <form action="{% url 'save_feedback' %}" method="post">
           {% csrf_token %}
           <div class="form-group mb-4">

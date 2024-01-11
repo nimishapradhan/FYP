@@ -4,6 +4,8 @@ from accounts import views
 
 urlpatterns = [
     path('oauth/', include('social_django.urls', namespace='social')),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.socialaccount.urls')),
 
     path('login', views.login, name='login'),
     path('register', views.register, name='register'),
@@ -87,6 +89,7 @@ urlpatterns = [
     path('user_change_password', views.user_change_password, name='user_change_password'),
     path('user_cancel_appointment/<id>', views.user_cancel_appointment, name='user_cancel_appointment'),
     path('user_appointment_detail/<id>', views.user_appointment_detail, name='user_appointment_detail'),
+    path('user_delete_account/<id>', views.user_delete_account, name='user_delete_account'),
 
 
     path('doctor_dashboard', views.doctor_dashboard, name='doctor_dashboard'),

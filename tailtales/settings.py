@@ -39,11 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'accounts',
     'information',
     'service',
+    'corsheaders',
 
     'social_django',
+    'accounts',
+
+    # 'accounts.apps.AccountsConfig',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -56,15 +63,23 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000", 
 ]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-SESSION_COOKIE_AGE = 259200
+SESSION_COOKIE_AGE = 1209600
+SESSION_SAVE_EVERY_REQUEST = True
 
 ROOT_URLCONF = 'tailtales.urls'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'user_appointment_list'
 
 # email setup
 
@@ -165,16 +180,36 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SITE_ID = 1
+
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
+    'allauth.account.auth_backends.AuthenticationBackend',
     # Add other social backends as needed
     'django.contrib.auth.backends.ModelBackend',
 )
+
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'SCOPE': ['profile', 'email'],
+#         'AUTH_PARAMS': {'access_type': 'online'},
+#         'APP': {
+#             'client_id': '550542172018-c03s36hd4vlb63bajaif86adfk2kg5le.apps.googleusercontent.com',
+#             'secret': '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',
+#             'key': '',
+#         }
+#     }
+# }
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '634619071101-4oolflnk9g5nf9hqjdp57pa4vm270vo7.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/user/oauth/complete/google-oauth2/'
 
-SOCIAL_AUTH_PIPELINE = (
-    'accounts.pipeline.set_is_patient',
-)
+# SOCIAL_AUTH_PIPELINE = (
+#     'accounts.pipeline.set_is_patient',
+# )

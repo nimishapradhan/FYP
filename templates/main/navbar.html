@@ -39,7 +39,7 @@
                         {% if request.user.is_authenticated %}
                         <li class="nav-item">
                             {% if request.user.is_patient %}
-                            <a class="nav-link" href="{% url 'user_dashboard' %}"><i class="fa fa-user"></i> {{ request.user.first_name }}</a>
+                            <a class="nav-link" href="{% url 'user_dashboard' %}"><i class="fa fa-user"></i> {{ request.user.first_name }} Dashboard</a>
                             {% elif request.user.is_operator %}
                             <a class="nav-link" href="{% url 'operator_dashboard' %}"><i class="fa fa-user"></i> {{ request.user.first_name }}</a>
                             {% elif request.user.is_doctor %}

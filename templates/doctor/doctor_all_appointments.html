@@ -15,7 +15,6 @@
                 <thead>
                     <tr>
                         <th>Pet Owner Name</th>
-                        <th>Pet Owner Phone</th>
                         <th>Service Type</th>
                         <th>Date</th>
                         <th>Time</th>
@@ -27,7 +26,6 @@
                     {% for app in appointments %}
                     <tr>
                         <td>{{ app.user.first_name }} {{ app.user.last_name }}</td>
-                        <td>{{ app.user.petowner.mobile }}</td>
                         <td>{{ app.service.title }}</td>
                         <td>{{ app.date }}</td>
                         <td>{{ app.time }}</td>
