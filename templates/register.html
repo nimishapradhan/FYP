@@ -18,7 +18,9 @@
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         ">
 
-        <div class="fs-4 fw-light text-muted pb-2 text-center">Register</div>
+        <!-- <div class="fs-4 fw-light text-muted pb-2 text-center">Register</div> -->
+<!-- Font 4: Verdana, Geneva, sans-serif -->
+<div class="fs-4 fw-light text-muted pb-2 text-center" style="font-family: 'Verdana', 'Geneva', sans-serif; color: black;">Register</div>
 
         
       <form action="{% url 'do_register' %}" method="post">
@@ -84,7 +86,7 @@
             </div>
           </div>
 
-          <!-- Password Input Field -->
+          <!-- Password Input Field
           <div class="col-lg-7 col-md-12 col-8 mx-auto">
             <div class="form-group pb-2">
               <label for="user_registration_password">Password</label>
@@ -99,14 +101,82 @@
               <input class="form-control" type="password" id="reg-confirm-password" name="reg-confirm-password" required
                 style="border: 1px solid #0eb62f" />
             </div>
-          </div>
-
-          <!-- <div class="col-lg-7 col-md-12 col-8 mx-auto">
-            <div class="form-group pb-2">
-              <label for="">Is patient</label>
-              <input class="form-check-input" type="checkbox" id="" name="is_patient" checked/>
-            </div>
           </div> -->
+
+
+      
+<!-- <div class="col-lg-7 col-md-12 col-8 mx-auto">
+  <div class="form-group pb-2">
+    <label for="user_registration_password">Password</label>
+    <div class="input-group">
+      <input class="form-control" type="password" id="ureg-password" name="reg-password" required
+        style="border: 1px solid #0eb62f; padding-right: 38px; height: 40px;" 
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+        title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"/>
+      <div class="input-group-append" style="height: 40px;">
+        <span class="input-group-text" style="height: 100%;" onclick="togglePasswordVisibility('ureg-password')">
+          <i class="fas fa-eye" style="height: 100%;"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+Confirm Password Input Field with Show Password Eye Icon 
+<div class="col-lg-7 col-md-12 col-8 mx-auto">
+  <div class="form-group pb-2">
+    <label for="user_registration_password">Confirm Password</label>
+    <div class="input-group">
+      <input class="form-control" type="password" id="reg-confirm-password" name="reg-confirm-password" required
+        style="border: 1px solid #0eb62f; padding-right: 38px; height: 40px;" />
+      <div class="input-group-append" style="height: 40px;">
+        <span class="input-group-text" style="height: 100%;" onclick="togglePasswordVisibility('reg-confirm-password')">
+          <i class="fas fa-eye" style="height: 100%;"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>   -->
+
+
+<!-- Password Input Field with Embedded Show Password Eye Icon -->
+<div class="col-lg-7 col-md-12 col-8 mx-auto">
+  <div class="form-group pb-2">
+    <label for="user_registration_password">Password</label>
+    <div class="input-group">
+      <input class="form-control" type="password" id="ureg-password" name="reg-password" required
+        style="border: 1px solid #0eb62f; padding-right: 38px; position: relative; height: 40px;" 
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+        title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"/>
+      <div class="input-group-append" style="position: absolute; top: 0; bottom: 0; right: 0; height: 100%;">
+        <span class="input-group-text" style="height: 100%; background: none; border: none;" onclick="togglePasswordVisibility('ureg-password', 'eye-icon-ureg')">
+          <i id="eye-icon-ureg" class="fas fa-eye" style="height: 100%; background: none;"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Password Input Field with Embedded Show Password Eye Icon -->
+<div class="col-lg-7 col-md-12 col-8 mx-auto">
+  <div class="form-group pb-2">
+    <label for="user_registration_password">Confirm Password</label>
+    <div class="input-group">
+      <input class="form-control" type="password" id="reg-confirm-password" name="reg-confirm-password" required
+        style="border: 1px solid #0eb62f; padding-right: 38px; position: relative; height: 40px;" />
+      <div class="input-group-append" style="position: absolute; top: 0; bottom: 0; right: 0; height: 100%;">
+        <span class="input-group-text" style="height: 100%; background: none; border: none;" onclick="togglePasswordVisibility('reg-confirm-password', 'eye-icon-reg-confirm')">
+          <i id="eye-icon-reg-confirm" class="fas fa-eye" style="height: 100%; background: none;"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+       
+
+
+
 
           <!-- Terms and Conditions Checkbox -->
           <div class="col-lg-7 col-md-12 col-8 mx-auto">
@@ -140,19 +210,47 @@
         Already have an account?<a href="{% url 'login' %}">Login Here!</a>
       </div>
 
-      <!-- Register Link with Google Icon -->
-      <div class="text-center pt-3 text-muted">
-        or register with
-      </div>
-
-
-      <!-- Google Icon on Another Line -->
-      <div class="text-center text-muted py-3">
-        <h3><i class="fab fa-google"></i></h3>
-      </div>
-    </div>
 
   </div>
 </div>
 </div>
+
+
+<!-- The querySelector method to dynamically find the corresponding icon within the same input group. This way, we don't need to manually add IDs to the icon spans  -->
+
+    <!-- <script>
+      function togglePasswordVisibility(inputId) {
+        var passwordInput = document.getElementById(inputId);
+        var passwordToggle = document.querySelector('#' + inputId + ' + .input-group-append i');
+
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          passwordToggle.className = 'fas fa-eye-slash';
+        } else {
+          passwordInput.type = 'password';
+          passwordToggle.className = 'fas fa-eye';
+        }
+      }
+    </script>  -->
+
+    <script>
+      function togglePasswordVisibility(inputId, eyeIconId) {
+        var passwordInput = document.getElementById(inputId);
+        var eyeIcon = document.getElementById(eyeIconId);
+    
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          eyeIcon.className = 'fas fa-eye-slash';
+        } else {
+          passwordInput.type = 'password';
+          eyeIcon.className = 'fas fa-eye';
+        }
+      }
+    </script>
+    
+    
+    
+
+
+
 {% endblock %}
