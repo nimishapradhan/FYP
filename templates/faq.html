@@ -3,42 +3,41 @@
 {% block title %} FAQ {% endblock %}
 {% block content %}
 
+
+<style>
+  .paragraph-spacing {
+    margin-bottom: 2rem; /* Adjust the value based on your preference */
+  }
+</style>
+
+
 <div class="container">
   <div class="row py-5">
-    <!-- Image on the Left Side -->
-    <div class="col-lg-6 col-12">
-      <img src="{% static 'image/img8.jpg' %}" alt="FAQ Image" class="img-fluid" style="border-radius: 10px; width: 100%; height: auto;">
-    </div>
 
-    <!-- FAQ Content on the Right Side -->
-    <div class="col-lg-6 col-12">
-      <div class="faq-container ">
-        <h3>Frequently Asked Questions</h3>
-        <p>
-          Here are some frequently asked questions about our veterinary services at Animal Clinic:
-        </p>
+    <!-- Centered FAQ Content Box -->
+    <div class="col-lg-8 offset-lg-2 col-12 border p-4">
+      <div class="faq text-justify">
+        <h2>Frequently Asked Questions:</h2>
+      <hr class="section-divider">  
 
-        <div class="faq-item" style="margin-bottom: 2rem;">
-          <h3>What vaccinations does my pet need?</h3>
-          <p>Vaccinations vary depending on the type of pet and their age. Please contact our office for a consultation to determine the best vaccine plan for your pet.</p>
-        </div>
 
-        <div class="faq-item" style="margin-bottom: 2rem;">
-          <h3>Can I bring my pet in for a checkup?</h3>
-          <p>Yes! We offer routine checkups and examinations for all of our patients. Please contact us to schedule an appointment.</p>
-        </div>
-
-        <div class="faq-item" style="margin-bottom: 2rem;">
-          <h3>What services does your clinic offer?</h3>
-          <p>We offer a wide range of services including general checkup, vaccinations, dental care, and more. Please contact us for more information.</p>
-        </div>
-
-        <div class="faq-item" style="margin-bottom: 2rem;">
-          <h3>What payment methods do you accept?</h3>
-          <p>We accept both payment through Khalti. For booking an appointment, you have to do an advance payment of Rs 500. This money won't be returned even after cancellation.</p>
-        </div>
+      <!-- Apply the class with spacing to each paragraph -->
+      <h5 style="text-align: justify;">What vaccinations does my pet need?</h5>
+      <p style="text-align: justify; font-size: 18px;" class="paragraph-spacing">Vaccinations vary depending on the type of pet and their age. Please contact our office for a consultation to determine the best vaccine plan for your pet.</p>
+      
+      <h5 style="text-align: justify;">Can I bring my pet in for a checkup?</h5>
+      <p style="text-align: justify; font-size: 18px;" class="paragraph-spacing">Yes! We offer routine checkups and examinations for all of our patients. Please <a href="contact">contact</a> us to schedule an appointment.</p>
+      
+      <h5 style="text-align: justify;">What services does your clinic offer?</h5>
+      <p style="text-align: justify; font-size: 18px;" class="paragraph-spacing">We offer a wide range of <a href="service">services</a> including general checkup, vaccinations, dental care, and more. Please  <a href="contact">contact</a> us for more information.</p>
+      
+      <h5 style="text-align: justify;">What payment methods do you accept?</h5>
+      <p style="text-align: justify; font-size: 18px;" class="paragraph-spacing">We accept payment through Khalti. Please go through our <a href="terms">terms and conditions</a> to learn more about the payment process.</p>
+      
       </div>
     </div>
+
+
   </div>
 </div>
 

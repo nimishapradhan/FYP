@@ -84,17 +84,9 @@ Team
         <h6 class="fw-light fs-4">Experienced veterinary professionals dedicated to providing top-quality care for your
             pets.</h6>
     </div>
-    <div class="text-center">
-        <p>
-            Get to know our team of highly skilled veterinarians who are passionate about providing exceptional care for
-            your pets. Each member brings a unique set of skills and expertise to ensure the well-being and happiness of
-            your furry friends. Meet them below and discover the dedicated professionals behind TailTales Veterinary
-            Clinic.
-        </p>
-    </div>
 </div>
 
-<!-- Service Packages Section with Carousel -->
+<!-- Vet Section with Carousel -->
 
 <div class="container">
     <!-- Previous and Next Slide Buttons -->
@@ -107,7 +99,7 @@ Team
         <span class="visually-hidden">Next</span>
     </button>
 
-    <!-- Service Packages Section -->
+    <!-- Service Packages and Qualification Section -->
 
     <div id="serviceCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner {% if forloop.first %}active{% endif %}">
@@ -123,11 +115,6 @@ Team
                     </div>
                     <div class="col-md-8">
                         <h3>{{ d.user.first_name }} {{ d.user.last_name }}</h3>
-                        <p>
-                            Meet our highly skilled veterinary specialist with a passion for animal care. His extensive
-                            knowledge and expertise in veterinary medicine have saved countless pets, earning him the
-                            respect and gratitude of pet owners.
-                        </p>
                         <p class="lead">{{ d.service_type }}</p>
                         <p class="qualification">{{ d.qualification }}</p>
                         <a href="{% url 'appointment_booking' %}" class="btn btn-success book-now-btn">Book Appointment
@@ -138,13 +125,7 @@ Team
             {% endfor %}
 
 
-            <!-- ... (similar structure for other carousel items) ... -->
-
-
-            <!-- Add more carousel items as needed -->
-
-            <!-- End of Carousel Items -->
-
+         
         </div>
     </div>
 </div>

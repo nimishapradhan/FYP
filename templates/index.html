@@ -8,14 +8,14 @@
 <section class="banner-section">
     <!-- Container to hold the content within a specified width -->
     <div class="container">
-        <!-- Column for text content (6 columns on medium-sized screens and above) -->
-        <div class="">
+        <!-- Column for text content (6 columns on medium-sized screens and above) same for footer -->
+        <div class="row">
             <!-- Banner text content -->
             <div class="banner-text text-center">
                 <!-- Main heading of the banner section -->
-                <h1>Welcome to TailTales</h1>
+                <h1>Welcome to TailTales!</h1>
                 <!-- Subheading or description of the banner section -->
-                <p>
+                <p style="text-align: center; font-size: 24px;">
                     "Compassionate veterinary professionals dedicated to exceptional pet
                     care."
                 </p>
@@ -42,10 +42,10 @@
                     </div>
                     <div class="about-info">
                         <h3>Our Mission</h3>
-                        <p>
+                        <p style="text-align: justify; font-size: 18px;">
                             We are dedicated to promoting the well-being of animals through
                             compassionate care, advanced medical services, and client
-                            education. We want the best for you and your pet.
+                            education. We want the best your pets.
                         </p>
                         <a href="{% url 'about' %}" class="read-more-btn">Read More</a>
                     </div>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="about-info">
                         <h3>Experienced Team</h3>
-                        <p>
+                        <p style="text-align: justify; font-size: 18px;">
                             Our team of skilled veterinarians and staff members work together
                             to provide personalized and comprehensive healthcare for your
                             beloved pets.
@@ -78,7 +78,7 @@
                     </div>
                     <div class="about-info">
                         <h3>Community Engagement</h3>
-                        <p>
+                        <p style="text-align: justify; font-size: 18px;">
                             We actively engage with the community, offering educational
                             programs and health services to promote responsible pet ownership
                             and animal welfare.
@@ -96,7 +96,7 @@
                 <!-- Introductory Section -->
                 <div class="intro-main text-center">
                     <h2>Our Services</h2>
-                    <p>All our services are available for you!</p>
+                    <p style="text-align: center; font-size: 24px;">All our services are available for you!</p>
                     <a href="{% url 'service' %}" class="btn btn-primary">View all services</a>
                 </div>
                 <br>
@@ -127,7 +127,7 @@
                 <!-- Introductory Section -->
                 <div class="intro-main text-center">
                     <h2>Our VetCare Team</h2>
-                    <p>Meet our experienced veterinary professionals dedicated to providing top-quality care for your
+                    <p style="text-align: center; font-size: 24px;">Meet our experienced veterinary professionals dedicated to providing top-quality care for your
                         pets.</p>
                     <a href="{% url 'team' %}" class="btn btn-primary">View all doctors</a>
                 </div>
@@ -163,6 +163,7 @@
             <!-- End of VetCare Team Section -->
 
 
+
             <!-- Start Contact Us Section -->
             <section class="contact-us-section" style="
                     padding: 100px 0;
@@ -176,7 +177,7 @@
                         <!-- Section Title -->
                         <h2>Contacts</h2>
                         <!-- Description -->
-                        <p>
+                        <p style="font-size: 24px;">
                             Have a question? Contact us whenever you have any questions. We are
                             always here for you!
                         </p>
@@ -187,7 +188,7 @@
                                 <!-- First Name Input Field -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group pb-2">
-                                        <label for="contact-first-name">First Name</label>
+                                        <label for="contact-first-name" style="font-size: 20px;">First Name</label>
                                         <input class="form-control" type="text" id="c-first-name" name="first-name"
                                             required class="p-1 fs-4 bg-transparent"
                                             style="border: 1px solid #0eb62f" />
@@ -197,7 +198,7 @@
                                 <!-- Last Name Input Field -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group pb-2">
-                                        <label for="contact-last-name">Last Name</label>
+                                        <label for="contact-last-name" style="font-size: 20px;">Last Name</label>
                                         <input class="form-control" type="text" id="c-last-name" name="last-name"
                                             required class="p-1 fs-4 bg-transparent"
                                             style="border: 1px solid #0eb62f" />
@@ -206,7 +207,7 @@
                                 <!-- Email Address Input Field -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group pb-2">
-                                        <label for="contact-email">Email address</label>
+                                        <label for="contact-email" style="font-size: 20px;">Email address</label>
                                         <input class="form-control" type="email" id="c-email" name="email" required
                                             class="p-1 fs-4 bg-transparent" style=" border: 1px solid #0eb62f" />
                                     </div>
@@ -215,7 +216,7 @@
                                 <!-- Phone Input Field -->
                                 <div class="col-md-6 col-12">
                                     <div class="form-group pb-2">
-                                        <label for="contact-phone">Phone</label>
+                                        <label for="contact-phone" style="font-size: 20px;">Phone</label>
                                         <input class="form-control" type="tel" id="c-phone" name="phone"
                                             class="p-1 fs-4 bg-transparent" style=" border: 1px solid #0eb62f" required />
                                     </div>
@@ -224,7 +225,7 @@
                                 <!-- Notes Textarea -->
                                 <div class="col-12">
                                     <div class="form-group pb-2">
-                                        <label for="contact-notes">Notes</label>
+                                        <label for="contact-notes" style="font-size: 20px;">Notes</label>
                                         <textarea class="form-control" id="c-notes" name="notes" rows="4" required
                                             class="p-1 fs-4 bg-transparent" style="
                  border: 1px solid #0eb62f;
@@ -239,7 +240,7 @@
             border: none;
             color: #fff;
             padding: 12px 24px;
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             transition: background 0.3s ease;
           ">
