@@ -727,24 +727,45 @@ def generate_single_bill(response, pa):
     p.setFont("Helvetica-Bold", 16)
     p.drawString(240, 670, "Payment Details")
 
-    # Details
-    p.setFont("Helvetica", 12)
-    p.drawString(100, 640, f"Booking ID: {pa.booking.id}")
-    p.drawString(100, 620, f"Pet Owner Name: {pa.booking.user.get_full_name()}")
-    p.drawString(100, 600, f"Doctor: {pa.booking.doctor.user.get_full_name()}")
-    p.drawString(100, 580, f"Service: {pa.booking.service.title}")
-    p.drawString(100, 560, f"Booking Type: {pa.booking.booking_type}")
-    p.drawString(100, 540, f"Amount: NPR. {pa.booking.service.price}")
-    p.drawString(100, 520, f"Payment Method: {pa.payment_method}")
-    p.drawString(100, 500, f"Paid Date: {pa.created_on.strftime('%Y-%m-%d %H:%M:%S')}")
-    p.drawString(100, 480, f"Booking Date: {pa.booking.date}")
-    p.drawString(100, 460, f"Booking Time: {pa.booking.time}")
+    # Create data for the table
+    data = [
+        ("Booking ID", pa.booking.id),
+        ("Pet Owner Name", pa.booking.user.get_full_name()),
+        ("Doctor", pa.booking.doctor.user.get_full_name()),
+        ("Service", pa.booking.service.title),
+        ("Booking Type", pa.booking.booking_type),
+        ("Amount", f"NPR. {pa.booking.service.price}"),
+        ("Payment Method", pa.payment_method),
+        ("Paid Date", pa.created_on.strftime('%Y-%m-%d')),
+        ("Booking Date", pa.booking.date),
+        ("Booking Time", pa.booking.time),
+    ]
 
     if pa.booking.location:
-        p.drawString(100, 440, f"Location: {pa.booking.location}")
-    p.drawString(100, 400, "Thank You")
-    p.drawString(100, 360, "Clinic Name: TailTales")
-    p.drawString(100, 340, "Address: Naxal")
+        data.append(("Location", pa.booking.location))
+
+    col_widths = [150, 200]  # Adjust the width of columns as needed
+    table = Table(data, colWidths=col_widths)
+    
+    # Create the table
+    table = Table(data)
+
+    # Style the table
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.green),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ])
+
+    table.setStyle(style)
+
+    # Draw the table on the canvas
+    table.wrapOn(p, 1000, 1000)  # Adjust the size as needed
+    table.drawOn(p, 200, 400)  # Adjust the position as needed
 
     p.save()
 
@@ -1527,9 +1548,9 @@ def initkhalti(request):
     else:
         return HttpResponse('Invalid Role action')
 
-
+@login_required
 def verifyKhalti(request):
-    # if request.user.is_patient:
+    if request.user.is_patient:
         pidx = request.GET.get('pidx')
         txnId = request.GET.get('txnId')
         amount = request.GET.get('amount')
@@ -1546,7 +1567,14 @@ def verifyKhalti(request):
                 payment = Payment.objects.create(payment_id=pidx, booking=booking, payment_method='Khalti', payment_completed=True)
                 payment.save()
 
-                # send_confirmation_emails(booking)
+                post_bill_response = post_bill_view(booking)
+
+                send_confirmation_emails(booking)
+
+                if 'result' in post_bill_response:
+                    messages.success(request, f"{post_bill_response['message']}. Response Data: {post_bill_response['data']}")
+                else:
+                    messages.error(request, f"Error code {post_bill_response['error']}: {post_bill_response['message']}. Response Data: {post_bill_response['data']}")
 
                 messages.success(request, 'Payment Verified. Booking Confirmed!')
                 return HttpResponseRedirect('user_appointment_list')
@@ -1556,8 +1584,8 @@ def verifyKhalti(request):
             messages.error(request, 'Invalid parameters in the callback URL.')
 
         return HttpResponse(status=400)
-    # else:
-    #     return HttpResponse('Invalid Role action.')
+    else:
+        return HttpResponse('Invalid Role action.')
          
 
 def send_confirmation_emails(booking):
@@ -1741,3 +1769,49 @@ def reset_password(request):
             return render(request, 'forget_password/reset_password.html', {'error': error, 'email': email})
     else:
         return HttpResponseRedirect('login')
+
+# ird api called to post the bill for verification
+
+def post_bill_view(booking):
+    api_url = "https://cbapi.ird.gov.np/api/bill"
+
+    headers = {
+        "Content-Type": "application/json",
+    }
+
+    payload = {
+        "username": booking.user.email,
+        "password": booking.user.password,
+        "seller_pan": "999999999",
+        "buyer_pan": "123456789",
+        "buyer_name": booking.user.first_name,
+        "fiscal_year": "2073.074",
+        "invoice_number": str(booking.id),
+        "invoice_date": "2074.07.06",
+        "total_sales": 1130,
+        "taxable_sales_vat": 1000,
+        "vat": 130,
+        "excisable_amount": 0,
+        "excise": 0,
+        "taxable_sales_hst": 0,
+        "hst": 0,
+        "amount_for_esf": 0,
+        "esf": 0,
+        "export_sales": 0,
+        "tax_exempted_sales": 0,
+        "isrealtime": True,
+        "datetimeclient": datetime.now().isoformat(),
+    }
+    print(payload)
+    try:
+        response = requests.post(api_url, data=json.dumps(payload), headers=headers)
+
+        print(response.json())
+
+        if response.status_code == 200:
+            return {"result": response.status_code, "message": "Payment verification successful.","data": response.json()}
+        else:
+            return {"error": f"Error code {response.status_code}", "message": "Payment verification failed.", "data": response.json()}
+
+    except Exception as e:
+        return {"error": str(e), "message": "An error occurred during payment verification."}
