@@ -715,6 +715,8 @@ def admin_download_payment_history(request):
             return HttpResponse('No payment history found')
     else:
         return HttpResponse('Invalid role action')
+    
+
 
 def generate_single_bill(response, pa):
     response['Content-Disposition'] = 'attachment; filename="single_payment_detail.pdf"'
@@ -768,6 +770,8 @@ def generate_single_bill(response, pa):
     table.drawOn(p, 200, 400)  # Adjust the position as needed
 
     p.save()
+
+
 
 
 @login_required
