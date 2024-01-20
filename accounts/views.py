@@ -718,6 +718,59 @@ def admin_download_payment_history(request):
     
 
 
+# def generate_single_bill(response, pa):
+#     response['Content-Disposition'] = 'attachment; filename="single_payment_detail.pdf"'
+#     p = canvas.Canvas(response)
+
+#     image_path = os.path.abspath('././static/image/logo.png')
+#     p.drawImage(ImageReader(image_path), 210, 700, width=200, height=100, preserveAspectRatio=True)
+
+#     # Title
+#     p.setFont("Helvetica-Bold", 16)
+#     p.drawString(240, 670, "Payment Details")
+
+#     # Create data for the table
+#     data = [
+#         ("Booking ID", pa.booking.id),
+#         ("Pet Owner Name", pa.booking.user.get_full_name()),
+#         ("Doctor", pa.booking.doctor.user.get_full_name()),
+#         ("Service", pa.booking.service.title),
+#         ("Booking Type", pa.booking.booking_type),
+#         ("Amount", f"NPR. {pa.booking.service.price}"),
+#         ("Payment Method", pa.payment_method),
+#         ("Paid Date", pa.created_on.strftime('%Y-%m-%d')),
+#         ("Booking Date", pa.booking.date),
+#         ("Booking Time", pa.booking.time),
+#     ]
+
+#     if pa.booking.location:
+#         data.append(("Location", pa.booking.location))
+
+#     col_widths = [150, 200]  # Adjust the width of columns as needed
+#     table = Table(data, colWidths=col_widths)
+    
+#     # Create the table
+#     table = Table(data)
+
+#     # Style the table
+#     style = TableStyle([
+#         ('BACKGROUND', (0, 0), (-1, 0), colors.green),
+#         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+#         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+#         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+#         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+#         ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+#         ('GRID', (0, 0), (-1, -1), 1, colors.black),
+#     ])
+
+#     table.setStyle(style)
+
+#     # Draw the table on the canvas
+#     table.wrapOn(p, 1000, 1000)  # Adjust the size as needed
+#     table.drawOn(p, 200, 400)  # Adjust the position as needed
+
+#     p.save()
+    
 def generate_single_bill(response, pa):
     response['Content-Disposition'] = 'attachment; filename="single_payment_detail.pdf"'
     p = canvas.Canvas(response)
@@ -729,29 +782,22 @@ def generate_single_bill(response, pa):
     p.setFont("Helvetica-Bold", 16)
     p.drawString(240, 670, "Payment Details")
 
-    # Create data for the table
+    header_data = ["Booking ID", "Pet Owner", "Doctor", "Service", "Booking Type", "Amount", "Payment Method", "Paid Date"]
+
     data = [
-        ("Booking ID", pa.booking.id),
-        ("Pet Owner Name", pa.booking.user.get_full_name()),
-        ("Doctor", pa.booking.doctor.user.get_full_name()),
-        ("Service", pa.booking.service.title),
-        ("Booking Type", pa.booking.booking_type),
-        ("Amount", f"NPR. {pa.booking.service.price}"),
-        ("Payment Method", pa.payment_method),
-        ("Paid Date", pa.created_on.strftime('%Y-%m-%d')),
-        ("Booking Date", pa.booking.date),
-        ("Booking Time", pa.booking.time),
+        [str(pa.booking.id),
+        pa.booking.user.get_full_name(),
+        pa.booking.doctor.user.get_full_name(),
+        pa.booking.service.title,
+        pa.booking.booking_type,
+        f"NPR. {pa.booking.service.price}",
+        pa.payment_method,
+        pa.created_on.strftime("%Y-%m-%d")]
     ]
-
-    if pa.booking.location:
-        data.append(("Location", pa.booking.location))
-
-    col_widths = [150, 200]  # Adjust the width of columns as needed
-    table = Table(data, colWidths=col_widths)
     
-    # Create the table
-    table = Table(data)
-
+    all_data = [header_data] + data
+    table = Table(all_data)
+    
     # Style the table
     style = TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.green),
@@ -765,9 +811,11 @@ def generate_single_bill(response, pa):
 
     table.setStyle(style)
 
-    # Draw the table on the canvas
-    table.wrapOn(p, 1000, 1000)  # Adjust the size as needed
-    table.drawOn(p, 200, 400)  # Adjust the position as needed
+    table.wrapOn(p, 0, 0)
+    table.drawOn(p, 20, 550)
+
+    p.setFont("Helvetica-Bold", 12)
+    p.drawString(220, 450, "Thank you! TailTales")
 
     p.save()
 
