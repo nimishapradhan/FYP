@@ -79,14 +79,10 @@
         }
 
         td:nth-of-type(3):before {
-            content: "Duration";
-        }
-
-        td:nth-of-type(4):before {
             content: "Status";
         }
 
-        td:nth-of-type(5):before {
+        td:nth-of-type(4):before {
             content: "Action";
         }
     }
@@ -115,7 +111,6 @@
                     <tr>
                         <th>Start time</th>
                         <th>End time</th>
-                        <th>Duration</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -125,7 +120,6 @@
                     <tr>
                         <td>{{ time.start_time }} </td>
                         <td>{{ time.end_time }} </td>
-                        <td>{{ time.duration }} </td>
                         {% if time.status == 1 %}
                         <td><i class="fa fa-check-circle text-success"></i></td>
                         {% else %}

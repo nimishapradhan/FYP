@@ -1,26 +1,26 @@
-import os
-import json
-import requests
-from django.shortcuts import render, redirect
-from accounts.models import *
-from django.contrib.auth.hashers import make_password
-from django.contrib import messages, auth
+import os                                                                     # Importing the 'os' module for interacting with the operating system.
+import json                                                                   # Importing the 'json' module for working with JSON data.
+import requests                                                               # Importing the 'requests' module for making HTTP requests.
+from django.shortcuts import render, redirect                    
+from accounts.models import *                                                 # Importing models from the 'accounts' app
+from django.contrib.auth.hashers import make_password                         # Importing a function for hashing passwords from Django
+from django.contrib import messages, auth                                     
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from service.models import Booking, Service, Time, Payment
 from information.models import Contact, Feedback
 from django.utils.crypto import get_random_string
-from django.core.mail import send_mail
+from django.core.mail import send_mail                                         # Importing a function for sending emails from Django
 from tailtales import settings
-from tailtales.settings import MEDIA_URL
-from reportlab.pdfgen import canvas
+from tailtales.settings import MEDIA_URL                                       # Import MEDIA_URL from 'tailtales.settings'
+from reportlab.pdfgen import canvas                                            # Importing modules for generating PDFs from ReportLab
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import Table, TableStyle
 from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
 from django.contrib.auth.password_validation import validate_password
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy                                         # Importing functions for reversing URLs from Django
 from django.contrib.auth import authenticate, login
 # Create your views here.
 
@@ -32,9 +32,9 @@ def login(request):
 def register(request):
     return render(request, 'register.html')
 
-
+# Define a function named 'do_register' which handles registration requests
 def do_register(request):
-    if request.method == 'POST':
+    if request.method == 'POST':                                    # When a form is submitted with the 'POST' method, the data from the form fields is sent to the server in the request body, allowing the server to process and handle the data accordingly.
         first_name = request.POST['reg-first-name']
         last_name = request.POST['reg-last-name']
         username = request.POST['reg-email']
@@ -44,8 +44,10 @@ def do_register(request):
         confirm_password = request.POST['reg-confirm-password']
         address = request.POST['reg-address']
 
+         # Set a flag indicating whether the user is a patient
         is_patient = True
-
+        
+        # Check if any required field is empty
         for value in [first_name, last_name, username, password, confirm_password]:
             if value is None or value == '':
                 messages.success(request, 'Provide all information')
@@ -63,6 +65,8 @@ def do_register(request):
             messages.warning(request, 'Password did not match')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         
+
+        # Validate the password against Django's built-in password validation rules
         try:
             validate_password(password)
         except:
