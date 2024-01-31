@@ -164,6 +164,8 @@ def user_appointment_list(request):
         return HttpResponse('Invalid role')
 
 # -----------------------------------------------------------------------
+    
+# function ma Django ko Canvas use garera table bhaneko parameter pa chai payment ko lagi ho,  data ma tei pa lai use garera booking table bata id, user ko name, doctor ko name ani property haru taneko ani data ra header data lai jodeko tyo table banaunua, style tyo color haru dina and tableWrapOn ley size and table.drawOn ley tyo position determine garcha ani last ma save gareko ho.
 
 def generate_pdf(response, payments):
     response['Content-Disposition'] = 'attachment; filename="payment_history.pdf"'
@@ -775,6 +777,10 @@ def admin_download_payment_history(request):
 
 #     p.save()
     
+
+
+# function ma Django ko Canvas use garera table bhaneko parameter pa chai payment ko lagi ho,  data ma tei pa lai use garera booking table bata id, user ko name, doctor ko name ani property haru taneko ani data ra header data lai jodeko tyo table banaunua, style tyo color haru dina and tableWrapOn ley size and table.drawOn ley tyo position determine garcha ani last ma save gareko.
+    
 def generate_single_bill(response, pa):
     response['Content-Disposition'] = 'attachment; filename="single_payment_detail.pdf"'
     p = canvas.Canvas(response)
@@ -1135,6 +1141,7 @@ def admin_update_doctor(request, id):
             if image:
                 doctor.image=image
 
+            # Sets the doctor's status based on the value in the POST request; 0 for inactive, 1 for active else returns an HttpResponse with 'Invalid' message if the status is neither "0" nor "1".
             if status == "0":
                 doctor.status = False
             elif status == "1":
@@ -1358,9 +1365,9 @@ def admin_operator_change_password(request, id):
 def operator_dashboard(request):
     if request.user.is_operator:
         today_date = datetime.now().date()
-        doctor_op = Doctor.objects.filter(status=True)[:4]
-        app_op = Booking.objects.filter(
-            status=True, date__gte=today_date).order_by('date')[:4]
+        doctor_op = Doctor.objects.filter(status=True)[:4]                              # Retrieves up to 4 active doctors
+        app_op = Booking.objects.filter(                                                # Retrieves up to 4 upcoming appointments
+            status=True, date__gte=today_date).order_by('date')[:4]                        
         return render(request, 'operator/operator_dashboard.html', {'doctors': doctor_op, 'appointment': app_op})
     else:
         return HttpResponse('Invalid action role')
@@ -1651,8 +1658,37 @@ def send_confirmation_emails(booking):
     send_email_to_operator(booking)
 
 
+# from django.template.loader import render_to_string
+# from django.core.mail import send_mail
+# from django.conf import settings
+
+# def send_confirmation_emails(booking):
+#     subject = 'Appointment Confirmed'
+
+#     # Context for rendering the email template
+#     context = {
+#         'user': booking.user,
+#         'doctor': booking.doctor.user,
+#         'service': booking.service,
+#         'booking_type': booking.booking_type,
+#         'date': booking.date,
+#         'time': booking.time,
+#     }
+
+#     # Render the email template with the context data
+#     message = render_to_string('confirmation_email.html', context)
+
+#     # Sender and recipient email addresses
+#     from_email = settings.EMAIL_HOST_USER
+#     to_email = [booking.user.email]
+
+#     # Send the email
+#     send_mail(subject, message, from_email, to_email, html_message=message)
+
+
+ # Defines a function named "send_email_to_user" that takes a single argument "booking".
 def send_email_to_user(booking):
-    subject = 'Appointment Confirmed'
+    subject = 'Appointment Confirmed'                                                  # Assigns a string 'Appointment Confirmed' to the variable "subject".
 
     message = f'Dear {booking.user.first_name} {booking.user.last_name},<br><br>'
     message += f'Your appointment has been confirmed. Your appointment details:<br><br>'
@@ -1663,10 +1699,10 @@ def send_email_to_user(booking):
     message += f'<strong>Time:</strong> {booking.time}<br><br>'
     message += 'Thank You!'
 
-    from_email = settings.EMAIL_HOST_USER
-    to_email = [booking.user.email]
+    from_email = settings.EMAIL_HOST_USER                                          # Retrieves the email host user from the settings.
+    to_email = [booking.user.email]                                                 # Retrieves the user's email address and stores it in a list.
 
-    send_mail(subject, message, from_email, to_email, html_message=message)
+    send_mail(subject, message, from_email, to_email, html_message=message)               # Calls the send_mail function to send the email with the specified subject, message, sender, recipient, and HTML message.
 
 def send_email_to_doctor(booking):
     subject = 'Appointment Confirmed'
