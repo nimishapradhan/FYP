@@ -6,35 +6,35 @@
    
         <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
             <h2 style="color: #333;">Booking Confirmation</h2>
-            <p>Dear [Customer Name],</p>
+            <p>Dear  {booking.user.first_name} {booking.user.last_name},</p>
             <p>We are pleased to confirm your booking with us. Below are the details of your booking:</p>
     
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                 <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;">Booking Reference:</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">[Booking Reference Number]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">Doctor:</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{booking.doctor.user.first_name} {booking.doctor.user.last_name}</td>
                 </tr>
                 <tr>
                     <td style="padding: 8px; border: 1px solid #ddd;">Date:</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">[Booking Date]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{booking.date}</td>
                 </tr>
                 <tr>
                     <td style="padding: 8px; border: 1px solid #ddd;">Time:</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">[Booking Time]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{booking.time}]</td>
                 </tr>
                 <tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;">Service/Event:</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">[Service/Event Name]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">Service:</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">{booking.service}</td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td style="padding: 8px; border: 1px solid #ddd;">Location:</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">[Booking Location]</td>
-                </tr>
+                </tr> -->
             </table>
     
             <p style="margin-top: 20px;">Thank you for choosing us. If you have any questions or need further assistance, feel free to contact us.</p>
     
-            <p>Best regards,<br/>[Your Company Name]</p>
+            <p>Best regards,<br/>Tailtales</p>
         </div>
     
     

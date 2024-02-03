@@ -1658,32 +1658,6 @@ def send_confirmation_emails(booking):
     send_email_to_operator(booking)
 
 
-# from django.template.loader import render_to_string
-# from django.core.mail import send_mail
-# from django.conf import settings
-
-# def send_confirmation_emails(booking):
-#     subject = 'Appointment Confirmed'
-
-#     # Context for rendering the email template
-#     context = {
-#         'user': booking.user,
-#         'doctor': booking.doctor.user,
-#         'service': booking.service,
-#         'booking_type': booking.booking_type,
-#         'date': booking.date,
-#         'time': booking.time,
-#     }
-
-#     # Render the email template with the context data
-#     message = render_to_string('confirmation_email.html', context)
-
-#     # Sender and recipient email addresses
-#     from_email = settings.EMAIL_HOST_USER
-#     to_email = [booking.user.email]
-
-#     # Send the email
-#     send_mail(subject, message, from_email, to_email, html_message=message)
 
 
  # Defines a function named "send_email_to_user" that takes a single argument "booking".
