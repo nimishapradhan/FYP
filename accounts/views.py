@@ -1737,6 +1737,46 @@ def send_email_to_operator(booking):
 
 # forget password
 
+# def forget_password(request):
+#     try:
+#         if request.method == 'POST':
+#             email = request.POST['email']
+
+#             if not User.objects.filter(email=email).first():
+#                 messages.warning(request, 'No email found.')
+#                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
+#             otp = get_random_string(length=6, allowed_chars='1234567890')
+
+#             request.session['reset_email'] = email 
+
+#             user = User.objects.get(email=email)
+#             user.otp = otp
+#             user.save()
+
+#             subject = 'Forget Password'
+        
+#             message = f'Hello {user.first_name} {user.last_name},<br><br>'
+#             message += 'You requested a password reset. Please use the following OTP to proceed:<br><br>'
+#             message += f'<strong>OTP: {otp}</strong><br><br>'
+#             message += 'This OTP is valid for 15 minutes.<br>'
+#             message += 'If you did not request a password reset, please ignore this email.<br><br>'
+#             message += 'Thank You!'
+
+#             from_email = settings.EMAIL_HOST_USER
+#             recipient_list = [user.email]
+
+#             send_mail(subject, message, from_email, recipient_list, html_message=message)
+
+#             return render(request, 'forget_password/otp.html')
+#     except:
+#         messages.warning(request, 'Invalid')
+#         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    
+#     return render(request,'forget_password/forget_password.html')
+
+from django.template.loader import render_to_string
+
 def forget_password(request):
     try:
         if request.method == 'POST':
@@ -1755,25 +1795,21 @@ def forget_password(request):
             user.save()
 
             subject = 'Forget Password'
-        
-            message = f'Hello {user.first_name} {user.last_name},<br><br>'
-            message += 'You requested a password reset. Please use the following OTP to proceed:<br><br>'
-            message += f'<strong>OTP: {otp}</strong><br><br>'
-            message += 'This OTP is valid for 15 minutes.<br>'
-            message += 'If you did not request a password reset, please ignore this email.<br><br>'
-            message += 'Thank You!'
+
+            # Use the render_to_string function to render the email template
+            email_template = render_to_string('forget_password/reset_password_email_template.html', {'user': user, 'otp': otp})
 
             from_email = settings.EMAIL_HOST_USER
             recipient_list = [user.email]
 
-            send_mail(subject, message, from_email, recipient_list, html_message=message)
+            send_mail(subject, None, from_email, recipient_list, html_message=email_template)
 
             return render(request, 'forget_password/otp.html')
     except:
         messages.warning(request, 'Invalid')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     
-    return render(request,'forget_password/forget_password.html')
+    return render(request, 'forget_password/forget_password.html')
 
 def verify_otp(request):
     try:
