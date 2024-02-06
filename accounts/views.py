@@ -1651,6 +1651,91 @@ def verifyKhalti(request):
         return HttpResponse('Invalid Role action.')
          
 
+# def send_confirmation_emails(booking):
+#     send_email_to_user(booking)
+#     send_email_to_doctor(booking)
+#     send_email_to_admin(booking)
+#     send_email_to_operator(booking)
+
+
+
+
+#  # Defines a function named "send_email_to_user" that takes a single argument "booking".
+# def send_email_to_user(booking):
+#     subject = 'Appointment Confirmed'                                                  # Assigns a string 'Appointment Confirmed' to the variable "subject".
+
+#     message = f'Dear {booking.user.first_name} {booking.user.last_name},<br><br>'
+#     message += f'Your appointment has been confirmed. Your appointment details:<br><br>'
+#     message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}<br><br>'
+#     message += f'<strong>Service:</strong> {booking.service}<br><br>'
+#     message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
+#     message += f'<strong>Date:</strong> {booking.date}<br><br>'
+#     message += f'<strong>Time:</strong> {booking.time}<br><br>'
+#     message += 'Thank You!'
+
+#     from_email = settings.EMAIL_HOST_USER                                          # Retrieves the email host user from the settings.
+#     to_email = [booking.user.email]                                                 # Retrieves the user's email address and stores it in a list.
+
+#     send_mail(subject, message, from_email, to_email, html_message=message)               # Calls the send_mail function to send the email with the specified subject, message, sender, recipient, and HTML message.
+
+# def send_email_to_doctor(booking):
+#     subject = 'Appointment Confirmed'
+
+#     message = f'Dear {booking.doctor.user.first_name} {booking.doctor.user.last_name},<br><br>'
+#     message += f'Appointment has been confirmed:<br><br>'
+#     message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
+#     message += f'<strong>Service:</strong> {booking.service}<br><br>'
+#     message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
+#     message += f'<strong>Date:</strong> {booking.date}<br><br>'
+#     message += f'<strong>Time:</strong> {booking.time}<br><br>'
+#     message += 'Thank You!'
+
+#     from_email = settings.EMAIL_HOST_USER
+#     to_email = [booking.doctor.user.email]
+
+#     send_mail(subject, message, from_email, to_email, html_message=message)
+
+# def send_email_to_admin(booking):
+
+#     admin_users = User.objects.filter(is_admin=True)
+
+#     subject = 'Appointment Confirmed'
+
+#     message = f'Appointment has been confirmed:<br><br>'
+#     message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
+#     message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}  <br><br>'
+#     message += f'<strong>Service:</strong> {booking.service}<br><br>'
+#     message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
+#     message += f'<strong>Date:</strong> {booking.date}<br><br>'
+#     message += f'<strong>Time:</strong> {booking.time}<br><br>'
+#     message += 'Thank You!'
+
+#     from_email = settings.EMAIL_HOST_USER
+#     to_email = [admin_user.email for admin_user in admin_users]
+
+#     send_mail(subject, message, from_email, to_email, html_message=message)
+
+# def send_email_to_operator(booking):
+#     operator_users = User.objects.filter(is_operator=True)
+
+#     subject = 'Appointment Confirmed'
+
+#     message = f'Appointment has been confirmed:<br><br>'
+#     message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
+#     message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}  <br><br>'
+#     message += f'<strong>Service:</strong> {booking.service}<br><br>'
+#     message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
+#     message += f'<strong>Date:</strong> {booking.date}<br><br>'
+#     message += f'<strong>Time:</strong> {booking.time}<br><br>'
+#     message += 'Thank You!'
+
+#     from_email = settings.EMAIL_HOST_USER
+#     to_email = [operator_user.email for operator_user in operator_users]
+
+#     send_mail(subject, message, from_email, to_email, html_message=message)
+    
+
+
 def send_confirmation_emails(booking):
     send_email_to_user(booking)
     send_email_to_doctor(booking)
@@ -1733,6 +1818,13 @@ def send_email_to_operator(booking):
     to_email = [operator_user.email for operator_user in operator_users]
 
     send_mail(subject, message, from_email, to_email, html_message=message)
+    
+    
+
+
+
+    
+
 
 
 # forget password
