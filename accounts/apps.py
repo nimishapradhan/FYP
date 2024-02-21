@@ -6,4 +6,4 @@ class AccountsConfig(AppConfig):                                   # Defining th
     name = 'accounts'
 
     def ready(self):                                               # Defining a method 'ready' which is called when the application is prepared
-        import accounts.signals                                    # Importing signals module from the accounts app
+        import accounts.signals                                    # Importing signals module from the accounts app from signal.py

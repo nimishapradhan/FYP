@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import User, Doctor, PetOwner
-import uuid
+import uuid                                                  #UUID (Universally Unique Identifier)  Version 4 
 # Create your models here.
 
 class Time(models.Model):
@@ -12,9 +12,9 @@ class Time(models.Model):
     occupied_daytimes = models.TextField(null=True, blank=True, default='')
     status = models.BooleanField(default=True)
 
-
+#String representing the start and end times of an event in the format "HH:MM AM/PM
     def __str__(self):
-        return f"{self.start_time.strftime('%I:%M %p')} - {self.end_time.strftime('%I:%M %p')}"
+        return f"{self.start_time.strftime('%I:%M %p')} - {self.end_time.strftime('%I:%M %p')}"     # %I: Hour (12-hour clock) , %M: Minute , %p: either AM or PM
 
 class Service(models.Model):
     title = models.CharField(max_length=255, null=True, blank=True)
@@ -27,10 +27,10 @@ class Service(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title
+        return self.title        # To represent a Service instance as a string when displaying it in an admin interface or other
 
     class Meta:
-        verbose_name_plural = "1. Services"
+        verbose_name_plural = "1. Services"                          # organizing model names for better categorization and presentation in the admin interface
 
 
 class Booking(models.Model):
@@ -82,7 +82,7 @@ class Booking(models.Model):
 
 class Payment(models.Model):
     payment_id = models.CharField(max_length = 255, null=True, blank=True)
-    booking = models.ForeignKey(Booking, on_delete = models.CASCADE)
+    booking = models.ForeignKey(Booking, on_delete = models.CASCADE)         # When a Booking object is deleted, the related objects that have a ForeignKey pointing to it will also be deleted due to the CASCADE behavior.
     payment_method = models.CharField(max_length=255, choices=[('Khalti', 'Khalti')],default='Khalti')
     payment_completed = models.BooleanField(default = False, null=True, blank=True)
 

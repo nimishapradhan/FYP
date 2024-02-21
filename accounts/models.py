@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser                         # AbstractUser provides the base implementation for a user model with commonly used fields such as username, email, etc
 
 # Create your models here.
 
@@ -19,12 +19,12 @@ class User(AbstractUser):
     otp_verified = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name_plural = '1. User'                 #specifies the human-readable name for the model in its plural form; when Django refers to the model User in its plural form, it will use '1. User' as the name instead of the default generated name.
+        verbose_name_plural = '1. User'                 #specifies the human-readable name for the model in its plural form; when Django refers to the model User in its plural form, it will use '1. User' as the name instead of the default generated name everywhere on django(admin interface)
 
 
 # Define a model named Doctor
 class Doctor(models.Model):
-    # Define a one-to-one relationship with the User model, where each Doctor has one User; when the associated user is deleted it also delete the Doctor instance.
+    # Define a one-to-one relationship with the User model, where each Doctor has one User; when the associated user is deleted it also delete the Doctor instance(containing user fields)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(max_length=255, choices=[(
         'Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')])
@@ -39,7 +39,7 @@ class Doctor(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
+    def __str__(self):                                             #The method returns the first name of the user associated with the current instance of the class yo instantiate garera tyo user variable where one to one bhako cha tesh bata user ko firstname taneko
         return self.user.first_name
     
     class Meta:

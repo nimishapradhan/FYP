@@ -22,7 +22,7 @@ def appointment_booking(request):
         doctor = Doctor.objects.filter(status = True)
         time= Time.objects.filter(status = True)
 
-        uid = uuid.uuid4()
+        uid = uuid.uuid4()             # generates unique booking id for each booking
         # print(uid)
 
         return render(request, 'user/user_booking.html', {'service':service, 'doctor':doctor, 'time':time, 'uid':uid})

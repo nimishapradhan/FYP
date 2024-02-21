@@ -278,6 +278,9 @@
     </div>
 </main>
 
+<!-- Updates the content of an element with the ID serviceprice to display the selected service price.-->
+<!-- If the selected booking type is "Home", it sets the display style of all elements with the class address-fields to 'block' (visible). Otherwise, it sets the display style to 'none' (hidden)-->
+<!--  Extracted date string (YYYY-MM-DD), ensuring that dates before today are not selectable.-->
 <script>
     function updateModalContent() {
         var selectedService = document.getElementById("service");
@@ -285,7 +288,8 @@
 
         document.getElementById("serviceprice").innerText = selectedPrice;
 
-    }
+    }                              
+
 
     function toggleFields() {
         var bookingType = document.getElementById('ubooking_type').value;

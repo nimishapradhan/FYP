@@ -6,8 +6,14 @@ from django.contrib.auth import get_user_model                               # I
 User = get_user_model()                                                      #Fetching the User model dynamically.
 
 @receiver(post_save, sender=UserSocialAuth)                                   # Registering a receiver for the post-save signal of UserSocialAuth model.
-def update_user_profile(sender, instance, created, **kwargs):                 #It is triggered after a UserSocialAuth instance is saved.
+def update_user_profile(sender, instance, created, **kwargs):                 #It is triggered after a UserSocialAuth instance is saved, kwargs accept any additional parameter passed with signal
     if created:                                                               #checks if the UserSocialAuth instance was just created (created) and if its provider is 'google-oauth2'
         if instance.provider == 'google-oauth2':
             instance.user.is_patient = True                                      #Set the is_patient attribute for user instance.
             instance.user.save()                                                 #Saving the updated user to db.
+
+
+
+
+
+#The details of this file is imported by accounts.py and then it creates a user by adding it in the model 

@@ -14,3 +14,6 @@ from django.core.asgi import get_asgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tailtales.settings')
 
 application = get_asgi_application()
+
+
+#This code sets up the ASGI (Asynchronous Server Gateway Interface) application for a Django project.

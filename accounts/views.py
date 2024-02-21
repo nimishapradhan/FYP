@@ -1,28 +1,28 @@
 import os                                                                     # Importing the 'os' module for interacting with the operating system.
 import json                                                                   # Importing the 'json' module for working with JSON data.
-import requests                                                               # Importing the 'requests' module for making HTTP requests.
-from django.shortcuts import render, redirect                    
-from accounts.models import *                                                 # Importing models from the 'accounts' app
+import requests                                                               # Importing the 'render' module for rendering HTML template.
+from django.shortcuts import render, redirect                                 # Importing models from the 'accounts' app * to import all
+from accounts.models import *                                                 # Importing a function for hashing passwords from Django
 from django.contrib.auth.hashers import make_password                         # Importing a function for hashing passwords from Django
-from django.contrib import messages, auth                                     
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from datetime import datetime
-from service.models import Booking, Service, Time, Payment
-from information.models import Contact, Feedback
-from django.utils.crypto import get_random_string
-from django.core.mail import send_mail                                         # Importing a function for sending emails from Django
-from tailtales import settings
-from tailtales.settings import MEDIA_URL                                       # Import MEDIA_URL from 'tailtales.settings'
+from django.contrib import messages, auth                                     # Messages to display messages to users, and auth to handle user authentication and related tasks
+from django.http import HttpResponse, HttpResponseRedirect                    # Importing HTTP response to display response on the browser
+from django.contrib.auth.decorators import login_required                     # To restrict access to authenticated users only
+from datetime import datetime                                                 # To work with dates and times
+from service.models import Booking, Service, Time, Payment                    # Importing Booking, Service, Time and Payment model.
+from information.models import Contact, Feedback                              # Importing Contact and Feedback model
+from django.utils.crypto import get_random_string                             # To generate random string such as generating unique identifiers, tokens, or password
+from django.core.mail import send_mail                                        # Importing a function for sending emails from Django
+from tailtales import settings                                                # Importing settings from tailtales project
+from tailtales.settings import MEDIA_URL                                       # Import MEDIA_URL from 'tailtales.settings'  for making things dynamic
 from reportlab.pdfgen import canvas                                            # Importing modules for generating PDFs from ReportLab
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import Table, TableStyle
-from reportlab.lib import colors
-from reportlab.lib.utils import ImageReader
-from django.contrib.auth.password_validation import validate_password
-from django.template.loader import render_to_string
-from django.urls import reverse, reverse_lazy                                         # Importing functions for reversing URLs from Django
-from django.contrib.auth import authenticate, login
+from reportlab.lib.pagesizes import letter                                     # To specify the page size when creating PDF documents 
+from reportlab.platypus import Table, TableStyle                               # To define rows and columns, set cell content, and apply formatting to the table
+from reportlab.lib import colors                                               # To access predefined colors or create custom color values
+from reportlab.lib.utils import ImageReader                                    # To load image files (such as PNG, JPEG, GIF, etc.) and use them within PDF documents
+from django.contrib.auth.password_validation import validate_password          # To validate the strength of passwords
+from django.template.loader import render_to_string                            # To render Django templates to strings used in email
+from django.urls import reverse, reverse_lazy                                  #  To dynamically generate URLs and to store data and save it in db used during 'booking and payment' process
+from django.contrib.auth import authenticate, login                            # To authenticate users based on their credentials
 # Create your views here.
 
 
@@ -72,7 +72,7 @@ def do_register(request):
             validate_password(password)
         except:
             messages.warning(request, 'Password must match all the requirements.')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))                           #Redirects the user back to the previous page they were on before submitting the current request.
 
         user = User.objects.create_user(username=username, password=password,
                                         first_name=first_name, last_name=last_name, email=username,
@@ -178,7 +178,7 @@ def generate_pdf(response, payments):
     main_header_text = "------- Tailtales Transaction Details -------"
     p.setFont("Helvetica-Bold", 16)
     p.setFillColorRGB(0, 0.5, 0)
-    p.drawString(165, 645, main_header_text)
+    p.drawString(165, 645, main_header_text)                            #coordinates specify the distance from the bottom-left corner of the page, and the text will be drawn starting from that position
 
     header_data = [["Booking ID", "Pet Owner", "Doctor","Service", "Booking Type", "Amount", "Payment Method", "Paid Date"]]
     
@@ -196,9 +196,11 @@ def generate_pdf(response, payments):
     all_data = header_data + data
 
     total_amount = sum(float(pa.booking.service.price) for pa in payments)
-    total_row = ["Total Amount", "", "", "","", f"{total_amount}", "", ""]
+    total_row = ["Total Amount", "", "", "","", f"{total_amount}", "", ""]                          # (""): Placeholder for other columns in the table, f-string formatting
     all_data.append(total_row)
-    table = Table(all_data)
+    table = Table(all_data)    
+
+    #Each tuple in the list represents a specific style rule top-left cell of the table(row index 0, column index 0), top-right cell of the table (row index -1 refers to the last row, and column index 0), (-1, -1) represents the bottom-right cell, (0, 1) represents the cell in the first row (index 0) and the second column (index 1) of the table.
 
     style = TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.green),
@@ -212,8 +214,8 @@ def generate_pdf(response, payments):
 
     table.setStyle(style)
 
-    table.wrapOn(p, 0, 0)
-    table.drawOn(p, 0, 450)
+    table.wrapOn(p, 0, 0)                                    #tableWrapOn gives size top-left corner of the canvas.
+    table.drawOn(p, 0, 450)                                  #table.drawOn gives position,  positioned 450 units from the bottom of the canvas.
 
     p.save()
 
@@ -221,8 +223,8 @@ def generate_pdf(response, payments):
 def user_download_payment_all(request):
     if request.user.is_patient:
         try:
-            bookings = Booking.objects.filter(user=request.user)
-            pay_ment = Payment.objects.filter(booking__in=bookings)
+            bookings = Booking.objects.filter(user=request.user)                    #the user field matches the current user (request.user)
+            pay_ment = Payment.objects.filter(booking__in=bookings)                 #perform a lookup with double underscore that spans a relationship of payment and booking
 
             response = HttpResponse(content_type='application/pdf')
 
@@ -260,7 +262,7 @@ def user_payment_list(request):
         payment = Payment.objects.filter(booking__in=booking)
         return render(request, 'user/payment_history.html', {'payment':payment})
     else:
-        return HttpResponse('Invalid role')
+        return HttpResponse('Invalid role')                            #Payment history page 
 
 
 # @login_required
@@ -297,7 +299,7 @@ def user_profile_update(request):
         email = request.POST['user-email']
         username = request.POST['user-email']
 
-        if email != request.user.email and User.objects.filter(email=email):
+        if email != request.user.email and User.objects.filter(email=email):                # Ensures that the user is attempting to change their email address to a different one and check old email = new email
             messages.warning(request, 'Email already exists')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -338,7 +340,7 @@ def user_change_password(request):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
         if new_password != request.user.password:
-            user.password = make_password(new_password)
+            user.password = make_password(new_password)                                # make_password function is a Django utility is used to hash passwords securely
 
         user.save()
 
@@ -1569,6 +1571,10 @@ def khalti_request(request, id):
         return render(request, 'user/khalti_payment_request.html', {'booking': booking, 'price': price})
     else:
         return HttpResponse('Invalid Role action')
+    
+
+
+#Yo khalti ley deko code ho, payload ma tyo json.dumps ley python object lai json string ma convert hancha ani tyo json.loads ley tyo aako string lai python dictionary ma convert hancha
 
 @login_required
 def initkhalti(request):
@@ -1785,89 +1791,6 @@ def send_email_to_operator(booking):
     send_mail(subject, message, from_email, to_email, html_message=message)
     
 
-# #Without Template
-
-#  # Defines a function named "send_email_to_user" that takes a single argument "booking".
-# def send_email_to_user(booking):
-#     subject = 'Appointment Confirmed'                                                  # Assigns a string 'Appointment Confirmed' to the variable "subject".
-
-#     message = f'Dear {booking.user.first_name} {booking.user.last_name},<br><br>'
-#     message += f'Your appointment has been confirmed. Your appointment details:<br><br>'
-#     message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}<br><br>'
-#     message += f'<strong>Service:</strong> {booking.service}<br><br>'
-#     message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
-#     message += f'<strong>Date:</strong> {booking.date}<br><br>'
-#     message += f'<strong>Time:</strong> {booking.time}<br><br>'
-#     message += 'Thank You!'
-
-#     from_email = settings.EMAIL_HOST_USER                                          # Retrieves the email host user from the settings.
-#     to_email = [booking.user.email]                                                 # Retrieves the user's email address and stores it in a list.
-
-#     send_mail(subject, message, from_email, to_email, html_message=message)               # Calls the send_mail function to send the email with the specified subject, message, sender, recipient, and HTML message.
-
-# def send_email_to_doctor(booking):
-#     subject = 'Appointment Confirmed'
-
-#     message = f'Dear {booking.doctor.user.first_name} {booking.doctor.user.last_name},<br><br>'
-#     message += f'Appointment has been confirmed:<br><br>'
-#     message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
-#     message += f'<strong>Service:</strong> {booking.service}<br><br>'
-#     message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
-#     message += f'<strong>Date:</strong> {booking.date}<br><br>'
-#     message += f'<strong>Time:</strong> {booking.time}<br><br>'
-#     message += 'Thank You!'
-
-#     from_email = settings.EMAIL_HOST_USER
-#     to_email = [booking.doctor.user.email]
-
-#     send_mail(subject, message, from_email, to_email, html_message=message)
-
-# def send_email_to_admin(booking):
-
-#     admin_users = User.objects.filter(is_admin=True)
-
-#     subject = 'Appointment Confirmed'
-
-#     message = f'Appointment has been confirmed:<br><br>'
-#     message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
-#     message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}  <br><br>'
-#     message += f'<strong>Service:</strong> {booking.service}<br><br>'
-#     message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
-#     message += f'<strong>Date:</strong> {booking.date}<br><br>'
-#     message += f'<strong>Time:</strong> {booking.time}<br><br>'
-#     message += 'Thank You!'
-
-#     from_email = settings.EMAIL_HOST_USER
-#     to_email = [admin_user.email for admin_user in admin_users]
-
-#     send_mail(subject, message, from_email, to_email, html_message=message)
-
-# def send_email_to_operator(booking):
-#     operator_users = User.objects.filter(is_operator=True)
-
-#     subject = 'Appointment Confirmed'
-
-#     message = f'Appointment has been confirmed:<br><br>'
-#     message += f'<strong>Pet Owner:</strong> {booking.user.first_name} {booking.user.last_name}  <br><br>'
-#     message += f'<strong>Doctor:</strong> {booking.doctor.user.first_name} {booking.doctor.user.last_name}  <br><br>'
-#     message += f'<strong>Service:</strong> {booking.service}<br><br>'
-#     message += f'<strong>Booking Type:</strong> {booking.booking_type}<br><br>'
-#     message += f'<strong>Date:</strong> {booking.date}<br><br>'
-#     message += f'<strong>Time:</strong> {booking.time}<br><br>'
-#     message += 'Thank You!'
-
-#     from_email = settings.EMAIL_HOST_USER
-#     to_email = [operator_user.email for operator_user in operator_users]
-
-#     send_mail(subject, message, from_email, to_email, html_message=message)
-    
-    
-
-
-
-    
-
-
 
 # forget password
 
@@ -2010,7 +1933,10 @@ def reset_password(request):
     else:
         return HttpResponseRedirect('login')
 
-# ird api called to post the bill for verification
+# ird api called to post the bill for verification 
+# paylod ma data aaucha ani tyo api url ma hit hanney ani response 200 aayo bhaney successful hanney nabaye failed hanney
+    
+    
 
 def post_bill_view(booking):
     api_url = "https://cbapi.ird.gov.np/api/bill"

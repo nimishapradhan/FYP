@@ -41,7 +41,7 @@ INSTALLED_APPS = [
 
     'information',
     'service',
-    'corsheaders',
+    
 
     'social_django',
     'accounts',
