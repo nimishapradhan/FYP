@@ -1,0 +1,16 @@
+
+1. To run the project you will need to have:
+python -m django --version 
+4.2.5
+
+2. The attach dabatabse "myprojectdb" is the database of this project.
+
+3. Steps to be run the file
+First of all you have to do to the terminal and make migration with the help of this command:
+python manage.py makemigration
+python manage.py migrate
+
+Then you can get access of the website in local host through this command:
+python manage.py runserver
+
+The username for admin is admin@admin.com and password id admin.

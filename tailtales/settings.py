@@ -87,8 +87,8 @@ LOGIN_REDIRECT_URL = 'user_appointment_list'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'pradhan.nimi13@gmail.com'
-EMAIL_HOST_PASSWORD = 'kfruykzrjbtvafgj'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 
 
@@ -200,15 +200,15 @@ AUTHENTICATION_BACKENDS = (
 #         'SCOPE': ['profile', 'email'],
 #         'AUTH_PARAMS': {'access_type': 'online'},
 #         'APP': {
-#             'client_id': '550542172018-c03s36hd4vlb63bajaif86adfk2kg5le.apps.googleusercontent.com',
-#             'secret': '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',
+#             'client_id': '',
+#             'secret': '',
 #             'key': '',
 #         }
 #     }
 # }
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '634619071101-4oolflnk9g5nf9hqjdp57pa4vm270vo7.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
 SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/user/oauth/complete/google-oauth2/'
 
 # SOCIAL_AUTH_PIPELINE = (
